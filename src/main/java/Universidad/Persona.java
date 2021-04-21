@@ -71,14 +71,13 @@ public abstract class Persona {
     }
 
     // metodo identificarse (este método no se que recibe ni que devuelve, lo dejo asi de momento)
-    public static void identificarse(ArrayList<Persona> listaPersonas) {
-
-        pass;
+    public static void identificarse() {
+        System.out.println("TODO");
     }
 
     //método buscar info personas (este método no se que recibe ni que devuelve, lo dejo asi de momento)
-    public static void buscarInfoPersonas(ArrayList<Persona> listaPersonas) {
-        pass;
+    public static void buscarInfoPersonas() {
+        System.out.printf("TODO");
     }
 
 }
