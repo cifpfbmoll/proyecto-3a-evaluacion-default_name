@@ -17,7 +17,7 @@ public class Libro {
     private int copias_totales;
     private int copias_disponibles;
     
-    // CONSTRUCTOR VACÍO, CONSTRUCTOR CON PARÁMETROS Y CONSTRUCTOR COPIA
+    // CONSTRUCTOR VACï¿½O, CONSTRUCTOR CON PARï¿½METROS Y CONSTRUCTOR COPIA
 
     public Libro() {
     }
@@ -90,15 +90,15 @@ public class Libro {
         this.copias_disponibles = copias_disponibles;
     }
     
-    // MÉTODOS
+    // Mï¿½TODOS
     /**
-     * Método que muestra todos los libros de la tabla LIBROS
+     * Mï¿½todo que muestra todos los libros de la tabla LIBROS
      */
     public static void mostrarLibros(){
         
         try{
             /**
-             * HABRIA QUE CREAR UNA CONEXIÓN CON LA BBDD, VOY
+             * HABRIA QUE CREAR UNA CONEXIï¿½N CON LA BBDD, VOY
              * A LLAMARLA miConexion 
              */
             Connection miConexion = DriverManager.getConnection("jdbc:mysql://51.178.152.223:3306/dam4", "Dam4", "ProyectoGrupo4");
