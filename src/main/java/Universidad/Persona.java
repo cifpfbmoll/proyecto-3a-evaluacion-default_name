@@ -70,8 +70,15 @@ public abstract class Persona {
         this.setContraseña(p.getContraseña());
     }
 
-    // metodo identificarse (este método no se que recibe ni que devuelve, lo dejo asi de momento)
-    public static void identificarse() {
+    // metodo identificarse
+    public static String identificarse(Connexion con) {
+        Scanner lector = new Scanner(System.in);
+        System.out.println("Dame tu dni");
+        String dni = lector.nextLine();
+        System.out.println("Dame tu contraseña");
+        String contraseña = lector.nextLine();
+
+
         System.out.println("TODO");
     }
 
