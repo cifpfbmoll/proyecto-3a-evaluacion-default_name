@@ -1,3 +1,5 @@
+package Universidad;
+
 import java.sql.*;
 
 /**
@@ -6,39 +8,39 @@ import java.sql.*;
 public class Titulacion {
     
     // ATRIBUTOS 
-    private int ID_titulacion;
-    private String nombreTitulacion;
+    private int ID_Titulacion;
+    private String Nombre_Titulacion;
     
     // CONSTRUCTORES VACÍO, CON PARÁMETROS Y COPIA
 
     public Titulacion() {
     }
     
-    public Titulacion(int ID_titulacion, String nombreTitulacion) {
-        this.setID_titulacion(ID_titulacion);
-        this.setNombreTitulacion(nombreTitulacion);
+    public Titulacion(int ID_Titulacion, String Nombre_Titulacion) {
+        this.setID_Titulacion(ID_Titulacion);
+        this.setNombre_Titulacion(Nombre_Titulacion);
     }
     
     public Titulacion(Titulacion copiaTitulacion){
-        this.setID_titulacion(copiaTitulacion.getID_titulacion());
-        this.setNombreTitulacion(copiaTitulacion.getNombreTitulacion());
+        this.setID_Titulacion(copiaTitulacion.getID_Titulacion());
+        this.setNombre_Titulacion(copiaTitulacion.getNombre_Titulacion());
     }
     // GETTERS AND SETTERS
 
-    public int getID_titulacion() {
-        return ID_titulacion;
+    public int getID_Titulacion() {
+        return ID_Titulacion;
     }
 
-    public void setID_titulacion(int ID_titulacion) {
-        this.ID_titulacion = ID_titulacion;
+    public void setID_Titulacion(int ID_Titulacion) {
+        this.ID_Titulacion = ID_Titulacion;
     }
 
-    public String getNombreTitulacion() {
-        return nombreTitulacion;
+    public String getNombre_Titulacion() {
+        return Nombre_Titulacion;
     }
 
-    public void setNombreTitulacion(String nombreTitulacion) {
-        this.nombreTitulacion = nombreTitulacion;
+    public void setNombre_Titulacion(String Nombre_Titulacion) {
+        this.Nombre_Titulacion = Nombre_Titulacion;
     }
 
    // MÉTODOS
@@ -56,7 +58,7 @@ public class Titulacion {
             while(resultado.next()){
                 System.out.println(resultado.getString("ID_ASIGNATURA") +
                                    resultado.getString("NOMBRE_ASIGNATURA") +
-                                   resultado.getString("ID_TITULACION") +
+                                   resultado.getString("ID_Titulacion") +
                                    resultado.getString("ID_PROFESOR") +
                                    resultado.getString("CURSO"));
             }
