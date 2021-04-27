@@ -10,92 +10,89 @@ public class Libro {
     
     // ATRIBUTOS 
     
-    private String titulo;
-    private String autor;
-    private String editorial;
-    private int ID_biblioteca;
-    private int copias_totales;
-    private int copias_disponibles;
+    private String Titulo_Libro;
+    private String Autor;
+    private String Editorial;
+    private int ID_Biblioteca;
+    private int Cantidad_Total;
+    private int Cantidad_Restante;
     
     // CONSTRUCTOR VAC�O, CONSTRUCTOR CON PAR�METROS Y CONSTRUCTOR COPIA
 
     public Libro() {
     }
 
-    public Libro(String titulo, String autor, String editorial, int ID_biblioteca, int copias_totales, int copias_disponibles) {
-        this.setTitulo(titulo);
-        this.setAutor(autor);
-        this.setEditorial(editorial);
-        this.setID_biblioteca(ID_biblioteca);
-        this.setCopias_totales(copias_totales);
-        this.setCopias_totales(copias_totales);
+    public Libro(String Titulo_Libro, String Autor, String Editorial, int ID_Biblioteca, int Cantidad_Total, int Cantidad_Restante) {
+        this.setTitulo_Libro(Titulo_Libro);
+        this.setAutor(Autor);
+        this.setEditorial(Editorial);
+        this.setID_Biblioteca(ID_Biblioteca);
+        this.setCantidad_Total(Cantidad_Total);
+        this.setCantidad_Restante(Cantidad_Restante);
     }
-    
+
     public Libro(Libro copiaLibro){
-        this.setTitulo(copiaLibro.getTitulo());
+        this.setTitulo_Libro(copiaLibro.getTitulo_Libro());
         this.setAutor(copiaLibro.getAutor());
         this.setEditorial(copiaLibro.getEditorial());
-        this.setID_biblioteca(copiaLibro.getID_biblioteca());
-        this.setCopias_totales(copiaLibro.getCopias_totales());
-        this.setCopias_disponibles(copiaLibro.getCopias_disponibles());
+        this.setID_Biblioteca(copiaLibro.getCantidad_Total());
+        this.setCantidad_Restante(copiaLibro.getCantidad_Restante());
     }
-    
     // GETTERS AND SETTERS
-
-    public String getTitulo() {
-        return titulo;
+    
+    public String getTitulo_Libro(){
+        return Titulo_Libro; 
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setTitulo_Libro(String Titulo_Libro) {
+        this.Titulo_Libro = Titulo_Libro;
     }
 
     public String getAutor() {
-        return autor;
+        return Autor;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
+    public void setAutor(String Autor) {
+        this.Autor = Autor;
     }
 
     public String getEditorial() {
-        return editorial;
+        return Editorial;
     }
 
-    public void setEditorial(String editorial) {
-        this.editorial = editorial;
+    public void setEditorial(String Editorial) {
+        this.Editorial = Editorial;
     }
 
-    public int getID_biblioteca() {
-        return ID_biblioteca;
+    public int getID_Biblioteca() {
+        return ID_Biblioteca;
     }
 
-    public void setID_biblioteca(int ID_biblioteca) {
-        this.ID_biblioteca = ID_biblioteca;
+    public void setID_Biblioteca(int ID_Biblioteca) {
+        this.ID_Biblioteca = ID_Biblioteca;
     }
 
-    public int getCopias_totales() {
-        return copias_totales;
+    public int getCantidad_Total() {
+        return Cantidad_Total;
     }
 
-    public void setCopias_totales(int copias_totales) {
-        this.copias_totales = copias_totales;
+    public void setCantidad_Total(int Cantidad_Total) {
+        this.Cantidad_Total = Cantidad_Total;
     }
 
-    public int getCopias_disponibles() {
-        return copias_disponibles;
+    public int getCantidad_Restante() {
+        return Cantidad_Restante;
     }
 
-    public void setCopias_disponibles(int copias_disponibles) {
-        this.copias_disponibles = copias_disponibles;
+    public void setCantidad_Restante(int Cantidad_Restante) {
+        this.Cantidad_Restante = Cantidad_Restante;
     }
-    
+
     // M�TODOS
     /**
      * M�todo que muestra todos los libros de la tabla LIBROS
      */
-    public static void mostrarLibros(){
-        
+    public static void mostrarLibros() {
         try{
             /**
              * HABRIA QUE CREAR UNA CONEXI�N CON LA BBDD, VOY
@@ -111,18 +108,17 @@ public class Libro {
             ResultSet resultado = sentenciaPrep.executeQuery();
             
             while(resultado.next()){
-                System.out.println(resultado.getString("TITULO") + 
+                System.out.println(resultado.getString("TITULO") +
                                    resultado.getString("AUTOR") +
                                    resultado.getString("EDITORIAL") +
-                                   resultado.getString("ID_BIBLIOTECA"));
+                                   resultado.getString("ID_BIBLIOTECA") +
+                                   resultado.getString("CANTIDAD TOTAL") +
+                                   resultado.getString("CANTIDAD RESTANTE"));
             }
             
         }catch(Exception e){
             System.out.println("Lo siento, ha ocurrido un error y no se puede conectar a la Base de Datos.");
         }
-        
-        
-        
     }
    
 }
