@@ -1,6 +1,15 @@
 package Universidad;
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
 
-public abstract class Persona {
+public  class Persona {
     private String ID_Persona;
     private String Nombre;
     private int Edad;
@@ -70,16 +79,30 @@ public abstract class Persona {
         this.setContraseña(p.getContraseña());
     }
 
-    // metodo identificarse
-    public static String identificarse(Connexion con) {
+    // metodo identificarse ESTA SIN PROBAR LO DE LA BASE DE DATOS
+    public static String[]  identificarse(Connection con) throws SQLException {
         Scanner lector = new Scanner(System.in);
         System.out.println("Dame tu dni");
         String dni = lector.nextLine();
         System.out.println("Dame tu contraseña");
         String contraseña = lector.nextLine();
 
+        PreparedStatement consulta = con.prepareStatement("select * from users where ID_Persona = ? and Constraseña = ?");
+        consulta.setString(1, dni);
+        consulta.setString(2, contraseña);
+        ResultSet resultados = consulta.executeQuery();
 
-        System.out.println("TODO");
+        String[] datos = new String[2];
+        if (resultados.next() == false) {
+            System.out.println("ResultSet in empty in Java");
+        } else {
+            String dniCorrecto = resultados.getString ("ID_Persona");
+            datos[0] = dniCorrecto;
+            String rol = resultados.getString ("Rol");
+            datos[1] = rol;
+        }
+
+        return datos;
     }
 
     //método buscar info personas (este método no se que recibe ni que devuelve, lo dejo asi de momento)
