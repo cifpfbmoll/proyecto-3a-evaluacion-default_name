@@ -1,35 +1,35 @@
 package Universidad;
 
-public class Asigantura {
+public class Asignatura {
 
     private int ID_Asignatura;
-    private string Nombre_Asignatura;
+    private String Nombre_Asignatura;
     private int ID_Titulacion;
     private int ID_Profesor;
-    private string Curso;
+    private String Curso;
 
     //Constructor vacío
     public Asignatura(){
     }
 
     // Constructor con parámetros
-    public Asignatura(String ID_Asignatura, String Nombre_Asignatura, int ID_Titulacion, int ID_Profesor, String Curso) {
+    public Asignatura(int ID_Asignatura, String Nombre_Asignatura, int ID_Titulacion, int ID_Profesor, String Curso) {
 
-        this.setID_Asigantura(ID_Asigantura);
-        this.setNombre_Asignatura(Nombre_Asignaatura);
-        this.setID_Tituacion(ID_Titulacion);
+        this.setID_Asignatura(ID_Asignatura);
+        this.setNombre_Asignatura(Nombre_Asignatura);
+        this.setID_Titulacion(ID_Titulacion);
         this.setID_Profesor(ID_Profesor);
         this.setCurso(Curso);
     }
 
     // Constructor copia
-    public Asigantura(Asignatura copiaAsignatura){
+    public Asignatura(Asignatura copiaAsignatura){
 
-       this.setID_Asigantura(copiaAsignatura.getID_Asigantura);
-       this.setNombre_Asignatura(copiaAsignatura.getNombre_Asignaatura);
-       this.setID_Tituacion(copiaAsignatura.getID_Titulacion);
-       this.setID_Profesor(copiaAsignatura.getID:Profesor);
-       this.setCurso(copiaAsignatura.getCurso);
+        this.setID_Asignatura(copiaAsignatura.getID_Asignatura());
+        this.setNombre_Asignatura(copiaAsignatura.getNombre_Asignatura());
+        this.setID_Titulacion(copiaAsignatura.getID_Titulacion());
+        this.setID_Profesor(copiaAsignatura.getID_Profesor());
+        this.setCurso(copiaAsignatura.getCurso());
     }
 
     // Getters & Setters
@@ -41,11 +41,11 @@ public class Asigantura {
         this.ID_Asignatura = ID_Asignatura;
     }
 
-    public string getNombre_Asignatura() {
+    public String getNombre_Asignatura() {
         return Nombre_Asignatura;
     }
 
-    public void setNombre_Asignatura(string nombre_Asignatura) {
+    public void setNombre_Asignatura(String nombre_Asignatura) {
         Nombre_Asignatura = nombre_Asignatura;
     }
 
@@ -65,18 +65,18 @@ public class Asigantura {
         this.ID_Profesor = ID_Profesor;
     }
 
-    public string getCurso() {
+    public String getCurso() {
         return Curso;
     }
 
-    public void setCurso(string curso) {
+    public void setCurso(String curso) {
         Curso = curso;
     }
 
     // toString
     @java.lang.Override
     public java.lang.String toString() {
-        return "Asigantura{" +
+        return "Asignatura{" +
                 "ID_Asignatura=" + ID_Asignatura +
                 ", Nombre_Asignatura=" + Nombre_Asignatura +
                 ", ID_Titulacion=" + ID_Titulacion +
