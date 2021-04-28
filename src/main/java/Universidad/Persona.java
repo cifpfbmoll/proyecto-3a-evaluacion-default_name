@@ -14,7 +14,7 @@ public  class Persona {
     private String Nombre;
     private int Edad;
     private String Telefono;
-    private String Contraseña;
+    private String Contrasena;
 
     // getters y setters
     public String getID_Persona() {
@@ -49,21 +49,21 @@ public  class Persona {
         Telefono = telefono;
     }
 
-    public String getContraseña() {
-        return Contraseña;
+    public String getContrasena() {
+        return Contrasena;
     }
 
-    public void setContraseña(String contraseña) {
-        Contraseña = contraseña;
+    public void setContrasena(String contrasena) {
+        Contrasena = contrasena;
     }
 
     // constructor completo
-    public Persona(String ID_Persona, String nombre, int edad, String telefono, String contraseña) {
+    public Persona(String ID_Persona, String nombre, int edad, String telefono, String contrasena) {
         this.ID_Persona = ID_Persona;
         this.Nombre = nombre;
         this.Edad = edad;
         this.Telefono = telefono;
-        this.Contraseña = contraseña;
+        this.Contrasena = contrasena;
     }
 
     // constructor vacio
@@ -76,25 +76,25 @@ public  class Persona {
         this.setNombre(p.getNombre());
         this.setEdad(p.getEdad());
         this.setTelefono(p.getTelefono());
-        this.setContraseña(p.getContraseña());
+        this.setContrasena(p.getContrasena());
     }
 
-    // metodo identificarse ESTA SIN PROBAR LO DE LA BASE DE DATOS
+    // metodo identificarse
     public static String[]  identificarse(Connection con) throws SQLException {
         Scanner lector = new Scanner(System.in);
         System.out.println("Dame tu dni");
         String dni = lector.nextLine();
-        System.out.println("Dame tu contraseña");
-        String contraseña = lector.nextLine();
+        System.out.println("Dame tu contrasena");
+        String contrasena = lector.nextLine();
 
-        PreparedStatement consulta = con.prepareStatement("select * from users where ID_Persona = ? and Constraseña = ?");
+        PreparedStatement consulta = con.prepareStatement("select * from persona where ID_Persona = ? and Contrasena = ?");
         consulta.setString(1, dni);
-        consulta.setString(2, contraseña);
+        consulta.setString(2, contrasena);
         ResultSet resultados = consulta.executeQuery();
 
         String[] datos = new String[2];
         if (resultados.next() == false) {
-            System.out.println("ResultSet in empty in Java");
+            System.out.println("No se ha encontrado al usuario.");
         } else {
             String dniCorrecto = resultados.getString ("ID_Persona");
             datos[0] = dniCorrecto;
