@@ -4,7 +4,7 @@ public class Matriculacion {
     //    Atributos
     private String ID_Alumno;
     private int ID_Asignatura;
-    private int Año_Academico;
+    private int Ano_Academico;
     private double Nota;
 
 //Constructores
@@ -12,17 +12,17 @@ public class Matriculacion {
     public Matriculacion() {
     }
 
-    public Matriculacion(String ID_Alumno, int ID_Asignatura, int Año_Academico, int Nota) {
+    public Matriculacion(String ID_Alumno, int ID_Asignatura, int Ano_Academico, int Nota) {
         this.setID_Alumno(ID_Alumno);
         this.setID_Asignatura(ID_Asignatura);
-        this.setAño_Academico(Año_Academico);
+        this.setAno_Academico(Ano_Academico);
         this.setNota(Nota);
     }
 
     public Matriculacion(Matriculacion m1) {
         this.setID_Alumno(m1.getID_Alumno());
         this.setID_Asignatura(m1.getID_Asignatura());
-        this.setAño_Academico(m1.getAño_Academico());
+        this.setAno_Academico(m1.getAno_Academico());
         this.setNota(m1.getNota());
     }
 
@@ -44,12 +44,12 @@ public class Matriculacion {
         this.ID_Asignatura = ID_Asignatura;
     }
 
-    public int getAño_Academico() {
-        return Año_Academico;
+    public int getAno_Academico() {
+        return Ano_Academico;
     }
 
-    public void setAño_Academico(int Año_Academico) {
-        this.Año_Academico = Año_Academico;
+    public void setAno_Academico(int Ano_Academico) {
+        this.Ano_Academico = Ano_Academico;
     }
 
     public double getNota() {
@@ -63,7 +63,7 @@ public class Matriculacion {
     //    toString, lo pongo pero no sé si es necesario.
     @Override
     public String toString() {
-        return "Matriculacion{" + "ID_Alumno=" + ID_Alumno + ", ID_Asignatura=" + ID_Asignatura + ", A\u00f1o_Academico=" + Año_Academico + ", Nota=" + Nota + '}';
+        return "Matriculacion{" + "ID_Alumno=" + ID_Alumno + ", ID_Asignatura=" + ID_Asignatura + ", A\u00f1o_Academico=" + Ano_Academico + ", Nota=" + Nota + '}';
     }
 
 
