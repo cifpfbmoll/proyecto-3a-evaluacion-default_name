@@ -4,14 +4,14 @@ public class Alumno {
 
     private int ID_Persona;
 
-    public Almuno (){
+    public Almuno () {
     }
 
-    public Alumno(int ID_Persona);{
+    public Alumno(int ID_Persona) {
         this.setID_Persona(ID_Persona);
     }
 
-    public Alumno(Alumno copiaAlumno);{
+    public Alumno(Alumno copiaAlumno) {
         this.setID_Persona(copiaAlumno.getID_Persona);
     }
 
@@ -29,4 +29,5 @@ public class Alumno {
                 "ID_Persona=" + ID_Persona +
                 '}';
     }
+
 }
