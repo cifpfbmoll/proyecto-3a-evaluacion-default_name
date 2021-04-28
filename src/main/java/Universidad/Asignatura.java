@@ -28,7 +28,7 @@ public class Asigantura {
        this.setID_Asigantura(copiaAsignatura.getID_Asigantura);
        this.setNombre_Asignatura(copiaAsignatura.getNombre_Asignaatura);
        this.setID_Tituacion(copiaAsignatura.getID_Titulacion);
-       this.setID_Profesor(copiaAsignatura.getID:Profesor);
+       this.setID_Profesor(copiaAsignatura.getID_Profesor);
        this.setCurso(copiaAsignatura.getCurso);
     }
 
@@ -69,8 +69,8 @@ public class Asigantura {
         return Curso;
     }
 
-    public void setCurso(string curso) {
-        Curso = curso;
+    public void setCurso(string Curso) {
+        this.Curso = Curso;
     }
 
     // toString
