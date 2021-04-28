@@ -4,7 +4,7 @@ public class Alumno {
 
     private int ID_Persona;
 
-    public Almuno () {
+    public Alumno () {
     }
 
     public Alumno(int ID_Persona) {
