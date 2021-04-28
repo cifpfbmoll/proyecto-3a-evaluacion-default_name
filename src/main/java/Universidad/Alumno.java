@@ -12,7 +12,7 @@ public class Alumno {
     }
 
     public Alumno(Alumno copiaAlumno) {
-        this.setID_Persona(copiaAlumno.getID_Persona);
+        this.setID_Persona(copiaAlumno.getID_Persona());
     }
 
     public int getID_Persona() {
