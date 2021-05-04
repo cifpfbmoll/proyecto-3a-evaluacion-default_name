@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 
-public  class Persona {
+public   class Persona {
     private String ID_Persona;
     private String Nombre;
     private int Edad;
