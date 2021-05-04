@@ -1,5 +1,10 @@
 package Universidad;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Profesor extends Persona{
 
 
@@ -29,5 +34,21 @@ public class Profesor extends Persona{
 
     public void setID_Departamento(String ID_Departamento) {
         this.ID_Departamento = ID_Departamento;
+    }
+
+    // METODOS
+
+    /**
+     *
+     * @param miConexion
+     */
+    public static void mostrarAlumnos(Connection miConexion) throws SQLException {
+
+        PreparedStatement prepStat =
+                miConexion.prepareStatement("SELECT p.ID_Persona" +
+                                             "FROM PERSONA p, Profesor pr, Asignatura a, Matriculacion m, Alumno al " +
+                                             "WHERE ID_PERSONA = ");
+
+        ResultSet resultado = prepStat.executeQuery();
     }
 }
