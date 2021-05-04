@@ -2,6 +2,7 @@ package Universidad;
 
 public class Profesor extends Persona{
 
+
     // ATRIBUTOS
     private String ID_Departamento;
 
