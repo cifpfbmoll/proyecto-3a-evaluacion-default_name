@@ -1,33 +1,16 @@
 package Universidad;
 
-public class Alumno {
+public class Alumno extends Persona{
 
-    private int ID_Persona;
 
     public Alumno () {
     }
 
-    public Alumno(int ID_Persona) {
-        this.setID_Persona(ID_Persona);
-    }
+    public Alumno(String ID_Persona, String nombre, int edad, String telefono, String contrasena) {
+        super(ID_Persona, nombre, edad, telefono, contrasena);
 
     public Alumno(Alumno copiaAlumno) {
-        this.setID_Persona(copiaAlumno.getID_Persona());
-    }
+            super((Persona)copiaAlumno);
+        }
 
-    public int getID_Persona() {
-        return ID_Persona;
     }
-
-    public void setID_Persona(int ID_Persona) {
-        this.ID_Persona = ID_Persona;
-    }
-
-    @java.lang.Override
-    public java.lang.String toString() {
-        return "Alumno{" +
-                "ID_Persona=" + ID_Persona +
-                '}';
-    }
-
-}
