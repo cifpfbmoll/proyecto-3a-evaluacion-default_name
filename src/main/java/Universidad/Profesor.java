@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class Profesor extends Persona{
 
@@ -43,12 +44,27 @@ public class Profesor extends Persona{
      * @param miConexion
      */
     public static void mostrarAlumnos(Connection miConexion) throws SQLException {
+        Scanner lector = new Scanner(System.in);
 
-        PreparedStatement prepStat =
-                miConexion.prepareStatement("SELECT p.ID_Persona" +
-                                             "FROM PERSONA p, Profesor pr, Asignatura a, Matriculacion m, Alumno al " +
-                                             "WHERE ID_PERSONA = ");
+        System.out.println("Quien eres? Escribe tu ID y tu contrasena para poder ver los alumnos");
+        System.out.println("ID:");
+        String id = lector.nextLine();
+        System.out.println("Contrasena:");
+        String contrasena = lector.nextLine();
+
+        System.out.println("Estos son los alumnos que tienes:");
+
+        PreparedStatement prepStat = miConexion.prepareStatement("SELECT * FROM Persona WHERE ID_Persona = ? AND Contrasena = ?");
+        prepStat.setString(1, id);
+        prepStat.setString(2, contrasena);
 
         ResultSet resultado = prepStat.executeQuery();
+
+        while(resultado.next()){
+            String trampitas = resultado.getString("ID_Persona") + " " + resultado.getString("Nombre") +
+                    " " + resultado.getString("Edad") + " " + resultado.getString("Telefono");
+            System.out.println(trampitas.replace(" ", " - "));
+        }
+
     }
 }

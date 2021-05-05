@@ -9,11 +9,12 @@ import java.sql.Statement;
             // TODO code application logic here
 
             Connection miConexion = obtenerConexion();
-            Persona persona = new Persona();
-            String[] datos = Persona.identificarse(miConexion);
-            for(int i =0; i< datos.length; i++){
-                System.out.println(datos[i]);
-            }
+            Profesor.mostrarAlumnos(miConexion);
+            //Persona persona = new Persona();
+            //String[] datos = Persona.identificarse(miConexion);
+            //for(int i =0; i< datos.length; i++){
+            //    System.out.println(datos[i]);
+            //}
         }
 
 
