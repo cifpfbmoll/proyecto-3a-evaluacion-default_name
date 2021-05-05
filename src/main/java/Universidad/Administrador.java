@@ -93,9 +93,26 @@ public class Administrador extends Persona{
     }
 
     public static void anadirPersona(Connection miConexion){
-        Scanner lector = new  Scanner(System.in);
-        System.out.println("¿Qué persona quieres introducir?");
-        System.out.println();
+        Persona p = Administrador.pedirDatosPersona();
+        //ID_Persona, Nombre, Edad, Telefono, Contrasena, Rol
+
+        String datosPersona = "insert into persona values( ?, ?,?,?,?,?) ";
+        try {
+            PreparedStatement estatementpreparada = miConexion.prepareStatement (datosPersona);
+            estatementpreparada.setString(1, p.getID_Persona());
+            estatementpreparada.setString(2, p.getNombre());
+            estatementpreparada.setInt(3, p.getEdad());
+            estatementpreparada.setString(4, p.getTelefono());
+            estatementpreparada.setString(5, p.getContrasena());
+            estatementpreparada.setString(6, p.getRol());
+            int filasMetidas = estatementpreparada.executeUpdate();
+
+            if(filasMetidas>0){
+                System.out.println("Se Ha añadido el registro");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
     }
 
