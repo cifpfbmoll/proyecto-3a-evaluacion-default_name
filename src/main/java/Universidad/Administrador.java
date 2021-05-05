@@ -32,9 +32,13 @@ public class Administrador extends Persona{
             } else {
                 do {
                     String dni = resultados.getString("ID_Persona");
+                    String nombre = resultados.getString("Nombre");
+                    int edad = resultados.getInt("Edad");
+                    String telefono = resultados.getString("Telefono");
                     String rol = resultados.getString("Rol");
                     String contrasena = resultados.getString("Contrasena");
-                    System.out.println("DNI " +dni + " ROL: "+rol +" Contrasena: " +contrasena);
+                    System.out.println("DNI " +dni + " ROL: "+rol +" Contrasena: "
+                            +contrasena + "Nombre: " + nombre + "Telefono: " + telefono + "Edad: " + edad);
                 } while(resultados.next());
 
             }
@@ -110,13 +114,72 @@ public class Administrador extends Persona{
             if(filasMetidas>0){
                 System.out.println("Se Ha añadido el registro");
             }
+            if (estatementpreparada != null) {estatementpreparada.close (); }//cierra
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
     }
 
+    public static boolean buscarDni( String dni, Connection con){
 
+        boolean encontrado = false;
+        try (PreparedStatement consulta = con.prepareStatement("select * from persona where ID_Persona = ?")) {
+            consulta.setString(1, dni);
+            ResultSet resultado = consulta.executeQuery();
+
+            if (resultado.next() == false) {
+                encontrado = false;
+            }else{
+                encontrado= true;
+            }
+            if (consulta != null) {consulta.close (); }//cierra
+            if (resultado != null) {resultado.close (); }//cierra
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            return encontrado;
+        }
+
+
+    }
+
+    public static void borrarPersona(Connection con){
+        Administrador.verPersonas(con);
+        boolean encontrado = false;
+        try {
+            String dni = null;
+            while (!encontrado) {
+                Scanner lector = new Scanner(System.in);
+                System.out.println("Escribe el DNI de la persona a eliminar");
+                dni = lector.nextLine();
+                encontrado = buscarDni(dni, con);
+                System.out.println(encontrado);
+            }
+            String datosPersona = "delete from persona where ID_Persona = ?  ";
+            PreparedStatement estatementpreparada = con.prepareStatement(datosPersona);
+            estatementpreparada = con.prepareStatement(datosPersona);
+            estatementpreparada.setString(1, dni);
+            int filasBorradas = estatementpreparada.executeUpdate();
+
+            if(filasBorradas > 0){
+                System.out.println("Se ha eliminado el registro");
+            }
+            if (estatementpreparada != null) {estatementpreparada.close (); }//cierra
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
+
+
+
+
+
+
+
+    }
 
 }
 
