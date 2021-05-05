@@ -6,9 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+/**
+ * Clase Administrador
+ * @author grupo3
+ */
 public class Administrador extends Persona{
-    
-    // ATRIBUTOS
 
     // CONSTRUCTOR VACÍO, CONSTRUCTOR CON PARÁMETROS Y CONSTRUCTOR COPIA
 
@@ -22,7 +24,11 @@ public class Administrador extends Persona{
     public Administrador(Administrador copiaAdministrador){
         super((Persona)copiaAdministrador);
     }
-    
+
+    /**
+     * Imprime las personas de la tabla persona.
+     * @param con es un objeto de tipo Connection, que es la conexión a la BBDD
+     */
     public static void verPersonas(Connection con) {
         try{
             PreparedStatement consulta = con.prepareStatement("select * from persona");
@@ -40,19 +46,19 @@ public class Administrador extends Persona{
                     System.out.println("DNI " +dni + " ROL: "+rol +" Contrasena: "
                             +contrasena + "Nombre: " + nombre + "Telefono: " + telefono + "Edad: " + edad);
                 } while(resultados.next());
-
             }
             if (resultados != null) {resultados.close (); }//cierra
             if (consulta != null) consulta.close ();//cierra
 
         }catch(SQLException error){
             System.out.println("Error en la consulta.");
-
         }
-
-
     }
 
+    /**
+     * Pide el rol y el resto de datos que le quieres dar a la nueva persona
+     * @return devuelve una personas con los datos introducidos por el administrador
+     */
     public static Persona pedirDatosPersona(){
         Scanner lector = new  Scanner(System.in);
         String tipoPersona;
@@ -96,9 +102,12 @@ public class Administrador extends Persona{
         return persona;
     }
 
+    /**
+     * Añade una persona a la BBDD
+     * @param miConexion recibe un objeto conexión para conectar con la BBDD
+     */
     public static void anadirPersona(Connection miConexion){
         Persona p = Administrador.pedirDatosPersona();
-        //ID_Persona, Nombre, Edad, Telefono, Contrasena, Rol
 
         String datosPersona = "insert into persona values( ?, ?,?,?,?,?) ";
         try {
@@ -122,6 +131,12 @@ public class Administrador extends Persona{
 
     }
 
+    /**
+     * Busca por un DNI
+     * @param dni un dni para buscar
+     * @param con un obbjeto Connection para hacer la búsqueda en la BBDD
+     * @return true si ha encontrado el DNI, false si no lo ha encontrado
+     */
     public static boolean buscarDni( String dni, Connection con){
 
         boolean encontrado = false;
@@ -145,6 +160,10 @@ public class Administrador extends Persona{
 
     }
 
+    /**
+     * Borra una persona de la BBD
+     * @param con es un objeto Connection para contactar con la BBDD
+     */
     public static void borrarPersona(Connection con){
         Administrador.verPersonas(con);
         boolean encontrado = false;
@@ -170,14 +189,6 @@ public class Administrador extends Persona{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
-
-
-
-
-
-
-
 
     }
 
