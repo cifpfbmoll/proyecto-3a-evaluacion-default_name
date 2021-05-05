@@ -49,7 +49,7 @@ public class Administrador extends Persona{
 
     }
 
-    public static Sring[] pedirDatosPersona(){
+    public static Persona pedirDatosPersona(){
         Scanner lector = new  Scanner(System.in);
         String tipoPersona;
         do{
@@ -59,22 +59,39 @@ public class Administrador extends Persona{
             System.out.println("3. Alumno");
             System.out.println("4. Bibliotecario");
             tipoPersona = lector.nextLine();
+            System.out.println(tipoPersona);
+        }while (!"1".equals(tipoPersona) && !"2".equals(tipoPersona)  && !"3".equals(tipoPersona)  && !"4".equals(tipoPersona) );
 
-        }while (tipoPersona != "1" || tipoPersona != "2" || tipoPersona != "2" || tipoPersona != "2");
+        String rol ="";
+        switch (tipoPersona){
+            case "1": rol = "administrador"; break;
+            case "2": rol = "profesor"; break;
+            case "3": rol = "alumno"; break;
+            case "4": rol = "bibliotecario"; break;
+        }
+
         System.out.println("Dame el DNI");
         String DNI = lector.nextLine();
         System.out.println("Dame la contrasena");
         String constrasena = lector.nextLine();
+        System.out.println("Dame la nombre");
+        String nombre = lector.nextLine();
         System.out.println("Dime el telefono");
         String telefono = lector.nextLine();
         System.out.println("Dime la edad");
         int edad = lector.nextInt();
         lector.nextLine();
+        Persona persona = new Persona();
+        persona.setID_Persona(DNI);
+        persona.setContrasena(constrasena);
+        persona.setNombre(nombre);
+        persona.setTelefono(telefono);
+        persona.setEdad(edad);
+        persona.setRol(rol);
 
-
-
-
+        return persona;
     }
+
     public static void anadirPersona(Connection miConexion){
         Scanner lector = new  Scanner(System.in);
         System.out.println("¿Qué persona quieres introducir?");
