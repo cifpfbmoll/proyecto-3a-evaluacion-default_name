@@ -16,7 +16,9 @@ import java.sql.Statement;
                 System.out.println(datos[i]);
             }
 
-            Profesor.mostrarAlumnos(miConexion, datos);
+            //Profesor.mostrarAlumnos(miConexion, datos);
+
+            Profesor.ponerNota(miConexion);
         }
 
 

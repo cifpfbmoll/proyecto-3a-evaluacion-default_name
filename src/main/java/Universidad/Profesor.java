@@ -65,11 +65,33 @@ public class Profesor extends Persona{
             System.out.println("No se ha podido realizar la consulta.");
             e.printStackTrace();
         }
-
-
     }
 
-    public static void ponerNota(Connection con){
+    public static void ponerNota(Connection miConexion){
+        Scanner lector = new Scanner(System.in);
+
+        System.out.println("Escribe el ID del Alumno al que quieres ponerle nota:");
+        System.out.println("ID: ");
+        String id = lector.nextLine();
+
+        System.out.println("Que nota quieres ponerle?");
+        Double nota = lector.nextDouble();
+        lector.nextLine();
+
+        try{
+            PreparedStatement prepStat = miConexion.prepareStatement("INSERT INTO Matriculacion(Nota)" +
+                    "                                                     SELECT ID_Alumno" +
+                    "                                                     FROM Alumno" +
+                    "                                                     WHERE ID_Persona = ?");
+
+            prepStat.setDouble(1, nota);
+
+            int n = prepStat.executeUpdate();
+
+        }catch(SQLException e){
+            System.out.println("No se ha podido insertar la nota");
+            e.printStackTrace();
+        }
 
     }
 }
