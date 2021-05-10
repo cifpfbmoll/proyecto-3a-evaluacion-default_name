@@ -160,6 +160,43 @@ public class Administrador extends Persona{
         }
 
     }
+    public static void mostrarPersonasAtributo(Connection con) {
+        try{
+            Scanner lector = new Scanner(System.in);
+            System.out.println("¿Por qué atributo quieres ordenar la lista (nombre, edad, rol)?");
+            String atributo = lector.nextLine();
+            while (!atributo.equals("nombre")&&!atributo.equals("edad")&&!atributo.equals("rol")){
+                System.out.println("Introduce un atributo valido:");
+                System.out.println("nombre, edad o rol");
+                atributo=lector.nextLine();
+            }
+            PreparedStatement consulta = con.prepareStatement("select * from persona order by ?");
+            consulta.setString(1, atributo);
+            ResultSet resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay usuarios.");
+            } else {
+                do {
+                    String dni = resultados.getString("ID_Persona");
+                    String nombre = resultados.getString("Nombre");
+                    Integer edad = resultados.getInt("Edad");
+                    String telefono = resultados.getString("Telefono");
+                    String rol = resultados.getString("Rol");
+                    String contrasena = resultados.getString("Contrasena");
+                    System.out.println("DNI " +dni + " Nombre: "+nombre +" Edad: " +edad +" Telefono: "+telefono +" Contrasena: " +contrasena +" Rol: " +rol);
+                } while(resultados.next());
+
+            }
+            if (resultados != null) {resultados.close (); }//cierra
+            if (consulta != null) consulta.close ();//cierra
+
+        }catch(SQLException error){
+            System.out.println("Error en la consulta.");
+
+        }
+
+
+    }
 
     /**
      * Busca por un DNI
