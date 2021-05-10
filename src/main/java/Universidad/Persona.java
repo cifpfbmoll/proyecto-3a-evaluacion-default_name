@@ -67,13 +67,13 @@ public  class Persona {
     }
 
     // constructor completo
-    public Persona(String ID_Persona, String nombre, int edad, String telefono, String contrasena String rol) {
+    public Persona(String ID_Persona, String nombre, int edad, String telefono, String contrasena, String rol) {
         this.ID_Persona = ID_Persona;
         this.Nombre = nombre;
         this.Edad = edad;
         this.Telefono = telefono;
         this.Contrasena = contrasena;
-        this.setRol = rol;
+        this.Rol = rol;
     }
 
     // constructor vacio
@@ -87,7 +87,7 @@ public  class Persona {
         this.setEdad(p.getEdad());
         this.setTelefono(p.getTelefono());
         this.setContrasena(p.getContrasena());
-        this.setRol(p.setRol());
+        this.setRol(p.getRol());
     }
 
     // metodo identificarse
