@@ -17,8 +17,8 @@ public class Administrador extends Persona{
     public Administrador() {
     }
 
-    public Administrador(String ID_Persona, String nombre, int edad, String telefono, String contrasena, int ID_Persona1) {
-        super(ID_Persona, nombre, edad, telefono, contrasena);
+    public Administrador(String ID_Persona, String nombre, int edad, String telefono, String contrasena, String rol) {
+        super(ID_Persona, nombre, edad, telefono, contrasena, rol);
     }
 
     public Administrador(Administrador copiaAdministrador){
@@ -108,25 +108,55 @@ public class Administrador extends Persona{
      */
     public static void anadirPersona(Connection miConexion){
         Persona p = Administrador.pedirDatosPersona();
-
         String datosPersona = "insert into persona values( ?, ?,?,?,?,?) ";
+
+        PreparedStatement estatementpreparadaPersona = null;
+        PreparedStatement  estatementpreparadaRol = null;
         try {
-            PreparedStatement estatementpreparada = miConexion.prepareStatement (datosPersona);
-            estatementpreparada.setString(1, p.getID_Persona());
-            estatementpreparada.setString(2, p.getNombre());
-            estatementpreparada.setInt(3, p.getEdad());
-            estatementpreparada.setString(4, p.getTelefono());
-            estatementpreparada.setString(5, p.getContrasena());
-            estatementpreparada.setString(6, p.getRol());
-            int filasMetidas = estatementpreparada.executeUpdate();
+            miConexion.setAutoCommit(false);
+            estatementpreparadaPersona = miConexion.prepareStatement (datosPersona);
+            estatementpreparadaPersona.setString(1, p.getID_Persona());
+            estatementpreparadaPersona.setString(2, p.getNombre());
+            estatementpreparadaPersona.setInt(3, p.getEdad());
+            estatementpreparadaPersona.setString(4, p.getTelefono());
+            estatementpreparadaPersona.setString(5, p.getContrasena());
+            estatementpreparadaPersona.setString(6, p.getRol());
+            int filasMetidas = estatementpreparadaPersona.executeUpdate();
+
+            String datosRol = "";
+            switch (p.getRol()){
+                case "administrador": datosRol = "insert into administrador values( ?) "; break;
+                case "profesor": datosRol = "insert into profesor values( ?) "; break;
+                case "alumno": datosRol = "insert into alumno values( ?) "; break;
+                case "bibliotecario": datosRol = "insert into bibliotecario values( ?) "; break;
+            }
+
+            estatementpreparadaRol = miConexion.prepareStatement (datosRol);
+            estatementpreparadaRol.setString(1, p.getID_Persona());
+
+            int filasMetidasROl = estatementpreparadaRol.executeUpdate();
+            miConexion.commit();
 
             if(filasMetidas>0){
                 System.out.println("Se Ha añadido el registro");
             }
-            if (estatementpreparada != null) {estatementpreparada.close (); }//cierra
 
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+           System.out.println("SQLSTATE " + throwables.getSQLState() + "SQLMESSAGE" +throwables.getMessage());
+            System.out.println("Hago rollback");
+            try {
+                miConexion.rollback() ;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }finally {
+            try {
+                miConexion.setAutoCommit(true);
+                if (estatementpreparadaPersona != null) {estatementpreparadaPersona.close (); }//cierra
+                if (estatementpreparadaRol != null) {estatementpreparadaRol.close (); }//cierra;
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
 
     }
