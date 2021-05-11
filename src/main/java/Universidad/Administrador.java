@@ -309,9 +309,38 @@ public class Administrador extends Persona{
 
         }
 
-        //metodos ver departamento
-        //metodo elegir departamento
+    }
 
+    /**
+     * Muestra las ids y los nombres de los departamentos de la tabla departamentos
+     * @param con  es un objeto Connection para contactar con la BBDD
+     */
+    public static void verDepartamentos(Connection con){
+        PreparedStatement consulta=null;
+        ResultSet resultados = null;
+        try{
+            consulta = con.prepareStatement("select * from departamento");
+            resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay departamentos.");
+            } else {
+                do {
+                    String id = resultados.getString("ID_Departamento");
+                    String nombre = resultados.getString("Nombre_Departamento");
+                    System.out.println("ID " +id + " Nombre: "+nombre);
+                } while(resultados.next());
+            }
+
+        }catch(SQLException error){
+            System.out.println("Error en la consulta.");
+        }finally{
+                    try {
+                        if (consulta != null) consulta.close ();//cierra
+                        if (resultados != null) resultados.close ();//cierra
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+        }
     }
 
 }
