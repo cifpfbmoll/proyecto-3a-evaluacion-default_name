@@ -49,6 +49,7 @@ public class Profesor extends Persona{
 
         System.out.println("Estos son los alumnos que tienes:");
         try{
+            
             PreparedStatement prepStat = miConexion.prepareStatement("SELECT p.ID_Persona, p.Nombre, p.Edad, p.Telefono " +
                     "                                                    FROM Persona AS p " +
                     "                                                    INNER JOIN Matriculacion AS m ON m.ID_Persona = p.ID_Persona" +
