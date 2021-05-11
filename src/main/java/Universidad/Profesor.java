@@ -12,7 +12,7 @@ public class Profesor extends Persona{
     // ATRIBUTOS
     private String ID_Departamento;
 
-    // CONSTRUCTOR VACÍO, CONSTRUCTOR CON PARÁMETROS, CONSTRUCTOR COPIA
+    // CONSTRUCTOR VACIO, CONSTRUCTOR CON PARAMETROS, CONSTRUCTOR COPIA
 
     public Profesor() {
     }
@@ -40,8 +40,9 @@ public class Profesor extends Persona{
     // METODOS
 
     /**
-     *
+     * Metodo estatico que busca los alumnos del profesor activo
      * @param miConexion
+     * @param datos
      * @throws SQLException
      */
     public static void mostrarAlumnos(Connection miConexion, String[] datos) throws SQLException {
@@ -67,9 +68,16 @@ public class Profesor extends Persona{
         }
     }
 
-    public static void ponerNota(Connection miConexion){
+    /**
+     * Metodo estatico que se utilizara para poner notas a los alumnos
+     * @param miConexion
+     * @param datos
+     * @throws SQLException
+     */
+    public static void ponerNota(Connection miConexion, String[] datos) throws SQLException{
         Scanner lector = new Scanner(System.in);
 
+        mostrarAlumnos(miConexion, datos);
         System.out.println("Escribe el ID del Alumno al que quieres ponerle nota:");
         System.out.println("ID: ");
         String id = lector.nextLine();
@@ -78,13 +86,13 @@ public class Profesor extends Persona{
         Double nota = lector.nextDouble();
         lector.nextLine();
 
-        try{
-            PreparedStatement prepStat = miConexion.prepareStatement("INSERT INTO Matriculacion(Nota)" +
-                    "                                                     SELECT ID_Alumno" +
-                    "                                                     FROM Alumno" +
-                    "                                                     WHERE ID_Persona = ?");
+        try {
+            PreparedStatement prepStat = miConexion.prepareStatement("UPDATE matriculacion" +
+                    "                                                     SET Nota=?" +
+                    "                                                     WHERE ID_Persona=?");
 
             prepStat.setDouble(1, nota);
+            prepStat.setString(2, id);
 
             int n = prepStat.executeUpdate();
 
