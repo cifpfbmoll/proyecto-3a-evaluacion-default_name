@@ -130,6 +130,12 @@ public class Administrador extends Persona{
         }
 
     }
+
+    /**
+     * Muestra todas las personas de la tabla personas con su informacion segun te indique el usuario.
+     * Posibilidades: Por nombre, por edad y por rol. Es estatico.
+     * @param con un objeto Connection para hacer la busqueda en la BBDD.
+     */
     public static void mostrarPersonasAtributo(Connection con) {
         try{
             Scanner lector = new Scanner(System.in);
