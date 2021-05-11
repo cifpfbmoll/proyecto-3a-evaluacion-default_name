@@ -15,10 +15,7 @@ import java.sql.Statement;
             for(int i =0; i< datos.length; i++){
                 System.out.println(datos[i]);
             }
-
-            //Profesor.mostrarAlumnos(miConexion, datos);
-
-            Profesor.ponerNota(miConexion, datos);
+            
         }
 
 
