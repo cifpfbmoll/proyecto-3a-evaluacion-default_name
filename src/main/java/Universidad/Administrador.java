@@ -122,17 +122,25 @@ public class Administrador extends Persona{
             estatementpreparadaPersona.setString(5, p.getContrasena());
             estatementpreparadaPersona.setString(6, p.getRol());
             int filasMetidas = estatementpreparadaPersona.executeUpdate();
-
+            int id = -1;
             String datosRol = "";
             switch (p.getRol()){
                 case "administrador": datosRol = "insert into administrador values( ?) "; break;
-                case "profesor": datosRol = "insert into profesor values( ?) "; break;
+                case "profesor":
+                    // lamo al metodo de buscar departamento que devuelve un departameno
+                    id = Administrador.devolverIdDepartamento(miConexion);
+                    datosRol = "insert into profesor values( ?,?) ";
+                    break;
                 case "alumno": datosRol = "insert into alumno values( ?) "; break;
                 case "bibliotecario": datosRol = "insert into bibliotecario values( ?) "; break;
             }
 
             estatementpreparadaRol = miConexion.prepareStatement (datosRol);
             estatementpreparadaRol.setString(1, p.getID_Persona());
+
+            if(p.getRol().equals("profesor")){
+                estatementpreparadaRol.setInt(2, id);
+            }
 
             int filasMetidasRol = estatementpreparadaRol.executeUpdate();
             miConexion.commit();
@@ -192,10 +200,7 @@ public class Administrador extends Persona{
 
         }catch(SQLException error){
             System.out.println("Error en la consulta.");
-
         }
-
-
     }
 
     /**
@@ -223,8 +228,6 @@ public class Administrador extends Persona{
         }finally {
             return encontrado;
         }
-
-
     }
 
     /**
@@ -270,9 +273,7 @@ public class Administrador extends Persona{
             switch (rol){
                 case "administrador":  datosRol = "delete from administrador where ID_Persona = ?";break;
                 case "alumno":  datosRol = "delete from alumno where ID_Persona = ?";break;
-                case "profesor":
-                    // lamo al metodo de buscar departamento que devuelve un departameno
-                    datosRol = "delete from profesor where ID_Persona = ?";break;
+                case "profesor": datosRol = "delete from profesor where ID_Persona = ?";break;
                 case "bibliotecario":  datosRol = "delete from bibliotecario where ID_Persona = ?";break;
             }
             estatementpreparadaRol= con.prepareStatement(datosRol);
@@ -342,6 +343,43 @@ public class Administrador extends Persona{
                     }
         }
     }
+
+    public static boolean buscarDepartamento( int id, Connection con){
+        boolean encontrado = false;
+        try (PreparedStatement consulta = con.prepareStatement("select * from departamento where ID_Departamento = ?")) {
+            consulta.setInt(1, id);
+            ResultSet resultado = consulta.executeQuery();
+
+            if (resultado.next() == false) {
+                encontrado = false;
+            }else{
+                encontrado= true;
+            }
+            if (consulta != null) {consulta.close (); }//cierra
+            if (resultado != null) {resultado.close (); }//cierra
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            return encontrado;
+        }
+    }
+
+    public static int devolverIdDepartamento(Connection con){
+        boolean encontrado = false;
+        int id = -1;
+        while (!encontrado) {
+            Administrador.verDepartamentos(con);
+            Scanner lector = new Scanner(System.in);
+            System.out.println("Escribe el id del departamento");
+            id = lector.nextInt();
+            lector.nextLine();
+            encontrado = buscarDepartamento(id, con);
+            //System.out.println(encontrado);
+        }
+        return id;
+    }
+
+
 
 }
 
