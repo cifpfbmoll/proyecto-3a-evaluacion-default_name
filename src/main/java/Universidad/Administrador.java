@@ -134,10 +134,10 @@ public class Administrador extends Persona{
             estatementpreparadaRol = miConexion.prepareStatement (datosRol);
             estatementpreparadaRol.setString(1, p.getID_Persona());
 
-            int filasMetidasROl = estatementpreparadaRol.executeUpdate();
+            int filasMetidasRol = estatementpreparadaRol.executeUpdate();
             miConexion.commit();
 
-            if(filasMetidas>0){
+            if(filasMetidas>0 && filasMetidasRol > 0){
                 System.out.println("Se Ha añadido el registro");
             }
 
@@ -228,34 +228,89 @@ public class Administrador extends Persona{
     }
 
     /**
-     * Borra una persona de la BBD
+     * Borra una persona de la BBDD
      * @param con es un objeto Connection para contactar con la BBDD
      */
     public static void borrarPersona(Connection con){
         Administrador.verPersonas(con);
         boolean encontrado = false;
+        String datosPersona = "delete from persona where ID_Persona = ?";
+        String datosRol = "";
+        PreparedStatement estatementpreparadaPersona = null;
+        PreparedStatement  estatementpreparadaRol = null;
+        ResultSet resultados = null;
+        PreparedStatement consulta = null;
         try {
+            con.setAutoCommit(false);
             String dni = null;
             while (!encontrado) {
                 Scanner lector = new Scanner(System.in);
                 System.out.println("Escribe el DNI de la persona a eliminar");
                 dni = lector.nextLine();
                 encontrado = buscarDni(dni, con);
-                System.out.println(encontrado);
+                //System.out.println(encontrado);
             }
-            String datosPersona = "delete from persona where ID_Persona = ?  ";
-            PreparedStatement estatementpreparada = con.prepareStatement(datosPersona);
-            estatementpreparada = con.prepareStatement(datosPersona);
-            estatementpreparada.setString(1, dni);
-            int filasBorradas = estatementpreparada.executeUpdate();
 
-            if(filasBorradas > 0){
+            estatementpreparadaPersona = con.prepareStatement(datosPersona);
+            estatementpreparadaPersona.setString(1, dni);
+
+            // busco el rol de la persona a eliminar
+            consulta = con.prepareStatement("select * from persona where ID_Persona = ?");
+            consulta.setString(1, dni);
+            resultados = consulta.executeQuery();
+            String rol = null;
+            if (resultados.next() == false) {
+                System.out.println("No hay usuarios.");
+            } else {
+                do {
+                    rol = resultados.getString("Rol");
+                } while(resultados.next());
+            }
+
+            switch (rol){
+                case "administrador":  datosRol = "delete from administrador where ID_Persona = ?";break;
+                case "alumno":  datosRol = "delete from alumno where ID_Persona = ?";break;
+                case "profesor":
+                    // lamo al metodo de buscar departamento que devuelve un departameno
+                    datosRol = "delete from profesor where ID_Persona = ?";break;
+                case "bibliotecario":  datosRol = "delete from bibliotecario where ID_Persona = ?";break;
+            }
+            estatementpreparadaRol= con.prepareStatement(datosRol);
+            estatementpreparadaRol.setString(1, dni);
+
+            int filasBorradasRol = estatementpreparadaRol.executeUpdate();
+            int filasBorradas = estatementpreparadaPersona.executeUpdate();
+
+            con.commit();
+            if(filasBorradas > 0 || filasBorradasRol >0){
                 System.out.println("Se ha eliminado el registro");
             }
-            if (estatementpreparada != null) {estatementpreparada.close (); }//cierra
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            try {
+                System.out.println("Hago rollback, ha habido un fallo.");
+                con.rollback() ;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+        finally {
+
+            try {
+                con.setAutoCommit(true);
+                if (estatementpreparadaRol != null) {estatementpreparadaRol.close (); }//cierra
+                if (estatementpreparadaPersona != null) {estatementpreparadaPersona.close (); }//cierra
+                if (resultados != null) {resultados.close (); }//cierra
+                if (consulta != null) {consulta.close (); }//cierra
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        }
+
+        //metodos ver departamento
+        //metodo elegir departamento
 
     }
 
