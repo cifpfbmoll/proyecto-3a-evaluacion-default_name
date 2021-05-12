@@ -63,6 +63,12 @@ public class Profesor extends Persona{
                         " " + resultado.getString("Edad") + " " + resultado.getString("Telefono");
                 System.out.println(trampitas.replace(" ", " - "));
             }
+            if(prepStat != null){
+                prepStat.close();
+            }
+            if (resultado != null){
+                resultado.close();
+            }
         }catch(SQLException e){
             System.out.println("No se ha podido realizar la consulta.");
             e.printStackTrace();
@@ -97,6 +103,9 @@ public class Profesor extends Persona{
 
             int n = prepStat.executeUpdate();
 
+            if(prepStat != null) {
+                prepStat.close();
+            }
         }catch(SQLException e){
             System.out.println("No se ha podido insertar la nota");
             e.printStackTrace();
