@@ -15,6 +15,7 @@ public  class Persona {
     private int Edad;
     private String Telefono;
     private String Contrasena;
+    private String Rol;
 
     // getters y setters
     public String getID_Persona() {
@@ -57,13 +58,22 @@ public  class Persona {
         Contrasena = contrasena;
     }
 
+    public String getRol() {
+        return Rol;
+    }
+
+    public void setRol(String rol) {
+        this.Rol = rol;
+    }
+
     // constructor completo
-    public Persona(String ID_Persona, String nombre, int edad, String telefono, String contrasena) {
+    public Persona(String ID_Persona, String nombre, int edad, String telefono, String contrasena, String rol) {
         this.ID_Persona = ID_Persona;
         this.Nombre = nombre;
         this.Edad = edad;
         this.Telefono = telefono;
         this.Contrasena = contrasena;
+        this.Rol = rol;
     }
 
     // constructor vacio
@@ -77,6 +87,7 @@ public  class Persona {
         this.setEdad(p.getEdad());
         this.setTelefono(p.getTelefono());
         this.setContrasena(p.getContrasena());
+        this.setRol(p.getRol());
     }
 
     // metodo identificarse

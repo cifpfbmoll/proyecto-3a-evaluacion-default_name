@@ -46,26 +46,36 @@ public class Profesor extends Persona{
      * @throws SQLException
      */
     public static void mostrarAlumnos(Connection miConexion, String[] datos) throws SQLException {
+        PreparedStatement prepStat = null;
+        ResultSet resultado = null;
 
         System.out.println("Estos son los alumnos que tienes:");
         try{
             
-            PreparedStatement prepStat = miConexion.prepareStatement("SELECT p.ID_Persona, p.Nombre, p.Edad, p.Telefono " +
-                    "                                                    FROM Persona AS p " +
-                    "                                                    INNER JOIN Matriculacion AS m ON m.ID_Persona = p.ID_Persona" +
-                    "                                                    INNER JOIN Asignatura AS a ON a.ID_Asignatura = m.ID_Asignatura " +
-                    "                                                    INNER JOIN Profesor AS pr ON pr.ID_Persona = a.ID_Profesor " +
-                    "                                                    WHERE pr.ID_Persona = ? ");
+            prepStat = miConexion.prepareStatement("SELECT p.ID_Persona, p.Nombre, p.Edad, p.Telefono " +
+                    "                                   FROM Persona AS p " +
+                    "                                   INNER JOIN Matriculacion AS m ON m.ID_Persona = p.ID_Persona" +
+                    "                                   INNER JOIN Asignatura AS a ON a.ID_Asignatura = m.ID_Asignatura " +
+                    "                                   INNER JOIN Profesor AS pr ON pr.ID_Persona = a.ID_Profesor " +
+                    "                                   WHERE pr.ID_Persona = ? ");
             prepStat.setString(1, datos[0]);
-            ResultSet resultado = prepStat.executeQuery();
+            resultado = prepStat.executeQuery();
             while(resultado.next()){
                 String trampitas = resultado.getString("ID_Persona") + " " + resultado.getString("Nombre") +
                         " " + resultado.getString("Edad") + " " + resultado.getString("Telefono");
                 System.out.println(trampitas.replace(" ", " - "));
             }
+
         }catch(SQLException e){
             System.out.println("No se ha podido realizar la consulta.");
             e.printStackTrace();
+        }finally{
+            if(prepStat != null){
+                prepStat.close();
+            }
+            if (resultado != null){
+                resultado.close();
+            }
         }
     }
 
@@ -77,6 +87,7 @@ public class Profesor extends Persona{
      */
     public static void ponerNota(Connection miConexion, String[] datos) throws SQLException{
         Scanner lector = new Scanner(System.in);
+        PreparedStatement prepStat = null;
 
         mostrarAlumnos(miConexion, datos);
         System.out.println("Escribe el ID del Alumno al que quieres ponerle nota:");
@@ -88,19 +99,25 @@ public class Profesor extends Persona{
         lector.nextLine();
 
         try {
-            PreparedStatement prepStat = miConexion.prepareStatement("UPDATE matriculacion" +
-                    "                                                     SET Nota=?" +
-                    "                                                     WHERE ID_Persona=?");
+            prepStat = miConexion.prepareStatement("UPDATE matriculacion" +
+                    "                                   SET Nota=?" +
+                    "                                   WHERE ID_Persona=?");
 
             prepStat.setDouble(1, nota);
             prepStat.setString(2, id);
 
             int n = prepStat.executeUpdate();
 
+
         }catch(SQLException e){
             System.out.println("No se ha podido insertar la nota");
             e.printStackTrace();
+        }finally {
+            if(prepStat != null) {
+                prepStat.close();
+            }
         }
 
     }
+    
 }
