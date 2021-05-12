@@ -1,5 +1,7 @@
 package Universidad;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -106,15 +108,15 @@ public class Administrador extends Persona{
      * Añade una persona a la BBDD
      * @param miConexion recibe un objeto conexión para conectar con la BBDD
      */
-    public static void anadirPersona(Connection miConexion){
+    public static void anadirPersona(Connection miConexion) {
         Persona p = Administrador.pedirDatosPersona();
         String datosPersona = "insert into persona values( ?, ?,?,?,?,?) ";
 
         PreparedStatement estatementpreparadaPersona = null;
-        PreparedStatement  estatementpreparadaRol = null;
+        PreparedStatement estatementpreparadaRol = null;
         try {
             miConexion.setAutoCommit(false);
-            estatementpreparadaPersona = miConexion.prepareStatement (datosPersona);
+            estatementpreparadaPersona = miConexion.prepareStatement(datosPersona);
             estatementpreparadaPersona.setString(1, p.getID_Persona());
             estatementpreparadaPersona.setString(2, p.getNombre());
             estatementpreparadaPersona.setInt(3, p.getEdad());
@@ -124,27 +126,47 @@ public class Administrador extends Persona{
             int filasMetidas = estatementpreparadaPersona.executeUpdate();
 
             String datosRol = "";
-            switch (p.getRol()){
-                case "administrador": datosRol = "insert into administrador values( ?) "; break;
-                case "profesor": datosRol = "insert into profesor values( ?, ?) "; break;
-                case "alumno": datosRol = "insert into alumno values( ?) "; break;
-                case "bibliotecario": datosRol = "insert into bibliotecario values( ?) "; break;
+            switch (p.getRol()) {
+                case "administrador":
+                    datosRol = "insert into administrador values( ?) ";
+                    break;
+                case "profesor":
+                    datosRol = "insert into profesor values( ?, ?) ";
+                    break;
+                case "alumno":
+                    datosRol = "insert into alumno values( ?) ";
+                    break;
+                case "bibliotecario":
+                    datosRol = "insert into bibliotecario values( ?) ";
+                    break;
             }
 
-            estatementpreparadaRol = miConexion.prepareStatement (datosRol);
+            estatementpreparadaRol = miConexion.prepareStatement(datosRol);
             estatementpreparadaRol.setString(1, p.getID_Persona());
 
-            if(p.getRol().equals("profesor")){
-                estatementpreparadaRol.setInt(2, 1);
+            if (p.getRol().equals("profesor")) {
+                boolean dptValido = false;
+                int idUsuario = 0;
+                while(dptValido == false){
+                    Administrador.verDepartamento(miConexion);
+                    System.out.println("dime el id del departamento del profesor");
+                    Scanner lector = new Scanner(System.in);
+                    idUsuario = lector.nextInt();
+                    lector.nextLine();
+                    dptValido = Administrador.validarIdDepartamento(idUsuario , miConexion);
+                }
+                estatementpreparadaRol.setInt(2, idUsuario);
             }
             int filasMetidasROl = estatementpreparadaRol.executeUpdate();
             miConexion.commit();
 
-            if(filasMetidas>0){
+            if (filasMetidas > 0 && filasMetidasROl > 0) {
                 System.out.println("Se Ha añadido el registro");
             }
 
-        } catch (SQLException throwables) {
+        } catch (MySQLIntegrityConstraintViolationException ex)  {
+            System.out.println("Este dni ya está en la base de datos");
+        }catch (SQLException throwables) {
            System.out.println("SQLSTATE " + throwables.getSQLState() + "SQLMESSAGE" +throwables.getMessage());
             System.out.println("Hago rollback");
             try {
@@ -161,7 +183,6 @@ public class Administrador extends Persona{
                 throwables.printStackTrace();
             }
         }
-
     }
 
     /**
@@ -202,8 +223,6 @@ public class Administrador extends Persona{
         }catch(SQLException error){
             System.out.println("Error en la consulta.");
        }
-
-
     }
 
     /**
@@ -213,7 +232,6 @@ public class Administrador extends Persona{
      * @return true si ha encontrado el DNI, false si no lo ha encontrado
      */
     public static boolean buscarDni( String dni, Connection con){
-
         boolean encontrado = false;
         try (PreparedStatement consulta = con.prepareStatement("select * from persona where ID_Persona = ?")) {
             consulta.setString(1, dni);
@@ -313,6 +331,10 @@ public class Administrador extends Persona{
 
     }
 
+    /**
+     * Lista todos los departamentos
+     * @param con es el objeto conexion con la base de datos
+     */
     public static void verDepartamento (Connection con){
         PreparedStatement consulta = null;
         ResultSet resultados = null;
@@ -339,6 +361,51 @@ public class Administrador extends Persona{
                 throwables.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Añade un departamento a la tabla departamento
+     * @param miConexion es el objeto conexion para conectar con la BBDD
+     */
+    public static void anadirDepartamento(Connection miConexion){
+        Scanner lector = new Scanner(System.in);
+        System.out.println("Escribe el nombre de departamento que quieres introducir. ");
+        String nombre = lector.nextLine();
+
+        String datosDpt = "insert into departamento (Nombre_Departamento) values( ?) ";
+        PreparedStatement estatementpreparada = null;
+        try {
+            estatementpreparada = miConexion.prepareStatement(datosDpt);
+            estatementpreparada.setString(1, nombre);
+            int filasMetidas = estatementpreparada.executeUpdate();
+            if (filasMetidas > 0) {
+                System.out.println("Se Ha añadido el departamento");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    /**
+     * Comprueba, dada una id de un departamento, si éste existe
+     * @param id la id del departamento que queremos comprobar si existe
+     * @param con es el objeto conexión
+     * @return devuelve true si el id del dpto existe, y false si no existe
+     */
+    public static boolean validarIdDepartamento(int id, Connection con){
+        boolean valido = false;
+        try{
+            PreparedStatement consulta = con.prepareStatement("select * from departamento where ID_Departamento = ? ");
+            consulta.setInt(1, id);
+            ResultSet resultados = consulta.executeQuery();
+            if(resultados.next()){
+                valido = true;
+            }
+
+        }catch(SQLException error){
+            System.out.println("Error en la consulta.");
+        }
+        return valido;
     }
 
 }
