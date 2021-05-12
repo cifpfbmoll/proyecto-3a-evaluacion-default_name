@@ -204,8 +204,6 @@ public class Administrador extends Persona{
 
 
     }
-
-    
     /**
      * Busca por un DNI
      * @param dni un dni para buscar
