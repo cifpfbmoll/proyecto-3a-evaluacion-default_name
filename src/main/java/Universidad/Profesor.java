@@ -122,7 +122,7 @@ public class Profesor extends Persona{
 
             PreparedStatement prepStat = miConexion.prepareStatement("SELECT p.ID_Persona, p.Nombre, p.Edad, p.Telefono " +
                     "                                                     FROM Persona AS p " +
-                    "                                                     INNER JOIN Matriculacion AS m ON m.ID_Persona = p.ID_Persona " +
+                    "                                                     INNER JOIN Matriculacion AS m ON m.ID_Alumno = p.ID_Persona " +
                     "                                                     INNER JOIN Asignatura AS a ON a.ID_Asignatura = m.ID_Asignatura " +
                     "                                                     INNER JOIN Alumno AS al ON al.ID_Persona = m.ID_Alumno " +
                     "                                                     WHERE a.ID_Asignatura = ? ");
