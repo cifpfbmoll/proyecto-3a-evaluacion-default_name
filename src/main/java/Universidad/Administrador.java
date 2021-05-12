@@ -408,5 +408,42 @@ public class Administrador extends Persona{
         return valido;
     }
 
+    /**
+     * Elimina un departamento de la base de datos
+     * @param con recibe el objeto conexion
+     */
+    public static void eliminarDepartamento(Connection con){
+        boolean valido = false;
+        int idUser = 0;
+        while(valido == false){
+            Administrador.verDepartamento(con);
+            System.out.println("Escribe el ID del departamento para eliminar");
+            Scanner lector = new Scanner(System.in);
+            idUser = lector.nextInt();
+            lector.nextLine();
+            valido = Administrador.validarIdDepartamento(idUser, con);
+        }
+
+        String datos = "delete from departamento where ID_Departamento= ?  ";
+        PreparedStatement estatementpreparada = null;
+        try {
+            estatementpreparada = con.prepareStatement(datos);
+            estatementpreparada.setInt(1, idUser);
+            int filasBorradas = estatementpreparada.executeUpdate();
+            if(filasBorradas > 0  ){
+                System.out.println("Se ha eliminado el departamento");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally{
+            try {
+                if (estatementpreparada != null) {estatementpreparada.close (); }//cierra
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+
+
+    }
 }
 
