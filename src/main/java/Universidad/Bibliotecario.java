@@ -1,5 +1,11 @@
 package Universidad;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
 public class Bibliotecario extends Persona{
     //ATRÍBUTOS -- la clase no tiene atríbutos porque los hereda directamenete todos de persona
 
@@ -18,4 +24,30 @@ public class Bibliotecario extends Persona{
         super((Persona)copiaBibliotecario);
     }
 
+    public static void anadirLibro(Connection miConexion, String[] datos){
+        Scanner lector = new Scanner(System.in);
+
+
+        PreparedStatement prepStat = null;
+        System.out.println("Vamos a anadir un libro:");
+
+        System.out.println("Titulo del libro:");
+        String titulo = lector.nextLine();
+        System.out.println("Autor:");
+        String autor = lector.nextLine();
+        System.out.println("Editorial");
+        String editorial = lector.nextLine();
+        System.out.println("Cantidad de libros:");
+        int cantidad = lector.nextInt();
+        lector.nextLine();
+
+        try{
+            prepStat= miConexion.prepareStatement("INSERT INTO libro VALUES()");
+
+        }catch(SQLException e){
+
+        }
+
+
+    }
 }
