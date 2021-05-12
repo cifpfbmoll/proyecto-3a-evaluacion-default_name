@@ -40,10 +40,21 @@ public class Bibliotecario extends Persona{
         System.out.println("Cantidad de libros:");
         int cantidad = lector.nextInt();
         lector.nextLine();
+        System.out.println("Tematica del libro:");
+        String tematica = lector.nextLine();
 
         try{
             Libro.mostrarLibros(miConexion);
-            prepStat= miConexion.prepareStatement("INSERT INTO libro VALUES()");
+            prepStat= miConexion.prepareStatement("INSERT INTO libro VALUES(?, ?, ?, 1, ?, ?, ?)");
+
+            prepStat.setString(1, titulo);
+            prepStat.setString(2, autor);
+            prepStat.setString(3, editorial);
+            prepStat.setInt(4, cantidad);
+            prepStat.setInt(5, cantidad);
+            prepStat.setString(6, tematica);
+
+            int n = prepStat.executeUpdate();
 
         }catch(SQLException e){
 
