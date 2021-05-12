@@ -192,7 +192,7 @@ public class Administrador extends Persona{
                     String telefono = resultados.getString("Telefono");
                     String rol = resultados.getString("Rol");
                     String contrasena = resultados.getString("Contrasena");
-                    System.out.println("DNI " +dni + " Nombre: "+nombre +" Edad: " +edad +" Telefono: "+telefono +" Contrasena: " +contrasena +" Rol: " +rol);
+                    System.out.println("DNI " +dni + " Nombre : "+nombre +" Edad : " +edad +" Telefono : "+telefono +" Contrasena : " +contrasena +" Rol: " +rol);
                 } while(resultados.next());
 
             }
@@ -311,6 +311,34 @@ public class Administrador extends Persona{
             return  rol;
         }
 
+    }
+
+    public static void verDepartamento (Connection con){
+        PreparedStatement consulta = null;
+        ResultSet resultados = null;
+        try{
+            consulta = con.prepareStatement("select * from departamento");
+            resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay usuarios.");
+            } else {
+                do {
+                    String nombre = resultados.getString("Nombre_Departamento");
+                    int id = resultados.getInt("ID_Departamento");
+                    System.out.println("ID " +id  + " Nombre: "+nombre);
+                } while(resultados.next());
+            }
+
+        }catch(SQLException error){
+            System.out.println("Error en la consulta.");
+        }finally {
+            try{
+                if (resultados != null) {resultados.close (); }//cierra
+                if (consulta != null) consulta.close ();//cierra
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
     }
 
 }
