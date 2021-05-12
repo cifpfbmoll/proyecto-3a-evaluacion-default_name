@@ -40,6 +40,33 @@ public class Profesor extends Persona{
     // METODOS
 
     /**
+     * Metodo que muestra las asignaturas
+     * @param miConexion
+     * @param datos
+     * @throws SQLException
+     */
+
+    public static void verAsignaturas(Connection miConexion, String[] datos) throws SQLException {
+
+        System.out.println("Ahora se mostrarán las asignaturas actuales");
+
+        try{
+
+            PreparedStatement prepStat = miConexion.prepareStatement("SELECT a.ID_Asignatura, a.Nombre_Asignatura " +
+                    "                                                    From Asignatura AS a");
+
+            ResultSet resol = prepStat.executeQuery();
+            while(resol.next()){
+                String cosas = resol.getString("ID_Asignatura") + " " + resol.getString("Nombre_Asignatura");
+                System.out.println(cosas.replace(" ", " - "));
+            }
+        }catch(SQLException e){
+            System.out.println("No se ha podido realizar la consulta.");
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Metodo estatico que busca los alumnos del profesor activo
      * @param miConexion
      * @param datos
@@ -113,7 +140,7 @@ public class Profesor extends Persona{
     public static void mostrarAlumnosPorAsignatura(Connection miConexion, String[] datos) throws SQLException{
         Scanner lectura = new Scanner (System.in);
 
-        mostrarAlumnosPorAsignatura(miConexion, datos);
+        verAsignaturas(miConexion, datos);
         System.out.println("Escribe el ID de la asignatura de la cual quieres ver los alumnos: ");
         String asign = lectura.nextLine();
 
