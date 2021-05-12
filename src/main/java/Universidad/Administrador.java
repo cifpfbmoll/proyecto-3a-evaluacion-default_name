@@ -200,8 +200,9 @@ public class Administrador extends Persona{
                 System.out.println("nombre, edad o rol");
                 atributo=lector.nextLine();
             }
-            PreparedStatement consulta = con.prepareStatement("select * from persona order by ?");
-            consulta.setString(1, atributo);
+            String st="select * from persona order by %s";
+            String st2= String.format(st, atributo);
+            PreparedStatement consulta = con.prepareStatement(st2);
             ResultSet resultados = consulta.executeQuery();
             if (resultados.next() == false) {
                 System.out.println("No hay usuarios.");
