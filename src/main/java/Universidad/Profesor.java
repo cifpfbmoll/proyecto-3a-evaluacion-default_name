@@ -17,8 +17,8 @@ public class Profesor extends Persona{
     public Profesor() {
     }
 
-    public Profesor(String ID_Persona, String nombre, int edad, String telefono, String contrasena) {
-        super(ID_Persona, nombre, edad, telefono, contrasena);
+    public Profesor(String ID_Persona, String nombre, int edad, String telefono, String contrasena, String rol) {
+        super(ID_Persona, nombre, edad, telefono, contrasena, rol);
         this.setID_Departamento(ID_Departamento);
     }
 

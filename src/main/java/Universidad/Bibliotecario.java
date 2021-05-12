@@ -9,8 +9,8 @@ public class Bibliotecario extends Persona{
 
 
     //constructor con parametros
-    public Bibliotecario(String ID_Persona, String nombre, int edad, String telefono, String contrasena) {
-        super(ID_Persona, nombre, edad, telefono, contrasena);
+    public Bibliotecario(String ID_Persona, String nombre, int edad, String telefono, String contrasena, String rol) {
+        super(ID_Persona, nombre, edad, telefono, contrasena, rol);
     }
 
     //constructor copia
