@@ -42,6 +42,7 @@ public class Bibliotecario extends Persona{
         lector.nextLine();
 
         try{
+            Libro.mostrarLibros(miConexion);
             prepStat= miConexion.prepareStatement("INSERT INTO libro VALUES()");
 
         }catch(SQLException e){

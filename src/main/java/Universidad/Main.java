@@ -15,7 +15,8 @@ public class Main {
             System.out.println(datos[i]);
         }
 
-        Bibliotecario.anadirLibro(miConexion, datos);
+        Libro.mostrarLibros(miConexion);
+        //Bibliotecario.anadirLibro(miConexion, datos);
 
         //Administrador.verPersonas(miConexion);
     }
