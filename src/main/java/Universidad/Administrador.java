@@ -359,22 +359,32 @@ public class Administrador extends Persona{
 
 
     }
+
+    /**
+     *Preguntar al administrador que titulaciones quiere crear, preguntarle por todos los atributos de la titulacioen
+     * y una vez se tienen los valores del atributo, añadirlos a la tabla de titulaciones. Es estatico.
+     * @param con un objeto Connection para hacer la busqueda en la BBDD.
+     */
+    //queda pendiente kambiar la PK de la tabla para que el catch error vea si existe el valor en la tabla
     public static void anadirTitulacion(Connection con){
         try {
             Scanner lector = new Scanner(System.in);
             System.out.println("¿Qué titulacion desea anadir?");
             String titulacion = lector.nextLine();
-            String st = "insert into titulacion values(2,'entornos')";
-            PreparedStatement pene = con.prepareStatement(st);
-//            update.setString(1, titulacion);
-            int n = pene.executeUpdate();
+            String st = "insert into titulacion(nombre_titulacion) values(?)";
+            PreparedStatement preparedSt = con.prepareStatement(st);
+            preparedSt.setString(1, titulacion);
+            int n = preparedSt.executeUpdate();
 
             if(n>0){
                 System.out.println("Se ha anadido la titulacion");
             }
 
-            if (pene != null) {pene.close (); }//cierra
+            if (preparedSt != null) {preparedSt.close (); }//cierra
 
+        } catch(MySQLIntegrityConstraintViolationException e){
+            e.printStackTrace();
+            System.out.println("Ya existe en la bbdd.");
         } catch(SQLException error){
             error.printStackTrace();
             System.out.println("Error en el update.");
