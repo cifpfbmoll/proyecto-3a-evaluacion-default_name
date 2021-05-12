@@ -109,13 +109,14 @@ public class Libro {
         PreparedStatement sentenciaPrep = null;
         ResultSet resultado = null;
 
+        System.out.println("Estos son los libros que tenemos en la Biblioteca: \n");
         try {
             /**
              * HABRIA QUE CREAR UNA CONEXI�N CON LA BBDD, VOY
              * A LLAMARLA miConexion 
              */
 
-            sentenciaPrep = miConexion.prepareStatement("SELECT * FROM LIBROS");
+            sentenciaPrep = miConexion.prepareStatement("SELECT * FROM LIBRO");
 
             /**
              * Una vez tenemos la sentencia preparada vamos a ejecutar la sentancia.
@@ -123,17 +124,25 @@ public class Libro {
             resultado = sentenciaPrep.executeQuery();
 
             while (resultado.next()) {
-                System.out.println(resultado.getString("TITULO") +
-                        resultado.getString("AUTOR") +
-                        resultado.getString("EDITORIAL") +
-                        resultado.getString("ID_BIBLIOTECA") +
-                        resultado.getString("CANTIDAD TOTAL") +
-                        resultado.getString("CANTIDAD RESTANTE") +
-                        resultado.getString("TEMATICA"));
+                String titulo = resultado.getString("TITULO_LIBRO");
+                String autor = resultado.getString("AUTOR");
+                String editorial = resultado.getString("EDITORIAL");
+                int id = resultado.getInt("ID_BIBLIOTECA");
+                int cant_tot = resultado.getInt("CANTIDAD_TOTAL");
+                int cant_rest = resultado.getInt("CANTIDAD_RESTANTE");
+                String tematica = resultado.getString("TEMATICA");
+                System.out.println("TITULO: " + titulo + " \n" +
+                                   "AUTOR: " + autor + " \n" +
+                                   "EDITORIAL: " + editorial + " \n" +
+                                   "ID_BIBLIOTECA: " + id + " \n" +
+                                   "CANTIDAD_TOTAL: " + cant_tot + " \n" +
+                                   "CANTIDAD_RESTANTE: " + cant_rest + " \n" +
+                                   "TEMATICA: " + tematica + " \n");
             }
 
         } catch (SQLException e) {
             System.out.println("Lo siento, ha ocurrido un error y no se puede conectar a la Base de Datos.");
+            e.printStackTrace();
         } finally {
             if (sentenciaPrep != null) {
                 sentenciaPrep.close();
