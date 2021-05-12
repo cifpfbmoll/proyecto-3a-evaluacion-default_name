@@ -105,7 +105,7 @@ public class Profesor extends Persona{
     }
 
     /**
-     * Metodo estatico que mostrara los alumnos de una asignatura
+     * Metodo estatico que mostrara los alumnos matriculados de una asignatura
      * @param miConexion
      * @param datos
      * @throws SQLException
@@ -114,13 +114,14 @@ public class Profesor extends Persona{
         Scanner lectura = new Scanner (System.in);
 
         mostrarAlumnosPorAsignatura(miConexion, datos);
-        System.out.println("Escribe el ID de la asignatura que quieres ver los alumnos: ");
+        System.out.println("Escribe el ID de la asignatura de la cual quieres ver los alumnos: ");
         String asign = lectura.nextLine();
 
         System.out.println("Estos son los alumnos de la asignatura: ");
         try{
 
-            PreparedStatement prepStat = miConexion.prepareStatement("SELECT p.ID_Persona, p.Nombre, p.Edad, p.Telefono " +                                                     FROM Persona AS p " +
+            PreparedStatement prepStat = miConexion.prepareStatement("SELECT p.ID_Persona, p.Nombre, p.Edad, p.Telefono " +
+                    "                                                     FROM Persona AS p " +
                     "                                                     INNER JOIN Matriculacion AS m ON m.ID_Persona = p.ID_Persona " +
                     "                                                     INNER JOIN Asignatura AS a ON a.ID_Asignatura = m.ID_Asignatura " +
                     "                                                     INNER JOIN Alumno AS al ON al.ID_Persona = m.ID_Alumno " +
@@ -136,6 +137,5 @@ public class Profesor extends Persona{
             System.out.println("No se ha podido realizar la consulta.");
             e.printStackTrace();
         }
-
     }
 }
