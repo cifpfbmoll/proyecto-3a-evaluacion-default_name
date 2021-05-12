@@ -331,6 +331,56 @@ public class Administrador extends Persona{
         }
 
     }
+    /**
+     * Muestra todas las titulaciones. Es estatico.
+     * @param con un objeto Connection para hacer la busqueda en la BBDD.
+     */
+    public static void verTitulaciones(Connection con) {
+        try{
+            PreparedStatement consulta = con.prepareStatement("select * from titulacion");
+            ResultSet resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay titulaciones.");
+            } else {
+                do {
+                    Integer id_titulacion = resultados.getInt("ID_Titulacion");
+                    String nombre_titulacion = resultados.getString("Nombre_titulacion");
+                    System.out.println("ID: "+id_titulacion+" Nombre: "+nombre_titulacion);
+                } while(resultados.next());
+
+            }
+            if (resultados != null) {resultados.close (); }
+            if (consulta != null) consulta.close ();
+
+        }catch(SQLException error){
+            System.out.println("Error en la consulta.");
+
+        }
+
+
+    }
+    public static void anadirTitulacion(Connection con){
+        try {
+            Scanner lector = new Scanner(System.in);
+            System.out.println("¿Qué titulacion desea anadir?");
+            String titulacion = lector.nextLine();
+            String st = "insert into titulacion values(2,'entornos')";
+            PreparedStatement pene = con.prepareStatement(st);
+//            update.setString(1, titulacion);
+            int n = pene.executeUpdate();
+
+            if(n>0){
+                System.out.println("Se ha anadido la titulacion");
+            }
+
+            if (pene != null) {pene.close (); }//cierra
+
+        } catch(SQLException error){
+            error.printStackTrace();
+            System.out.println("Error en el update.");
+        }
+
+    }
 
     /**
      * Lista todos los departamentos
@@ -447,4 +497,3 @@ public class Administrador extends Persona{
 
     }
 }
-
