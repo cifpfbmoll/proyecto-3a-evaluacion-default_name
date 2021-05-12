@@ -14,8 +14,11 @@ public class Main {
         for(int i =0; i< datos.length; i++){
             System.out.println(datos[i]);
         }
-        Profesor.mostrarAlumnosPorAsignatura(miConexion, datos);
-
+        try {
+            Profesor.mostrarAlumnosPorAsignatura(miConexion, datos);
+        }catch(Exception e){
+            System.out.println("Error " + e);
+        }
         
     }
 
