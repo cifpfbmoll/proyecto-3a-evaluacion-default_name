@@ -126,7 +126,7 @@ public class Administrador extends Persona{
             String datosRol = "";
             switch (p.getRol()){
                 case "administrador": datosRol = "insert into administrador values( ?) "; break;
-                case "profesor": datosRol = "insert into profesor values( ?) "; break;
+                case "profesor": datosRol = "insert into profesor values( ?, ?) "; break;
                 case "alumno": datosRol = "insert into alumno values( ?) "; break;
                 case "bibliotecario": datosRol = "insert into bibliotecario values( ?) "; break;
             }
@@ -134,6 +134,9 @@ public class Administrador extends Persona{
             estatementpreparadaRol = miConexion.prepareStatement (datosRol);
             estatementpreparadaRol.setString(1, p.getID_Persona());
 
+            if(p.getRol().equals("profesor")){
+                estatementpreparadaRol.setInt(2, 1);
+            }
             int filasMetidasROl = estatementpreparadaRol.executeUpdate();
             miConexion.commit();
 
@@ -198,8 +201,7 @@ public class Administrador extends Persona{
 
         }catch(SQLException error){
             System.out.println("Error en la consulta.");
-
-        }
+       }
 
 
     }
@@ -240,7 +242,10 @@ public class Administrador extends Persona{
     public static void borrarPersona(Connection con){
         Administrador.verPersonas(con);
         boolean encontrado = false;
+        PreparedStatement estatementpreparadaRol =null;
+        PreparedStatement estatementpreparada = null;
         try {
+            con.setAutoCommit(false);
             String dni = null;
             while (!encontrado) {
                 Scanner lector = new Scanner(System.in);
@@ -250,17 +255,60 @@ public class Administrador extends Persona{
                 System.out.println(encontrado);
             }
             String datosPersona = "delete from persona where ID_Persona = ?  ";
-            PreparedStatement estatementpreparada = con.prepareStatement(datosPersona);
             estatementpreparada = con.prepareStatement(datosPersona);
             estatementpreparada.setString(1, dni);
+
             int filasBorradas = estatementpreparada.executeUpdate();
 
-            if(filasBorradas > 0){
+            con.commit();
+            if(filasBorradas > 0  ){
                 System.out.println("Se ha eliminado el registro");
             }
-            if (estatementpreparada != null) {estatementpreparada.close (); }//cierra
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            try {
+                con.rollback() ;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }finally{
+            try {
+                if (estatementpreparada != null) {estatementpreparada.close (); }//cierr
+                con.setAutoCommit(true);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Obtiene el rol dado un usuario
+     * @param con objeto conexion con la base de datos
+     * @param dni el dni de la persona que quiero buscar
+     * @return el rol de la persona buscada (administrador, profesor, alumno, bibliotecario)
+     */
+    public static String obtenerRol(Connection con, String dni){
+        String rol = "";
+        try{
+            PreparedStatement consulta = con.prepareStatement("select * from persona where ID_Persona = ?");
+            consulta.setString(1, dni);
+            ResultSet resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay usuarios.");
+            } else {
+                do {
+                    rol = resultados.getString("Rol");
+                    System.out.println("el rol es "+rol);
+                } while(resultados.next());
+            }
+            if (resultados != null) {resultados.close (); }//cierra
+            if (consulta != null) consulta.close ();//cierra
+
+        }catch(SQLException error){
+            System.out.println("Error en la consulta.");
+        }finally {
+            return  rol;
         }
 
     }
