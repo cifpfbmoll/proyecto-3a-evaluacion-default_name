@@ -14,6 +14,8 @@ public class Main {
         for(int i =0; i< datos.length; i++){
             System.out.println(datos[i]);
         }
+        Profesor.mostrarAlumnosPorAsignatura(miConexion, datos);
+
         
     }
 
