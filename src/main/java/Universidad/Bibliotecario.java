@@ -2,7 +2,6 @@ package Universidad;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -24,9 +23,14 @@ public class Bibliotecario extends Persona{
         super((Persona)copiaBibliotecario);
     }
 
+    // METODOS
+    public static Scanner lector = new Scanner(System.in);
+    /**
+     * Metodo que pide al usuario los datos del libro y los anade a la BBDD
+     * @param miConexion
+     * @param datos
+     */
     public static void anadirLibro(Connection miConexion, String[] datos){
-        Scanner lector = new Scanner(System.in);
-
 
         PreparedStatement prepStat = null;
         System.out.println("Vamos a anadir un libro:");
@@ -44,7 +48,6 @@ public class Bibliotecario extends Persona{
         String tematica = lector.nextLine();
 
         try{
-            Libro.mostrarLibros(miConexion);
             prepStat= miConexion.prepareStatement("INSERT INTO libro VALUES(?, ?, ?, 1, ?, ?, ?)");
 
             prepStat.setString(1, titulo);
@@ -57,9 +60,67 @@ public class Bibliotecario extends Persona{
             int n = prepStat.executeUpdate();
 
         }catch(SQLException e){
-
+            System.out.println("No he podido añadir el libro");
+            e.printStackTrace();
+            System.out.println(e.getSQLState());
+        }finally{
+            try{
+                if(prepStat != null){
+                    prepStat.close();
+                }
+            }catch (SQLException e){
+                System.out.println("No he podido cerrar el preparedStatement");
+            }
         }
+    }
 
+    /**
+     * Metodo que muestra todos los libros guardados en la BBDD, llama a otro metodo de la clase Libro
+     * @param miConexion
+     */
+    public static void mostrarLibros(Connection miConexion){
 
+        try{
+            Libro.mostrarLibros(miConexion);
+        }catch(SQLException e){
+            System.out.println("No he podido mostrarte los libros");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Metodo que muestra los libros y pregunta al usuario el titulo del libro que quiere eliminar, seguidamente lo elimina
+     * @param miConexion
+     */
+    public static void eliminarLibro(Connection miConexion){
+
+        System.out.println("Escribe el titulo del libro que quieres borrar: ");
+        mostrarLibros(miConexion);
+        System.out.println("---------------------------------");
+        String titulo = lector.nextLine();
+        PreparedStatement prepStat = null;
+
+        try{
+            prepStat = miConexion.prepareStatement("DELETE FROM LIBRO WHERE TITULO_LIBRO = ?");
+
+            prepStat.setString(1, titulo);
+
+            int n = prepStat.executeUpdate();
+
+            System.out.println("Libro borrado con éxito");
+
+        }catch(SQLException e){
+            System.out.println("No he podido borrar el libro " + titulo);
+            System.out.println("Revisa que lo hayas escrito bien");
+            e.printStackTrace();
+        }finally{
+            try{
+                if (prepStat != null){
+                    prepStat.close();
+                }
+            }catch (SQLException e){
+                System.out.println("No he podido cerrar el PreparedStatement");
+            }
+        }
     }
 }
