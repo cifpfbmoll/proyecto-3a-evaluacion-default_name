@@ -33,20 +33,20 @@ public class Administrador extends Persona{
      */
     public static void verPersonas(Connection con) {
         try{
-            PreparedStatement consulta = con.prepareStatement("select * from persona");
+            PreparedStatement consulta = con.prepareStatement("select * from persona inner join asignatura on persona.ID_persona = asignatura.ID_profesor INNER join titulacion on asignatura.iD_titulacion = titulacion.id_titulacion  ");
             ResultSet resultados = consulta.executeQuery();
             if (resultados.next() == false) {
                 System.out.println("No hay usuarios.");
             } else {
                 do {
-                    String dni = resultados.getString("ID_Persona");
-                    String nombre = resultados.getString("Nombre");
-                    int edad = resultados.getInt("Edad");
-                    String telefono = resultados.getString("Telefono");
-                    String rol = resultados.getString("Rol");
-                    String contrasena = resultados.getString("Contrasena");
-                    System.out.println("DNI " +dni + " ROL: "+rol +" Contrasena: "
-                            +contrasena + "Nombre: " + nombre + "Telefono: " + telefono + "Edad: " + edad);
+                    int ID_Asignatura = resultados.getInt("asignatura.ID_Asignatura");
+                    String nombre = resultados.getString("asignatura.Nombre_Asignatura");
+                    int ID_Titulacion = resultados.getInt("asignatura.ID_Titulacion");
+                    String ID_Profesor = resultados.getString("asignatura.ID_Profesor");
+                    String curso = resultados.getString("asignatura.Curso");
+                 
+                    System.out.println("ID_Asignatura " +ID_Asignatura + " Nombre_Asignatura: "+ nombre +" ID_Titulacion: "
+                            +ID_Titulacion + "ID_Profesor: " + ID_Profesor + "curso: " + curso) ;
                 } while(resultados.next());
             }
             if (resultados != null) {resultados.close (); }//cierra
@@ -381,11 +381,11 @@ public class Administrador extends Persona{
         }
     }
 
-    public static int devolverIdDepartamento(Connection con){git 
+    public static int devolverIdDepartamento(Connection con){
         boolean encontrado = false;
         int id = -1;
         while (!encontrado) {
-            Administrador.verDepartamentos(con);
+            Administrador.verDepartamento(con);
             Scanner lector = new Scanner(System.in);
             System.out.println("Escribe el id del departamento");
             id = lector.nextInt();
@@ -477,6 +477,38 @@ public class Administrador extends Persona{
             }
         }
 
+
+    }
+    public static void verAsignaturas(Connection miConexion){
+        try{
+            PreparedStatement consulta = miConexion.prepareStatement("select * from persona inner join asignatura on persona.ID_persona = asignatura.ID_profesor INNER join titulacion on asignatura.iD_titulacion = titulacion.id_titulacion  ");
+            ResultSet resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay asignaturas");
+            } else {
+                System.out.println("------------LISTADO DE ASIGNATURAS------------");
+                do {
+                    int ID_Asignatura = resultados.getInt("asignatura.ID_Asignatura");
+                    String nombre = resultados.getString("asignatura.Nombre_Asignatura");
+                    String nombreprofe = resultados.getString("persona.Nombre");
+                    int ID_Titulacion = resultados.getInt("asignatura.ID_Titulacion");
+                    String nombretil = resultados.getString("titulacion.Nombre_titulacion");
+                    String ID_Profesor = resultados.getString("asignatura.ID_Profesor");
+                    String curso = resultados.getString("asignatura.Curso");
+
+                    System.out.println("ID_Asignatura " +ID_Asignatura + " Nombre_Asignatura: "+ nombre ) ;
+                    System.out.println("ID_Titulacion: " +ID_Titulacion + " Nombre titulacion: " + nombretil);
+                    System.out.println("ID_Profesor: " + ID_Profesor +" Nombre profesor: " + nombreprofe);
+                    System.out.println( "Curso: " + curso);
+                    System.out.println("----------------------------------------------------------------------");
+                } while(resultados.next());
+            }
+            if (resultados != null) {resultados.close (); }//cierra
+            if (consulta != null) consulta.close ();//cierra
+
+        }catch(SQLException error){
+            System.out.println("Error en la consulta.");
+        }
 
     }
 }
