@@ -80,12 +80,7 @@ public class Bibliotecario extends Persona{
      */
     public static void mostrarLibros(Connection miConexion){
 
-        try{
-            Libro.mostrarLibros(miConexion);
-        }catch(SQLException e){
-            System.out.println("No he podido mostrarte los libros");
-            e.printStackTrace();
-        }
+        Libro.mostrarLibros(miConexion);
     }
 
     /**
