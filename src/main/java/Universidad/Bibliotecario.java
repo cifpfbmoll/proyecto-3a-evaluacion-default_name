@@ -118,4 +118,30 @@ public class Bibliotecario extends Persona{
             }
         }
     }
+
+    /**
+     * Metodo que reserva libros a los alumnos. Se utiliza una transaccion
+     * @param miConexion
+     */
+    public static void reservarLibro(Connection miConexion){
+        PreparedStatement prepStat = null;
+        int contadorReservas = 0;
+        System.out.println("Escribe el titulo del libro que quieras reservar");
+        mostrarLibros(miConexion);
+        System.out.println("Escribe el titulo correctamente");
+        System.out.print("Titulo: ");
+        String titulo = lector.nextLine();
+
+        try{
+             prepStat = miConexion.prepareStatement("UPDATE LIBRO SET CANTIDAD_RESTANTE = CANTIDAD_RESTANTE-1 WHERE TITULO_LIBRO = ?");
+
+             prepStat.setString(1, titulo);
+
+             int  n = prepStat.executeUpdate();
+         }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+
+    }
 }
