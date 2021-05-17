@@ -102,28 +102,21 @@ public class Libro {
     // M�TODOS
 
     /**
-     * M�todo que muestra todos los libros de la tabla LIBROS
+     * Metodo que muestra todos los libros de la tabla LIBROS
      */
-    public static void mostrarLibros(Connection miConexion) throws SQLException {
+    public static void mostrarLibros(Connection miConexion){
 
         PreparedStatement sentenciaPrep = null;
         ResultSet resultado = null;
 
         System.out.println("Estos son los libros que tenemos en la Biblioteca: \n");
         try {
-            /**
-             * HABRIA QUE CREAR UNA CONEXI�N CON LA BBDD, VOY
-             * A LLAMARLA miConexion 
-             */
-
             sentenciaPrep = miConexion.prepareStatement("SELECT * FROM LIBRO");
 
-            /**
-             * Una vez tenemos la sentencia preparada vamos a ejecutar la sentancia.
-             */
             resultado = sentenciaPrep.executeQuery();
 
             while (resultado.next()) {
+
                 String titulo = resultado.getString("TITULO_LIBRO");
                 String autor = resultado.getString("AUTOR");
                 String editorial = resultado.getString("EDITORIAL");
@@ -131,6 +124,7 @@ public class Libro {
                 int cant_tot = resultado.getInt("CANTIDAD_TOTAL");
                 int cant_rest = resultado.getInt("CANTIDAD_RESTANTE");
                 String tematica = resultado.getString("TEMATICA");
+
                 System.out.println("TITULO: " + titulo + " \n" +
                                    "AUTOR: " + autor + " \n" +
                                    "EDITORIAL: " + editorial + " \n" +
@@ -144,12 +138,18 @@ public class Libro {
             System.out.println("Lo siento, ha ocurrido un error y no se puede conectar a la Base de Datos.");
             e.printStackTrace();
         } finally {
-            if (sentenciaPrep != null) {
-                sentenciaPrep.close();
+            try{
+                if (sentenciaPrep != null) {
+                    sentenciaPrep.close();
+                }
+                if (resultado != null) {
+                    resultado.close();
+                }
+            }catch(SQLException e){
+                System.out.println("No he podido cerrar los recursos");
+                e.printStackTrace();
             }
-            if (resultado != null) {
-                resultado.close();
-            }
+
         }
 
     }
