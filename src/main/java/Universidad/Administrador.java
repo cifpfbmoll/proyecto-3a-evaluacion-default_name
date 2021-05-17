@@ -391,6 +391,48 @@ public class Administrador extends Persona{
         }
 
     }
+    /**
+     * Se muestran las titulaciones que hay y pide cual se quiere eliminar. Es estatico.
+     * @param con un objeto Connection para hacer la busqueda en la BBDD.
+     */
+    public static void eliminarTitulacion(Connection con){
+        Administrador.verTitulaciones(con);
+        int filas = 0;
+        PreparedStatement preparedSt = null;
+        try {
+            while (filas == 0) {
+                Scanner lector = new Scanner(System.in);
+                System.out.println("Que titulacion desea eliminar?");
+                int idTitulacion = lector.nextInt();
+                lector.nextLine();
+                String st = "delete from titulacion where ID_Titulacion= ?  ";
+                preparedSt = con.prepareStatement(st);
+                preparedSt.setInt(1, idTitulacion);
+                filas = preparedSt.executeUpdate();
+
+                if (filas > 0) {
+                    System.out.println("Se ha eliminado la titulacion "+idTitulacion);
+                }
+                else{
+                    System.out.println("id no valido, try again \n");
+                }
+            }
+
+        }catch(SQLException error){
+            error.printStackTrace();
+            System.out.println("Error en el update.");
+        }
+        finally {
+            if (preparedSt != null) {
+                try {
+                    preparedSt.close ();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }
+
+    }
 
     /**
      * Lista todos los departamentos
