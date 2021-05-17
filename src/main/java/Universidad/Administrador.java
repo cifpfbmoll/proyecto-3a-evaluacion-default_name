@@ -511,5 +511,68 @@ public class Administrador extends Persona{
         }
 
     }
-}
+
+    public static  boolean comprobarIdAsignatura(Connection miConexion, int idAsignatura){
+        boolean encontrado = false;
+        PreparedStatement consulta =null;
+        ResultSet resultado = null;
+        try  {
+            consulta = miConexion.prepareStatement("select * from asignatura where ID_asignatura = ?");
+            consulta.setInt(1, idAsignatura);
+            resultado = consulta.executeQuery();
+
+            if (resultado.next() == false) {
+                encontrado = false;
+            }else{
+                encontrado= true;
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+                try {
+                    if (resultado != null) {resultado.close (); }//cierra
+                    if (consulta != null) {consulta.close (); }//cierra
+
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            return encontrado;
+        }
+
+        public  static void borrarAsignatura(Connection  miConexion){
+         boolean idCorrecta = false;
+            int idUsuario= -1;
+            while (idCorrecta == false){
+             Scanner lector = new Scanner(System.in);
+             System.out.println("Escribe el ID de la asignatura para borrar: ");
+             Administrador.verAsignaturas(miConexion);
+             idUsuario = lector.nextInt();
+             lector.nextLine();
+             idCorrecta = comprobarIdAsignatura(miConexion, idUsuario);
+         }
+             PreparedStatement estatementpreparada = null;
+             try {
+                 estatementpreparada = miConexion.prepareStatement("delete from asignatura where ID_Asignatura = ?");
+                 estatementpreparada.setInt(1, idUsuario);
+                 int resultados = estatementpreparada.executeUpdate();
+                 if(resultados > 0 ){
+                     System.out.println("Se ha eliminado la asignatura");
+                 }
+             } catch (SQLException throwables) {
+                 throwables.printStackTrace();
+             } finally {
+                 try{
+                     if (estatementpreparada != null) {estatementpreparada.close (); }//cierr
+                 }catch (SQLException e){
+                    e.printStackTrace();
+                 }
+             }
+
+
+        }
+
+    }
+
 
