@@ -1,5 +1,7 @@
 package Universidad;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -62,7 +64,6 @@ public class Bibliotecario extends Persona{
         }catch(SQLException e){
             System.out.println("No he podido añadir el libro");
             e.printStackTrace();
-            System.out.println(e.getSQLState());
         }finally{
             try{
                 if(prepStat != null){
@@ -125,22 +126,64 @@ public class Bibliotecario extends Persona{
      */
     public static void reservarLibro(Connection miConexion){
         PreparedStatement prepStat = null;
-        int contadorReservas = 0;
-        System.out.println("Escribe el titulo del libro que quieras reservar");
-        mostrarLibros(miConexion);
-        System.out.println("Escribe el titulo correctamente");
-        System.out.print("Titulo: ");
-        String titulo = lector.nextLine();
+        System.out.print("Escribe tu ID de Alumno: ");
+        String id = lector.nextLine();
+        System.out.println("Hola, dime cuantos libros quieres reservar (maximo 3)");
+        int reservas = lector.nextInt();
+        lector.nextLine();
+        if (reservas > 3 || reservas <= 0){
+            System.out.println("Solo puedes reservas de 1 a 3 libros. Vuelve a escribir la cantidad");
+            reservas = lector.nextInt();
+            lector.nextLine();
+        }else{
+            for(int i = 0; reservas > i; i++){
+                System.out.println("Escribe el titulo del libro que quieras reservar");
+                mostrarLibros(miConexion);
+                System.out.println("Escribe el titulo correctamente");
+                System.out.print("Titulo: ");
+                String titulo = lector.nextLine();
 
-        try{
-             prepStat = miConexion.prepareStatement("UPDATE LIBRO SET CANTIDAD_RESTANTE = CANTIDAD_RESTANTE-1 WHERE TITULO_LIBRO = ?");
+                try{
+                    // Inicio transaccion
+                    miConexion.setAutoCommit(false);
 
-             prepStat.setString(1, titulo);
+                    prepStat = miConexion.prepareStatement("UPDATE LIBRO SET CANTIDAD_RESTANTE = CANTIDAD_RESTANTE-1 WHERE TITULO_LIBRO = ?");
 
-             int  n = prepStat.executeUpdate();
-         }catch(SQLException e){
-            e.printStackTrace();
+                    prepStat.setString(1, titulo);
+
+                    int n = prepStat.executeUpdate();
+
+                    miConexion.commit();
+
+                    prepStat = miConexion.prepareStatement("INSERT INTO LIBROS_RESERVADOS VALUES (?,?, default, default)");
+
+                    prepStat.setString(1, id);
+                    prepStat.setString(2, titulo);
+
+                    int n2 = prepStat.executeUpdate();
+
+                    System.out.println("Libro reservado con éxito para el alumno con ID = " + id);
+                    miConexion.commit();
+                }catch(SQLException e){
+                    try{
+                        miConexion.rollback();
+                        e.printStackTrace();
+                    }catch(SQLException e2){
+                        System.out.println("No he podido hacer rollback");
+                    }
+                }finally {
+                    try{
+                        miConexion.setAutoCommit(true);
+                        if(prepStat != null){
+                            prepStat.close();
+                        }
+                    }catch(SQLException e){
+                        System.out.println("No he podido cerrar el prepared Statement");
+                    }
+                }
+            }
         }
+
 
 
     }

@@ -14,8 +14,7 @@ public class Main {
         for (int i = 0; i < datos.length; i++) {
             System.out.println(datos[i]);
         }
-        Bibliotecario.reservarLibro(miConexion);
-        //Administrador.verPersonas(miConexion);
+        Administrador.verPersonas(miConexion);
     }
 
 
