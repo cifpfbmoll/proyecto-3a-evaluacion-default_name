@@ -1,6 +1,6 @@
-CREATE SCHEMA `gestion_universidad` DEFAULT CHARACTER SET utf8 ;
-drop schema gestion_universidad;
-USE gestion_universidad;
+CREATE SCHEMA `nueva_gestion_universidad` DEFAULT CHARACTER SET utf8 ;
+drop schema nueva_gestion_universidad;
+USE nueva_gestion_universidad;
 
 CREATE TABLE Titulacion (
 ID_titulacion INT NOT NULL AUTO_INCREMENT,
@@ -66,13 +66,13 @@ create table matriculacion (
 ID_Persona varchar(9) NOT NULL,
 ID_Asignatura INT not null,
 año_academico INT NOT NULL,
-nota int,
+nota double,
 primary key(ID_Persona,ID_Asignatura,año_academico),
 constraint matriculacion_fk_persona FOREIGN KEY (ID_Persona) references Persona(ID_Persona),
 constraint matriculacion_fk_asignatura FOREIGN KEY (ID_Asignatura) references Asignatura(ID_Asignatura)
 );
 
-drop table Biblioteca;
+
 create table Biblioteca(
 ID_Biblioteca int,
 primary key(ID_Biblioteca)
