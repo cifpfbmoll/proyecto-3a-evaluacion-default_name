@@ -2,6 +2,7 @@ package Universidad;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
+import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -674,6 +675,93 @@ public class Administrador extends Persona{
              }
 
 
+        }
+
+        public static void anadirAsignatura(Connection miConexion){
+            Scanner lector = new Scanner(System.in);
+            System.out.println("Escribe el nombre de la asignatura a añadir");
+            String nombreAsignatura = lector.nextLine();
+
+            boolean titulacionValida = false;
+            int idTitulacion =-1;
+            while (titulacionValida == false){
+                System.out.println("Escribe el id de la titulacion a la que pertenece la asignatura. ");
+                Administrador.verTitulaciones(miConexion);
+                idTitulacion = lector.nextInt();
+                lector.nextLine();
+                titulacionValida = Administrador.comprobarTitulacion(idTitulacion, miConexion);
+            }
+
+            boolean profesorValido = false;
+            String idProfesor = "";
+            while(profesorValido== false){
+                System.out.println("Escribe el dni del profesor de esta asignatura");
+                Administrador.verProfesores(miConexion);
+                idProfesor = lector.nextLine();
+                profesorValido = Administrador.comprobarProfesor(idProfesor,miConexion);
+            }
+
+            }
+
+    public static boolean comprobarTitulacion( int idTitulacion, Connection con){
+        boolean encontrado = false;
+        try (PreparedStatement consulta = con.prepareStatement("select * from titulacion where ID_titulacion = ?")) {
+            consulta.setInt(1, idTitulacion);
+            ResultSet resultado = consulta.executeQuery();
+
+            if (resultado.next() == false) {
+                encontrado = false;
+            }else{
+                encontrado= true;
+            }
+            if (consulta != null) {consulta.close (); }//cierra
+            if (resultado != null) {resultado.close (); }//cierra
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            return encontrado;
+        }
+    }
+
+    public static void verProfesores(Connection miConexion){
+        try (PreparedStatement consulta = miConexion.prepareStatement("select * from persona  where rol = 'profesor'  ")) {
+            ResultSet resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay profesores");
+            } else {
+                do {
+                    int ID_profesor = resultados.getInt("ID_persona");
+                    String nombre = resultados.getString("nombre");
+                    int edad = resultados.getInt("edad");
+                    String telefono = resultados.getString("telefono");
+                    System.out.println("ID_Asignatura " +ID_profesor + " Nombre_Asignatura: "+ nombre +" Edad: "
+                            +edad + "Telefono: " + telefono) ;
+                } while(resultados.next());
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+
+        public static boolean comprobarProfesor( String idProfesor, Connection con){
+            boolean encontrado = false;
+            try (PreparedStatement consulta = con.prepareStatement("select * from profesor where ID_persona = ?")) {
+                consulta.setString(1, idProfesor);
+                ResultSet resultado = consulta.executeQuery();
+
+                if (resultado.next() == false) {
+                    encontrado = false;
+                }else{
+                    encontrado= true;
+                }
+                if (consulta != null) {consulta.close (); }//cierra
+                if (resultado != null) {resultado.close (); }//cierra
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }finally {
+                return encontrado;
+            }
         }
 
     }
