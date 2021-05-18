@@ -582,9 +582,6 @@ public class Administrador extends Persona{
 
 
     }
-<<<<<<< HEAD
-}
-=======
     public static void verAsignaturas(Connection miConexion){
         try{
             PreparedStatement consulta = miConexion.prepareStatement("select * from persona inner join asignatura on persona.ID_persona = asignatura.ID_profesor INNER join titulacion on asignatura.iD_titulacion = titulacion.id_titulacion  ");
@@ -682,4 +679,3 @@ public class Administrador extends Persona{
     }
 
 
->>>>>>> feature/crearClaseAdministrador
