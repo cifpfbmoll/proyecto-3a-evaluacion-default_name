@@ -18,7 +18,7 @@ CREATE TABLE Persona (
 ID_Persona varchar(9) NOT NULL,
 Nombre VARCHAR(100) NOT NULL,
 Edad integer not null,
-Telefono integer,
+Telefono varchar2(25),
 Contrasena varchar(25)not null,
 Rol varchar(25)not null,
 PRIMARY KEY (id_persona)
