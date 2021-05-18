@@ -33,20 +33,20 @@ public class Administrador extends Persona{
      */
     public static void verPersonas(Connection con) {
         try{
-            PreparedStatement consulta = con.prepareStatement("select * from persona");
+            PreparedStatement consulta = con.prepareStatement("select * from persona inner join asignatura on persona.ID_persona = asignatura.ID_profesor INNER join titulacion on asignatura.iD_titulacion = titulacion.id_titulacion  ");
             ResultSet resultados = consulta.executeQuery();
             if (resultados.next() == false) {
                 System.out.println("No hay usuarios.");
             } else {
                 do {
-                    String dni = resultados.getString("ID_Persona");
-                    String nombre = resultados.getString("Nombre");
-                    int edad = resultados.getInt("Edad");
-                    String telefono = resultados.getString("Telefono");
-                    String rol = resultados.getString("Rol");
-                    String contrasena = resultados.getString("Contrasena");
-                    System.out.println("DNI " +dni + " ROL: "+rol +" Contrasena: "
-                            +contrasena + "Nombre: " + nombre + "Telefono: " + telefono + "Edad: " + edad);
+                    int ID_Asignatura = resultados.getInt("asignatura.ID_Asignatura");
+                    String nombre = resultados.getString("asignatura.Nombre_Asignatura");
+                    int ID_Titulacion = resultados.getInt("asignatura.ID_Titulacion");
+                    String ID_Profesor = resultados.getString("asignatura.ID_Profesor");
+                    String curso = resultados.getString("asignatura.Curso");
+                 
+                    System.out.println("ID_Asignatura " +ID_Asignatura + " Nombre_Asignatura: "+ nombre +" ID_Titulacion: "
+                            +ID_Titulacion + "ID_Profesor: " + ID_Profesor + "curso: " + curso) ;
                 } while(resultados.next());
             }
             if (resultados != null) {resultados.close (); }//cierra
@@ -124,21 +124,17 @@ public class Administrador extends Persona{
             estatementpreparadaPersona.setString(5, p.getContrasena());
             estatementpreparadaPersona.setString(6, p.getRol());
             int filasMetidas = estatementpreparadaPersona.executeUpdate();
-
+            int id = -1;
             String datosRol = "";
-            switch (p.getRol()) {
-                case "administrador":
-                    datosRol = "insert into administrador values( ?) ";
-                    break;
+            switch (p.getRol()){
+                case "administrador": datosRol = "insert into administrador values( ?) "; break;
                 case "profesor":
-                    datosRol = "insert into profesor values( ?, ?) ";
+                    // lamo al metodo de buscar departamento que devuelve un departameno
+                    id = Administrador.devolverIdDepartamento(miConexion);
+                    datosRol = "insert into profesor values( ?,?) ";
                     break;
-                case "alumno":
-                    datosRol = "insert into alumno values( ?) ";
-                    break;
-                case "bibliotecario":
-                    datosRol = "insert into bibliotecario values( ?) ";
-                    break;
+                case "alumno": datosRol = "insert into alumno values( ?) "; break;
+                case "bibliotecario": datosRol = "insert into bibliotecario values( ?) "; break;
             }
 
             estatementpreparadaRol = miConexion.prepareStatement(datosRol);
@@ -250,19 +246,21 @@ public class Administrador extends Persona{
         }finally {
             return encontrado;
         }
-
-
     }
 
     /**
-     * Borra una persona de la BBD
+     * Borra una persona de la BBDD
      * @param con es un objeto Connection para contactar con la BBDD
      */
     public static void borrarPersona(Connection con){
         Administrador.verPersonas(con);
         boolean encontrado = false;
-        PreparedStatement estatementpreparadaRol =null;
-        PreparedStatement estatementpreparada = null;
+        String datosPersona = "delete from persona where ID_Persona = ?";
+        String datosRol = "";
+        PreparedStatement estatementpreparadaPersona = null;
+        PreparedStatement  estatementpreparadaRol = null;
+        ResultSet resultados = null;
+        PreparedStatement consulta = null;
         try {
             con.setAutoCommit(false);
             String dni = null;
@@ -271,63 +269,63 @@ public class Administrador extends Persona{
                 System.out.println("Escribe el DNI de la persona a eliminar");
                 dni = lector.nextLine();
                 encontrado = buscarDni(dni, con);
-                System.out.println(encontrado);
+                //System.out.println(encontrado);
             }
-            String datosPersona = "delete from persona where ID_Persona = ?  ";
-            estatementpreparada = con.prepareStatement(datosPersona);
-            estatementpreparada.setString(1, dni);
 
-            int filasBorradas = estatementpreparada.executeUpdate();
+            estatementpreparadaPersona = con.prepareStatement(datosPersona);
+            estatementpreparadaPersona.setString(1, dni);
+
+            // busco el rol de la persona a eliminar
+            consulta = con.prepareStatement("select * from persona where ID_Persona = ?");
+            consulta.setString(1, dni);
+            resultados = consulta.executeQuery();
+            String rol = null;
+            if (resultados.next() == false) {
+                System.out.println("No hay usuarios.");
+            } else {
+                do {
+                    rol = resultados.getString("Rol");
+                } while(resultados.next());
+            }
+
+            switch (rol){
+                case "administrador":  datosRol = "delete from administrador where ID_Persona = ?";break;
+                case "alumno":  datosRol = "delete from alumno where ID_Persona = ?";break;
+                case "profesor": datosRol = "delete from profesor where ID_Persona = ?";break;
+                case "bibliotecario":  datosRol = "delete from bibliotecario where ID_Persona = ?";break;
+            }
+            estatementpreparadaRol= con.prepareStatement(datosRol);
+            estatementpreparadaRol.setString(1, dni);
+
+            int filasBorradasRol = estatementpreparadaRol.executeUpdate();
+            int filasBorradas = estatementpreparadaPersona.executeUpdate();
 
             con.commit();
-            if(filasBorradas > 0  ){
+            if(filasBorradas > 0 || filasBorradasRol >0){
                 System.out.println("Se ha eliminado el registro");
             }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             try {
+                System.out.println("Hago rollback, ha habido un fallo.");
                 con.rollback() ;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }finally{
+        }
+        finally {
+
             try {
-                if (estatementpreparada != null) {estatementpreparada.close (); }//cierr
                 con.setAutoCommit(true);
+                if (estatementpreparadaRol != null) {estatementpreparadaRol.close (); }//cierra
+                if (estatementpreparadaPersona != null) {estatementpreparadaPersona.close (); }//cierra
+                if (resultados != null) {resultados.close (); }//cierra
+                if (consulta != null) {consulta.close (); }//cierra
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-        }
-    }
 
-    /**
-     * Obtiene el rol dado un usuario
-     * @param con objeto conexion con la base de datos
-     * @param dni el dni de la persona que quiero buscar
-     * @return el rol de la persona buscada (administrador, profesor, alumno, bibliotecario)
-     */
-    public static String obtenerRol(Connection con, String dni){
-        String rol = "";
-        try{
-            PreparedStatement consulta = con.prepareStatement("select * from persona where ID_Persona = ?");
-            consulta.setString(1, dni);
-            ResultSet resultados = consulta.executeQuery();
-            if (resultados.next() == false) {
-                System.out.println("No hay usuarios.");
-            } else {
-                do {
-                    rol = resultados.getString("Rol");
-                    System.out.println("el rol es "+rol);
-                } while(resultados.next());
-            }
-            if (resultados != null) {resultados.close (); }//cierra
-            if (consulta != null) consulta.close ();//cierra
-
-        }catch(SQLException error){
-            System.out.println("Error en la consulta.");
-        }finally {
-            return  rol;
         }
 
     }
@@ -456,15 +454,51 @@ public class Administrador extends Persona{
 
         }catch(SQLException error){
             System.out.println("Error en la consulta.");
-        }finally {
-            try{
-                if (resultados != null) {resultados.close (); }//cierra
-                if (consulta != null) consulta.close ();//cierra
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+        }finally{
+                    try {
+                        if (consulta != null) consulta.close ();//cierra
+                        if (resultados != null) resultados.close ();//cierra
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
         }
     }
+
+    public static boolean buscarDepartamento( int id, Connection con){
+        boolean encontrado = false;
+        try (PreparedStatement consulta = con.prepareStatement("select * from departamento where ID_Departamento = ?")) {
+            consulta.setInt(1, id);
+            ResultSet resultado = consulta.executeQuery();
+
+            if (resultado.next() == false) {
+                encontrado = false;
+            }else{
+                encontrado= true;
+            }
+            if (consulta != null) {consulta.close (); }//cierra
+            if (resultado != null) {resultado.close (); }//cierra
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            return encontrado;
+        }
+    }
+
+    public static int devolverIdDepartamento(Connection con){
+        boolean encontrado = false;
+        int id = -1;
+        while (!encontrado) {
+            Administrador.verDepartamento(con);
+            Scanner lector = new Scanner(System.in);
+            System.out.println("Escribe el id del departamento");
+            id = lector.nextInt();
+            lector.nextLine();
+            encontrado = buscarDepartamento(id, con);
+            //System.out.println(encontrado);
+        }
+        return id;
+    }
+
 
     /**
      * Añade un departamento a la tabla departamento
@@ -548,4 +582,100 @@ public class Administrador extends Persona{
 
 
     }
-}
+    public static void verAsignaturas(Connection miConexion){
+        try{
+            PreparedStatement consulta = miConexion.prepareStatement("select * from persona inner join asignatura on persona.ID_persona = asignatura.ID_profesor INNER join titulacion on asignatura.iD_titulacion = titulacion.id_titulacion  ");
+            ResultSet resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay asignaturas");
+            } else {
+                System.out.println("------------LISTADO DE ASIGNATURAS------------");
+                do {
+                    int ID_Asignatura = resultados.getInt("asignatura.ID_Asignatura");
+                    String nombre = resultados.getString("asignatura.Nombre_Asignatura");
+                    String nombreprofe = resultados.getString("persona.Nombre");
+                    int ID_Titulacion = resultados.getInt("asignatura.ID_Titulacion");
+                    String nombretil = resultados.getString("titulacion.Nombre_titulacion");
+                    String ID_Profesor = resultados.getString("asignatura.ID_Profesor");
+                    String curso = resultados.getString("asignatura.Curso");
+
+                    System.out.println("ID_Asignatura " +ID_Asignatura + " Nombre_Asignatura: "+ nombre ) ;
+                    System.out.println("ID_Titulacion: " +ID_Titulacion + " Nombre titulacion: " + nombretil);
+                    System.out.println("ID_Profesor: " + ID_Profesor +" Nombre profesor: " + nombreprofe);
+                    System.out.println( "Curso: " + curso);
+                    System.out.println("----------------------------------------------------------------------");
+                } while(resultados.next());
+            }
+            if (resultados != null) {resultados.close (); }//cierra
+            if (consulta != null) consulta.close ();//cierra
+
+        }catch(SQLException error){
+            System.out.println("Error en la consulta.");
+        }
+
+    }
+
+    public static  boolean comprobarIdAsignatura(Connection miConexion, int idAsignatura){
+        boolean encontrado = false;
+        PreparedStatement consulta =null;
+        ResultSet resultado = null;
+        try  {
+            consulta = miConexion.prepareStatement("select * from asignatura where ID_asignatura = ?");
+            consulta.setInt(1, idAsignatura);
+            resultado = consulta.executeQuery();
+
+            if (resultado.next() == false) {
+                encontrado = false;
+            }else{
+                encontrado= true;
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+                try {
+                    if (resultado != null) {resultado.close (); }//cierra
+                    if (consulta != null) {consulta.close (); }//cierra
+
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            return encontrado;
+        }
+
+        public  static void borrarAsignatura(Connection  miConexion){
+         boolean idCorrecta = false;
+            int idUsuario= -1;
+            while (idCorrecta == false){
+             Scanner lector = new Scanner(System.in);
+             System.out.println("Escribe el ID de la asignatura para borrar: ");
+             Administrador.verAsignaturas(miConexion);
+             idUsuario = lector.nextInt();
+             lector.nextLine();
+             idCorrecta = comprobarIdAsignatura(miConexion, idUsuario);
+         }
+             PreparedStatement estatementpreparada = null;
+             try {
+                 estatementpreparada = miConexion.prepareStatement("delete from asignatura where ID_Asignatura = ?");
+                 estatementpreparada.setInt(1, idUsuario);
+                 int resultados = estatementpreparada.executeUpdate();
+                 if(resultados > 0 ){
+                     System.out.println("Se ha eliminado la asignatura");
+                 }
+             } catch (SQLException throwables) {
+                 throwables.printStackTrace();
+             } finally {
+                 try{
+                     if (estatementpreparada != null) {estatementpreparada.close (); }//cierr
+                 }catch (SQLException e){
+                    e.printStackTrace();
+                 }
+             }
+
+
+        }
+
+    }
+
+
