@@ -19,8 +19,8 @@ ID_Persona varchar(9) NOT NULL,
 Nombre VARCHAR(100) NOT NULL,
 Edad integer not null,
 Telefono integer,
-Contraseña varchar(25)not null,
-Rol varchar(2)not null,
+Contrasena varchar(25)not null,
+Rol varchar(25)not null,
 PRIMARY KEY (id_persona)
 );
 create table alumno (
@@ -65,7 +65,7 @@ constraint asignatura_fk_profesor FOREIGN KEY (ID_Profesor) references Profesor(
 create table matriculacion (
 ID_Persona varchar(9) NOT NULL,
 ID_Asignatura INT not null,
-año_academico INT NOT NULL,
+ano_academico INT NOT NULL,
 nota double,
 primary key(ID_Persona,ID_Asignatura,año_academico),
 constraint matriculacion_fk_persona FOREIGN KEY (ID_Persona) references Persona(ID_Persona),
