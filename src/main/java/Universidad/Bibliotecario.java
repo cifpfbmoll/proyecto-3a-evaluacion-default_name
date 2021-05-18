@@ -2,6 +2,7 @@ package Universidad;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -118,4 +119,49 @@ public class Bibliotecario extends Persona{
             }
         }
     }
+    private static void verTematicasLibros(Connection connection){
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement("select tematica from Libro");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            System.out.println("----------------------");
+            System.out.println("TEMATICAS");
+            while (resultSet.next()){
+                System.out.println("- " + resultSet.getString("tematica"));;
+            }
+            System.out.println("----------------------");
+
+
+        }catch (SQLException e){
+            System.out.println("SQLSTATE: " + e.getSQLState());
+            System.out.println("SQLMESSAGE: " + e.getMessage());
+        }finally {
+            try {
+                if(preparedStatement != null){preparedStatement.close();}
+
+            }catch (SQLException e){
+                System.out.println("SQLSTATE: " + e.getSQLState());
+                System.out.println("SQLMESSAGE: " + e.getMessage());
+            }
+        }
+
+    }
+
+    public static void filtrarLibrosTematica(Connection connection) {
+        PreparedStatement preparedStatement = null;
+        String tematica;
+        Boolean bool = false;
+        try {
+            while (!bool) {
+                Bibliotecario.mostrarLibros(connection);
+                System.out.println("----------------------");
+                System.out.println("Introduce la ");
+                preparedStatement = connection.prepareStatement("Select * from libro where Tematica = ?");
+
+            }
+        } catch (SQLException e) {
+
+        }
+    }
+
 }
