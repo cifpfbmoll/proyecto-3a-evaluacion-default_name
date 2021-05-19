@@ -4,6 +4,7 @@ import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -183,8 +184,72 @@ public class Bibliotecario extends Persona{
                 }
             }
         }
+    }
+
+    /**
+     * Metodo que hace un filtrado por Autor para ver solo los libros que hay de dicho Autor en la biblioteca
+     * @param miConexion
+     */
+    public static void filtrarLibrosAutor(Connection miConexion){
+        PreparedStatement prepStat = null;
+        ResultSet resultado = null;
+        System.out.println("Escribe el autor de los libros que quieras ver");
+        System.out.print("Autor:");
+        String autor = lector.nextLine();
+
+        try{
+
+            prepStat = miConexion.prepareStatement("SELECT * FROM LIBRO WHERE Autor = ?");
+
+            prepStat.setString(1, autor);
+
+            resultado = prepStat.executeQuery();
+
+            if(resultado.next() == false){
+                System.out.println("\nNo hay libros de " + autor + ", lo siento");
+            }else{
+                System.out.println("\nEstos son los libros que hay de " + autor + "\n");
+                do{
+
+                    String tit = resultado.getString("TITULO_LIBRO");
+                    String aut = resultado.getString("AUTOR");
+                    String edi = resultado.getString("EDITORIAL");
+                    int tot = resultado.getInt("CANTIDAD_TOTAL");
+                    int rest  = resultado.getInt("CANTIDAD_RESTANTE");
+                    String tem = resultado.getString("TEMATICA");
+
+                    System.out.println("TITULO: " + tit + "\n" +
+                                       "AUTOR: " + aut + "\n" +
+                                       "EDITORIAL: " + edi + "\n" +
+                                       "CANTIDAD TOTAL: " + tot + "\n" +
+                                       "CANTIDAD RESTANTE: " + rest + "\n" +
+                                       "TEMATICA: " + tem + "\n");
+                }while(resultado.next());
+
+                System.out.println("Quieres imprimirlo en un fichero ? \n");
+                System.out.println(" 1) En un fichero .txt");
+                System.out.println(" 2) En un PDF");
+                System.out.println(" 3) No quiero imprimir nada");
+                int opcion = lector.nextInt();
+                lector.nextLine();
 
 
 
+            }
+        }catch(SQLException e){
+            System.out.println("No he podido filtrar por autor");
+            e.printStackTrace();
+        }finally {
+            try{
+                if(prepStat != null){
+                    prepStat.close();
+                }
+                if(resultado != null){
+                    resultado.close();
+                }
+            }catch(SQLException e2){
+
+            }
+        }
     }
 }
