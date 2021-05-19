@@ -34,20 +34,23 @@ public class Administrador extends Persona{
      */
     public static void verPersonas(Connection con) {
         try{
-            PreparedStatement consulta = con.prepareStatement("select * from persona inner join asignatura on persona.ID_persona = asignatura.ID_profesor INNER join titulacion on asignatura.iD_titulacion = titulacion.id_titulacion  ");
+            PreparedStatement consulta = con.prepareStatement("select * from persona ");
             ResultSet resultados = consulta.executeQuery();
             if (resultados.next() == false) {
                 System.out.println("No hay usuarios.");
             } else {
+                System.out.println("------------LISTADO DE PERSONAS----------");
                 do {
-                    int ID_Asignatura = resultados.getInt("asignatura.ID_Asignatura");
-                    String nombre = resultados.getString("asignatura.Nombre_Asignatura");
-                    int ID_Titulacion = resultados.getInt("asignatura.ID_Titulacion");
-                    String ID_Profesor = resultados.getString("asignatura.ID_Profesor");
-                    String curso = resultados.getString("asignatura.Curso");
+                    int DNI = resultados.getInt("id_persona");
+                    String nombre = resultados.getString("nombre");
+                    int edad = resultados.getInt("edad");
+                    String telefono = resultados.getString("telefono");
+                    String contrasena = resultados.getString("contrasena");
+                    String rol = resultados.getString("rol");
                  
-                    System.out.println("ID_Asignatura " +ID_Asignatura + " Nombre_Asignatura: "+ nombre +" ID_Titulacion: "
-                            +ID_Titulacion + "ID_Profesor: " + ID_Profesor + "curso: " + curso) ;
+                    System.out.println("DNI " +DNI + " Nombre_persona: "+ nombre +" Edad: "
+                            +edad + " Telefono: " + telefono + " Contrasena: " + contrasena + " Rol: " + rol) ;
+                    System.out.println("------------------------------------------------------");
                 } while(resultados.next());
             }
             if (resultados != null) {resultados.close (); }//cierra
@@ -226,7 +229,7 @@ public class Administrador extends Persona{
     /**
      * Busca por un DNI
      * @param dni un dni para buscar
-     * @param con un obbjeto Connection para hacer la búsqueda en la BBDD
+     * @param con un objeto Connection para hacer la búsqueda en la BBDD
      * @return true si ha encontrado el DNI, false si no lo ha encontrado
      */
     public static boolean buscarDni( String dni, Connection con){
@@ -465,6 +468,12 @@ public class Administrador extends Persona{
         }
     }
 
+    /**
+     * Comprueba si existe un departamento dada uno id
+     * @param id la id del departamento a buscar
+     * @param con objeto Connection para conectar con la base de datos
+     * @return true si ha encontrado el departamento y false si no lo ha encontrado
+     */
     public static boolean buscarDepartamento( int id, Connection con){
         boolean encontrado = false;
         try (PreparedStatement consulta = con.prepareStatement("select * from departamento where ID_Departamento = ?")) {
@@ -485,6 +494,11 @@ public class Administrador extends Persona{
         }
     }
 
+    /**
+     * Pide la id de un departamento y comprueba que existe
+     * @param con objeto Connection para conectar con la base de datos
+     * @return la id de un departamento que existe
+     */
     public static int devolverIdDepartamento(Connection con){
         boolean encontrado = false;
         int id = -1;
@@ -580,9 +594,12 @@ public class Administrador extends Persona{
                 throwables.printStackTrace();
             }
         }
-
-
     }
+
+    /**
+     * Creo un listado de asignaturas
+     * @param miConexion objeto conexion para conectar con la bbdd
+     */
     public static void verAsignaturas(Connection miConexion){
         try{
             PreparedStatement consulta = miConexion.prepareStatement("select * from persona inner join asignatura on persona.ID_persona = asignatura.ID_profesor INNER join titulacion on asignatura.iD_titulacion = titulacion.id_titulacion  ");
@@ -616,6 +633,12 @@ public class Administrador extends Persona{
 
     }
 
+    /**
+     * Dado un id de asignatura, comprueba que éste exista o no
+     * @param miConexion objeto Connection para conectar con la base de datos
+     * @param idAsignatura el id de la asignatura a buscar
+     * @return true si el id existe en la tabla asignaturas, false si no existe
+     */
     public static  boolean comprobarIdAsignatura(Connection miConexion, int idAsignatura){
         boolean encontrado = false;
         PreparedStatement consulta =null;
@@ -645,7 +668,11 @@ public class Administrador extends Persona{
             return encontrado;
         }
 
-        public  static void borrarAsignatura(Connection  miConexion){
+    /**
+     * Borra una asignatura de la BBDD
+     * @param miConexion objeto conexión para conectar con la BBDD
+     */
+    public  static void borrarAsignatura(Connection  miConexion){
          boolean idCorrecta = false;
             int idUsuario= -1;
             while (idCorrecta == false){
@@ -677,7 +704,11 @@ public class Administrador extends Persona{
 
         }
 
-        public static void anadirAsignatura(Connection miConexion){
+    /**
+     * Añade una asignatura a la base de datos
+     * @param miConexion objeto conexión para conectar con la BBDD
+     */
+    public static void anadirAsignatura(Connection miConexion){
             Scanner lector = new Scanner(System.in);
             System.out.println("Escribe el nombre de la asignatura a añadir");
             String nombreAsignatura = lector.nextLine();
@@ -701,8 +732,32 @@ public class Administrador extends Persona{
                 profesorValido = Administrador.comprobarProfesor(idProfesor,miConexion);
             }
 
+            String datosAsign = "insert into asignatura (Nombre_Asignatura, ID_titulacion, ID_profesor, Curso,Plazas_disponibles) values( ?,?,?,?,?) ";
+            PreparedStatement estatementpreparada = null;
+            try {
+                estatementpreparada = miConexion.prepareStatement(datosAsign);
+                estatementpreparada.setString(1, nombreAsignatura);
+                estatementpreparada.setInt(2, idTitulacion);
+                estatementpreparada.setString(3, idProfesor);
+                estatementpreparada.setInt(4, 2021);
+                estatementpreparada.setInt(5, 80);
+
+                int filasMetidas = estatementpreparada.executeUpdate();
+                if (filasMetidas > 0) {
+                    System.out.println("Se Ha añadido la asignatura");
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
 
+            }
+
+    /**
+     * Comprueba, dada una id, que la titulacion existe en la BBDD
+     * @param idTitulacion id de la titulacion a buscar
+     * @param con objeto conexión para conectar con la BBDD
+     * @return false si el id no existe, true, si el id existe
+     */
     public static boolean comprobarTitulacion( int idTitulacion, Connection con){
         boolean encontrado = false;
         try (PreparedStatement consulta = con.prepareStatement("select * from titulacion where ID_titulacion = ?")) {
@@ -723,6 +778,10 @@ public class Administrador extends Persona{
         }
     }
 
+    /**
+     * Lista todos los profesores
+     * @param miConexion objeto conexión para conectar con la BBDD
+     */
     public static void verProfesores(Connection miConexion){
         try (PreparedStatement consulta = miConexion.prepareStatement("select * from persona  where rol = 'profesor'  ")) {
             ResultSet resultados = consulta.executeQuery();
@@ -730,11 +789,11 @@ public class Administrador extends Persona{
                 System.out.println("No hay profesores");
             } else {
                 do {
-                    int ID_profesor = resultados.getInt("ID_persona");
+                    String ID_profesor = resultados.getString("ID_persona");
                     String nombre = resultados.getString("nombre");
                     int edad = resultados.getInt("edad");
                     String telefono = resultados.getString("telefono");
-                    System.out.println("ID_Asignatura " +ID_profesor + " Nombre_Asignatura: "+ nombre +" Edad: "
+                    System.out.println("DNI " +ID_profesor + " Nombre_profesor: "+ nombre +" Edad: "
                             +edad + "Telefono: " + telefono) ;
                 } while(resultados.next());
             }
@@ -743,16 +802,23 @@ public class Administrador extends Persona{
         }
     }
 
-
+    /**
+     * Comprueba que la id dada pertenece a un profesor o no
+     * @param idProfesor id del profesor a buscar
+     * @param con objeto conexión para conectar con la BBDD
+     * @return true si el id dado es de un profesor, false si no lo es
+     */
         public static boolean comprobarProfesor( String idProfesor, Connection con){
             boolean encontrado = false;
-            try (PreparedStatement consulta = con.prepareStatement("select * from profesor where ID_persona = ?")) {
+            try (PreparedStatement consulta = con.prepareStatement("select * from persona where ID_persona = ? and rol = 'profesor'")) {
                 consulta.setString(1, idProfesor);
                 ResultSet resultado = consulta.executeQuery();
 
                 if (resultado.next() == false) {
+                    System.out.println("No se ha encontrado");
                     encontrado = false;
                 }else{
+                    System.out.println("se ha encontrado");
                     encontrado= true;
                 }
                 if (consulta != null) {consulta.close (); }//cierra
