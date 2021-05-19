@@ -788,6 +788,7 @@ public class Administrador extends Persona{
             if (resultados.next() == false) {
                 System.out.println("No hay profesores");
             } else {
+                System.out.println("----Listado de profesores----");
                 do {
                     String ID_profesor = resultados.getString("ID_persona");
                     String nombre = resultados.getString("nombre");
@@ -829,6 +830,84 @@ public class Administrador extends Persona{
                 return encontrado;
             }
         }
+
+    /**
+     * Lista todos los alumnos
+     * @param miConexion objeto conexión para conectar con la BBDD
+     */
+    public static void verAlumnos(Connection miConexion){
+        try (PreparedStatement consulta = miConexion.prepareStatement("select * from persona  where rol = 'alumno'  ")) {
+            ResultSet resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay alumnos");
+            } else {
+                System.out.println("----Listado de alumnos----");
+                do {
+                    String ID = resultados.getString("ID_persona");
+                    String nombre = resultados.getString("nombre");
+                    int edad = resultados.getInt("edad");
+                    String telefono = resultados.getString("telefono");
+                    System.out.println("DNI " +ID + " Nombre_alumno: "+ nombre +" Edad: "
+                            +edad + " Telefono: " + telefono) ;
+                    System.out.println("-----------------------");
+                } while(resultados.next());
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    /**
+     * Lista todos los administradores
+     * @param miConexion objeto conexión para conectar con la BBDD
+     */
+    public static void verAdministradores(Connection miConexion){
+        try (PreparedStatement consulta = miConexion.prepareStatement("select * from persona  where rol = 'administrador'  ")) {
+            ResultSet resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay administradores");
+            } else {
+                System.out.println("----Listado de administradores----");
+                do {
+                    String ID = resultados.getString("ID_persona");
+                    String nombre = resultados.getString("nombre");
+                    int edad = resultados.getInt("edad");
+                    String telefono = resultados.getString("telefono");
+                    System.out.println("DNI " +ID + " Nombre_administrador: "+ nombre +" Edad: "
+                            +edad + " Telefono: " + telefono) ;
+                    System.out.println("-----------------------");
+                } while(resultados.next());
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    /**
+     * Lista todos los bibliotecarios
+     * @param miConexion objeto conexión para conectar con la BBDD
+     */
+    public static void verBibliotecarios(Connection miConexion){
+        try (PreparedStatement consulta = miConexion.prepareStatement("select * from persona  where rol = 'bibliotecario'  ")) {
+            ResultSet resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay bibliotecarios");
+            } else {
+                System.out.println("----Listado de bibliotecarios----");
+                do {
+                    String id = resultados.getString("ID_persona");
+                    String nombre = resultados.getString("nombre");
+                    int edad = resultados.getInt("edad");
+                    String telefono = resultados.getString("telefono");
+                    System.out.println("DNI " +id + " Nombre_bibliotecario: "+ nombre +" Edad: "
+                            +edad + " Telefono: " + telefono) ;
+                    System.out.println("-----------------------");
+                } while(resultados.next());
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
     }
 
