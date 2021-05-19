@@ -1,0 +1,6 @@
+TITULO: Harry Potter y la Piedra Filosofal
+AUTOR: JK Rowling
+EDITORIAL: Salamandra
+CANTIDAD TOTAL: 100
+CANTIDAD RESTANTE: 98
+TEMATICA: Fantasia

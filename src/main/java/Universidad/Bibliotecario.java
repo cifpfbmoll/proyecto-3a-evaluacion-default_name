@@ -2,10 +2,14 @@ package Universidad;
 
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Bibliotecario extends Persona{
@@ -187,7 +191,8 @@ public class Bibliotecario extends Persona{
     }
 
     /**
-     * Metodo que hace un filtrado por Autor para ver solo los libros que hay de dicho Autor en la biblioteca
+     * Metodo que hace un filtrado por Autor para ver solo los libros que hay de dicho Autor en la biblioteca y
+     * pide si lo quieren escribir en un fichero o PDF
      * @param miConexion
      */
     public static void filtrarLibrosAutor(Connection miConexion){
@@ -196,6 +201,7 @@ public class Bibliotecario extends Persona{
         System.out.println("Escribe el autor de los libros que quieras ver");
         System.out.print("Autor:");
         String autor = lector.nextLine();
+        String atajo;
 
         try{
 
@@ -218,12 +224,13 @@ public class Bibliotecario extends Persona{
                     int rest  = resultado.getInt("CANTIDAD_RESTANTE");
                     String tem = resultado.getString("TEMATICA");
 
-                    System.out.println("TITULO: " + tit + "\n" +
-                                       "AUTOR: " + aut + "\n" +
-                                       "EDITORIAL: " + edi + "\n" +
-                                       "CANTIDAD TOTAL: " + tot + "\n" +
-                                       "CANTIDAD RESTANTE: " + rest + "\n" +
-                                       "TEMATICA: " + tem + "\n");
+                    atajo = "TITULO: " + tit + "\n" +
+                            "AUTOR: " + aut + "\n" +
+                            "EDITORIAL: " + edi + "\n" +
+                            "CANTIDAD TOTAL: " + tot + "\n" +
+                            "CANTIDAD RESTANTE: " + rest + "\n" +
+                            "TEMATICA: " + tem + "\n";
+                    System.out.println(atajo);
                 }while(resultado.next());
 
                 System.out.println("Quieres imprimirlo en un fichero ? \n");
@@ -233,6 +240,26 @@ public class Bibliotecario extends Persona{
                 int opcion = lector.nextInt();
                 lector.nextLine();
 
+                if(opcion == 1){
+                    try(BufferedWriter bufferWriter = new BufferedWriter(new FileWriter("Ficheros/prueba.txt"))){
+
+                          bufferWriter.write(atajo);
+
+                        System.out.println("Se ha escrito correctamente el fichero .txt en la ruta Fichero/prueba.txt");
+
+                    }catch(IOException e){
+                        System.out.println("No he podido escribir el fichero .txt");
+                        e.printStackTrace();
+                    }catch(InputMismatchException e2){
+                        System.out.println("No he encontrado el fichero .txt");
+                    }
+                }
+                if(opcion == 2){
+                    //PDF
+                }
+                if(opcion == 3){
+                    System.out.println(":(");
+                }
 
 
             }
