@@ -3,6 +3,7 @@ package Universidad;
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -277,6 +278,117 @@ public class Bibliotecario extends Persona{
             }catch(SQLException e2){
 
             }
+        }
+    }
+
+    /**
+     * Pregunta al usuario que editorial quiere para consultar sus libros e imprime listado en txt
+     * @param con objeto conexion para conectar con la bbdd
+     */
+    public static void filtrarLibrosEditorial(Connection con){
+        boolean editValida = false;
+        String nombreEdit = null;
+        while(editValida ==false){
+            Bibliotecario.mostrarEditoriales(con);
+            System.out.println("Escribe el nombre de la editorial que quieres ");
+            Scanner lector = new Scanner(System.in);
+            nombreEdit = lector.nextLine();
+            editValida = Bibliotecario.validarEditorial(nombreEdit, con);
+        }
+        PreparedStatement consulta = null;
+        ResultSet resultados = null;
+
+
+        try{
+            File archivoSalida = new File("Ficheros/LibrosEditorial"+nombreEdit.toUpperCase()+".txt");
+            consulta = con.prepareStatement("select * from libro where editorial = ?");
+            consulta.setString(1, nombreEdit);
+            resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay libros.");
+            } else {
+                BufferedWriter escritorMejorado = new BufferedWriter(new FileWriter(archivoSalida));;
+                do {
+                    String titulo = resultados.getString("Titulo_libro");
+                    String autor = resultados.getString("autor");
+                    String edit = resultados.getString("editorial");
+                    String linea= "Titulo: " + titulo  + "--- Autor: "+autor + "--- Editorial: " +edit;
+                    System.out.println(linea);
+                    escritorMejorado.write(linea);
+                    escritorMejorado.newLine();
+
+                } while(resultados.next());
+                escritorMejorado.close();
+            }
+
+        }catch(SQLException error) {
+            System.out.println("Error en la consulta.");
+        }catch (IOException e) {
+                e.printStackTrace();
+        }
+        finally{
+            try {
+                if (resultados != null) resultados.close();
+                if (consulta != null)consulta.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        }
+        }
+
+
+    /**
+     * Enseña las diferentes editoriales que tienen libros
+     * @param con objeto conexion para conectar con la bbdd
+     */
+    public static void mostrarEditoriales( Connection con){
+        try{
+            PreparedStatement consulta = con.prepareStatement("select distinct editorial from libro");
+            ResultSet resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay editoriales.");
+            } else {
+                System.out.println("----LISTADO DE EDITORIALES----");
+                do {
+                    String nombre = resultados.getString("Editorial");
+                    System.out.println(nombre);
+                } while(resultados.next());
+
+            }
+            if (resultados != null) {resultados.close (); }
+            if (consulta != null) consulta.close ();
+
+        }catch(SQLException error){
+            System.out.println("Error en la consulta.");
+
+        }
+
+    }
+
+    /**
+     * Comprueba si una editorial existe dada un nombre
+     * @param nombre es el nombre de la editorial para comprobar si existe
+     * @param con objeto conexion para conectar con la bbdd
+     * @return true si la editorial existe en la bbdd, y false si no existe
+     */
+    public static boolean validarEditorial( String nombre, Connection con){
+        boolean encontrado = false;
+        try (PreparedStatement consulta = con.prepareStatement("select editorial from libro where editorial = ?")) {
+            consulta.setString(1, nombre);
+            ResultSet resultado = consulta.executeQuery();
+
+            if (resultado.next() == false) {
+                encontrado = false;
+            }else{
+                encontrado= true;
+            }
+            if (consulta != null) {consulta.close (); }//cierra
+            if (resultado != null) {resultado.close (); }//cierra
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            return encontrado;
         }
     }
 }
