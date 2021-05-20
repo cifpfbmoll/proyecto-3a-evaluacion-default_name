@@ -1,5 +1,6 @@
 package Universidad;
 
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -76,12 +77,56 @@ public class Bibliotecario extends Persona{
     }
 
     /**
-     * Metodo que muestra todos los libros guardados en la BBDD, llama a otro metodo de la clase Libro
+     * Metodo que muestra todos los libros guardados en la BBDD
      * @param miConexion
      */
     public static void mostrarLibros(Connection miConexion){
 
-        Libro.mostrarLibros(miConexion);
+        PreparedStatement sentenciaPrep = null;
+        ResultSet resultado = null;
+
+        System.out.println("Estos son los libros que tenemos en la Biblioteca: \n");
+        try {
+            sentenciaPrep = miConexion.prepareStatement("SELECT * FROM LIBRO");
+
+            resultado = sentenciaPrep.executeQuery();
+
+            while (resultado.next()) {
+
+                String titulo = resultado.getString("TITULO_LIBRO");
+                String autor = resultado.getString("AUTOR");
+                String editorial = resultado.getString("EDITORIAL");
+                int id = resultado.getInt("ID_BIBLIOTECA");
+                int cant_tot = resultado.getInt("CANTIDAD_TOTAL");
+                int cant_rest = resultado.getInt("CANTIDAD_RESTANTE");
+                String tematica = resultado.getString("TEMATICA");
+
+                System.out.println("TITULO: " + titulo + " \n" +
+                        "AUTOR: " + autor + " \n" +
+                        "EDITORIAL: " + editorial + " \n" +
+                        "ID_BIBLIOTECA: " + id + " \n" +
+                        "CANTIDAD_TOTAL: " + cant_tot + " \n" +
+                        "CANTIDAD_RESTANTE: " + cant_rest + " \n" +
+                        "TEMATICA: " + tematica + " \n");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Lo siento, ha ocurrido un error y no se puede conectar a la Base de Datos.");
+            e.printStackTrace();
+        } finally {
+            try{
+                if (sentenciaPrep != null) {
+                    sentenciaPrep.close();
+                }
+                if (resultado != null) {
+                    resultado.close();
+                }
+            }catch(SQLException e){
+                System.out.println("No he podido cerrar los recursos");
+                e.printStackTrace();
+            }
+
+        };
     }
 
     /**
@@ -168,8 +213,8 @@ public class Bibliotecario extends Persona{
                 ResultSet resultSet = preparedStatement.executeQuery();//Ejecutar sequencia sql
                 System.out.println("LIBROS DE TEMATICA " + tematica.toUpperCase());
                 //Mostrar los resultados de la sequencia
+                System.out.println("----------------------");
                 while (resultSet.next()){
-                    System.out.println("----------------------");
                     System.out.println("- Titulo: " + resultSet.getString("Titulo_Libro"));
                     System.out.println("- Autor: " + resultSet.getString("Autor"));
                     System.out.println("- Editorial: " + resultSet.getString("ID_Biblioteca"));
@@ -180,7 +225,7 @@ public class Bibliotecario extends Persona{
                         bool=true;
                         System.out.println("Quieres exportar los datos? (si/no)");
                         if(scanner.nextLine().equalsIgnoreCase("si")){
-                            librosTematicaExportar(connection);
+                            librosTematicaExportar(connection, tematica);
                         }
 
                     }
@@ -202,21 +247,63 @@ public class Bibliotecario extends Persona{
         }
     }
 
-    private static void librosTematicaExportar(Connection connection) {
+    private static void librosTematicaExportar(Connection connection, String tematica) {
         Scanner scanner = new Scanner(System.in);
         PreparedStatement preparedStatement;
+        BufferedWriter bufferedWriter = null;
         System.out.println("Donde quieres exportar los libros?");
         System.out.println("1. TXT");
         System.out.println("2. PDF");
         System.out.print("> ");
-        switch (Integer.parseInt(scanner.nextLine())){
-            case 1:
+        try {
+            switch (Integer.parseInt(scanner.nextLine())) {
+                case 1:
+                    preparedStatement = connection.prepareStatement("select * from libro where tematica = ?");
+                    preparedStatement.setString(1, tematica);
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    try{
+                        bufferedWriter = new BufferedWriter(new FileWriter("Ficheros/prueba.txt"));
+                        while (resultSet.next()) {
+                            bufferedWriter.write("- Titulo: " + resultSet.getString("Titulo_Libro"));
+                            bufferedWriter.newLine();
+                            bufferedWriter.write("- Autor: " + resultSet.getString("Autor"));
+                            bufferedWriter.newLine();
+                            bufferedWriter.write("- Editorial: " + resultSet.getString("ID_Biblioteca"));
+                            bufferedWriter.newLine();
+                            bufferedWriter.write("- Cantidad Total: " + resultSet.getString("Cantidad_Total"));
+                            bufferedWriter.newLine();
+                            bufferedWriter.write("- Cantidad Restante: " + resultSet.getString("Cantidad_Restante"));
+                            bufferedWriter.newLine();
+                            bufferedWriter.write("----------------------");
+                            bufferedWriter.newLine();
 
-                break;
-            case 2:
-                break;
-            default:
-                System.out.println("Opcion erronea, no se va a exportar.");
+                        }
+
+
+                    }catch (FileNotFoundException e){
+                        System.out.println("Archivo no encontrado");
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    finally {
+                        try {
+                            if (bufferedWriter != null) {
+                                bufferedWriter.close();
+                            }
+                        }catch (IOException e){
+                            System.out.println("El archivo no se ha podido cerrar");
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                case 2:
+                    break;
+                default:
+                    System.out.println("Opcion erronea, no se va a exportar.");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
         }
     }
 }
