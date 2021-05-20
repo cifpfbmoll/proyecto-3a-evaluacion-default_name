@@ -392,12 +392,15 @@ public class Bibliotecario extends Persona{
         }
     }
     private static void verTematicasLibros(Connection connection){
+        //Declarar variables
         PreparedStatement preparedStatement = null;
         try {
+            //Preparar statement
             preparedStatement = connection.prepareStatement("select tematica from Libro");
             ResultSet resultSet = preparedStatement.executeQuery();
             System.out.println("----------------------");
-            System.out.println("TEMATICAS");
+            System.out.println("TEMATICAS: ");
+            //Printear el resultado
             while (resultSet.next()){
                 System.out.println("- " + resultSet.getString("tematica"));;
             }
@@ -420,20 +423,72 @@ public class Bibliotecario extends Persona{
     }
 
     public static void filtrarLibrosTematica(Connection connection) {
+        //Declarar variables
+        Scanner scanner = new Scanner(System.in);
         PreparedStatement preparedStatement = null;
         String tematica;
         Boolean bool = false;
         try {
             while (!bool) {
-                Bibliotecario.mostrarLibros(connection);
-                System.out.println("----------------------");
-                System.out.println("Introduce la ");
+                //Preparar sequencia SQL
+                Bibliotecario.verTematicasLibros(connection);
+                System.out.println("Introduce la tematica de la que quieres ver los libros: ");
+                System.out.print("> ");
+                tematica = scanner.nextLine();
                 preparedStatement = connection.prepareStatement("Select * from libro where Tematica = ?");
+                preparedStatement.setString(1, tematica);
+                ResultSet resultSet = preparedStatement.executeQuery();//Ejecutar sequencia sql
+                System.out.println("LIBROS DE TEMATICA " + tematica.toUpperCase());
+                //Mostrar los resultados de la sequencia
+                while (resultSet.next()){
+                    System.out.println("----------------------");
+                    System.out.println("- Titulo: " + resultSet.getString("Titulo_Libro"));
+                    System.out.println("- Autor: " + resultSet.getString("Autor"));
+                    System.out.println("- Editorial: " + resultSet.getString("ID_Biblioteca"));
+                    System.out.println("- Cantidad Total: " + resultSet.getString("Cantidad_Total"));
+                    System.out.println("- Cantidad Restante: " + resultSet.getString("Cantidad_Restante"));
+                    System.out.println("----------------------");
+                    if(!resultSet.next()){
+                        bool=true;
+                        System.out.println("Quieres exportar los datos? (si/no)");
+                        if(scanner.nextLine().equalsIgnoreCase("si")){
+                            librosTematicaExportar(connection);
+                        }
+
+                    }
+                }
+
 
             }
         } catch (SQLException e) {
-
+            System.out.println("SQLSTATE: " + e.getSQLState());
+            System.out.println("SQLMESSAGE: " + e.getMessage());
+        }finally {
+            try {
+                //Cerrar PreparedStatement
+                if(preparedStatement!= null){preparedStatement.close();}
+            }catch (SQLException e){
+                System.out.println("SQLSTATE: " + e.getSQLState());
+                System.out.println("SQLMESSAGE: " + e.getMessage());
+            }
         }
     }
 
+    private static void librosTematicaExportar(Connection connection) {
+        Scanner scanner = new Scanner(System.in);
+        PreparedStatement preparedStatement;
+        System.out.println("Donde quieres exportar los libros?");
+        System.out.println("1. TXT");
+        System.out.println("2. PDF");
+        System.out.print("> ");
+        switch (Integer.parseInt(scanner.nextLine())){
+            case 1:
+
+                break;
+            case 2:
+                break;
+            default:
+                System.out.println("Opcion erronea, no se va a exportar.");
+        }
+    }
 }
