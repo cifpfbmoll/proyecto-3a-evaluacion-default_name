@@ -294,7 +294,7 @@ public class Bibliotecario extends Persona{
             switch (Integer.parseInt(scanner.nextLine())) {
                 case 1://TXT
                     //Crear el buffered writer i con el fichero
-                    bufferedWriter = new BufferedWriter(new FileWriter("Ficheros/prueba.txt"));
+                    bufferedWriter = new BufferedWriter(new FileWriter("Ficheros/tematica_" + tematica.toUpperCase() + ".txt"));
                     //Escibir toda la informacion en el fichero TXT
                     while (resultSet.next()) {
                         bufferedWriter.write("- Titulo: " + resultSet.getString("Titulo_Libro"));
@@ -315,7 +315,7 @@ public class Bibliotecario extends Persona{
                     //Instancia de documento
                     document = new Document();
                     //Crear el pdf
-                    pdfWriter = PdfWriter.getInstance(document, new FileOutputStream("Ficheros/tematicas_" + tematica.toUpperCase() + ".pdf"));
+                    pdfWriter = PdfWriter.getInstance(document, new FileOutputStream("Ficheros/tematica_" + tematica.toUpperCase() + ".pdf"));
                     //Abrir el documento
                     document.open();
                     //Escribir en el documento la informacion
