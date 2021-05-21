@@ -491,6 +491,7 @@ public class Bibliotecario extends Persona{
         PreparedStatement preparedStatement = null;
         String tematica;
         Boolean bool = false;
+        Boolean informacion = false;
         try {
             while (!bool) {
                 //Preparar sequencia SQL
@@ -511,14 +512,17 @@ public class Bibliotecario extends Persona{
                     System.out.println("- Cantidad Total: " + resultSet.getString("Cantidad_Total"));
                     System.out.println("- Cantidad Restante: " + resultSet.getString("Cantidad_Restante"));
                     System.out.println("----------------------");
-                    if(!resultSet.next()){
-                        bool=true;
-                        System.out.println("Quieres exportar los datos? (si/no)");
-                        if(scanner.nextLine().equalsIgnoreCase("si")){
-                            librosTematicaExportar(connection, tematica);
-                        }
+                    informacion = true;
 
+                }
+                if(informacion){
+                    bool=true;
+                    System.out.println("Quieres exportar los datos? (si/no)");
+                    if(scanner.nextLine().equalsIgnoreCase("si")){
+                        librosTematicaExportar(connection, tematica);
                     }
+                }else{
+                    System.out.println("No se ha encontrado esa tematica, inserta otra.");
                 }
 
 
