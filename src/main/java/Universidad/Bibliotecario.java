@@ -1,5 +1,13 @@
 package Universidad;
 
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.awt.*;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -164,12 +172,17 @@ public class Bibliotecario extends Persona{
             }
         }
     }
+
+    /**
+     * Metodo que muestra las tematicas disponibles de los libros
+     * @param connection
+     */
     private static void verTematicasLibros(Connection connection){
         //Declarar variables
         PreparedStatement preparedStatement = null;
         try {
             //Preparar statement
-            preparedStatement = connection.prepareStatement("select tematica from Libro");
+            preparedStatement = connection.prepareStatement("select tematica from Libro group by tematica");
             ResultSet resultSet = preparedStatement.executeQuery();
             System.out.println("----------------------");
             System.out.println("TEMATICAS: ");
@@ -179,10 +192,11 @@ public class Bibliotecario extends Persona{
             }
             System.out.println("----------------------");
 
-
+        //Recojer los errores
         }catch (SQLException e){
             System.out.println("SQLSTATE: " + e.getSQLState());
             System.out.println("SQLMESSAGE: " + e.getMessage());
+        //Cerrar la conexion a la bbdd
         }finally {
             try {
                 if(preparedStatement != null){preparedStatement.close();}
@@ -195,6 +209,10 @@ public class Bibliotecario extends Persona{
 
     }
 
+    /**
+     * Metodo que filtra los libros por una tematica y los enseña en consola
+     * @param connection
+     */
     public static void filtrarLibrosTematica(Connection connection) {
         //Declarar variables
         Scanner scanner = new Scanner(System.in);
@@ -233,9 +251,12 @@ public class Bibliotecario extends Persona{
 
 
             }
+        //Recojer excepciones
         } catch (SQLException e) {
             System.out.println("SQLSTATE: " + e.getSQLState());
             System.out.println("SQLMESSAGE: " + e.getMessage());
+
+        //Cerrar conexion
         }finally {
             try {
                 //Cerrar PreparedStatement
@@ -247,63 +268,102 @@ public class Bibliotecario extends Persona{
         }
     }
 
+
+    /**
+     * Filtra los libros por una tematica y los exporta a un txt o pdf (usado por filtrarLibrosTematica(Connection connection))
+     * @param connection
+     * @param tematica
+     */
     private static void librosTematicaExportar(Connection connection, String tematica) {
+        //Declarar variables
         Scanner scanner = new Scanner(System.in);
-        PreparedStatement preparedStatement;
+        PreparedStatement preparedStatement = null;
         BufferedWriter bufferedWriter = null;
+        Document document = null;
+        PdfWriter pdfWriter = null;
+        //pedir como desea exportar la informacion
         System.out.println("Donde quieres exportar los libros?");
         System.out.println("1. TXT");
         System.out.println("2. PDF");
         System.out.print("> ");
         try {
+            //Preparar select con la tematica elegida
+            preparedStatement = connection.prepareStatement("select * from libro where tematica = ?");
+            preparedStatement.setString(1, tematica);
+            ResultSet resultSet = preparedStatement.executeQuery();
             switch (Integer.parseInt(scanner.nextLine())) {
-                case 1:
-                    preparedStatement = connection.prepareStatement("select * from libro where tematica = ?");
-                    preparedStatement.setString(1, tematica);
-                    ResultSet resultSet = preparedStatement.executeQuery();
-                    try{
-                        bufferedWriter = new BufferedWriter(new FileWriter("Ficheros/prueba.txt"));
-                        while (resultSet.next()) {
-                            bufferedWriter.write("- Titulo: " + resultSet.getString("Titulo_Libro"));
-                            bufferedWriter.newLine();
-                            bufferedWriter.write("- Autor: " + resultSet.getString("Autor"));
-                            bufferedWriter.newLine();
-                            bufferedWriter.write("- Editorial: " + resultSet.getString("ID_Biblioteca"));
-                            bufferedWriter.newLine();
-                            bufferedWriter.write("- Cantidad Total: " + resultSet.getString("Cantidad_Total"));
-                            bufferedWriter.newLine();
-                            bufferedWriter.write("- Cantidad Restante: " + resultSet.getString("Cantidad_Restante"));
-                            bufferedWriter.newLine();
-                            bufferedWriter.write("----------------------");
-                            bufferedWriter.newLine();
-
-                        }
-
-
-                    }catch (FileNotFoundException e){
-                        System.out.println("Archivo no encontrado");
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    finally {
-                        try {
-                            if (bufferedWriter != null) {
-                                bufferedWriter.close();
-                            }
-                        }catch (IOException e){
-                            System.out.println("El archivo no se ha podido cerrar");
-                            e.printStackTrace();
-                        }
+                case 1://TXT
+                    //Crear el buffered writer i con el fichero
+                    bufferedWriter = new BufferedWriter(new FileWriter("Ficheros/prueba.txt"));
+                    //Escibir toda la informacion en el fichero TXT
+                    while (resultSet.next()) {
+                        bufferedWriter.write("- Titulo: " + resultSet.getString("Titulo_Libro"));
+                        bufferedWriter.newLine();
+                        bufferedWriter.write("- Autor: " + resultSet.getString("Autor"));
+                        bufferedWriter.newLine();
+                        bufferedWriter.write("- Editorial: " + resultSet.getString("ID_Biblioteca"));
+                        bufferedWriter.newLine();
+                        bufferedWriter.write("- Cantidad Total: " + resultSet.getString("Cantidad_Total"));
+                        bufferedWriter.newLine();
+                        bufferedWriter.write("- Cantidad Restante: " + resultSet.getString("Cantidad_Restante"));
+                        bufferedWriter.newLine();
+                        bufferedWriter.write("----------------------");
+                        bufferedWriter.newLine();
                     }
                     break;
                 case 2:
+                    //Instancia de documento
+                    document = new Document();
+                    //Crear el pdf
+                    pdfWriter = PdfWriter.getInstance(document, new FileOutputStream("Ficheros/tematicas_" + tematica.toUpperCase() + ".pdf"));
+                    //Abrir el documento
+                    document.open();
+                    //Escribir en el documento la informacion
+                    document.add(new Paragraph("LIBROS DE LA TEMATICA " + tematica.toUpperCase(), FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLD)));
+                    document.add(new Paragraph(" ", FontFactory.getFont(FontFactory.HELVETICA, 12)));
+                    while (resultSet.next()){
+                        document.add(new Paragraph("- Titulo: " + resultSet.getString("Titulo_Libro"), FontFactory.getFont(FontFactory.HELVETICA, 12)));
+                        document.add(new Paragraph("- Autor: " + resultSet.getString("Autor"), FontFactory.getFont(FontFactory.HELVETICA, 12)));
+                        document.add(new Paragraph("- Editorial: " + resultSet.getString("ID_Biblioteca"), FontFactory.getFont(FontFactory.HELVETICA, 12)));
+                        document.add(new Paragraph("- Cantidad Total: " + resultSet.getString("Cantidad_Total"), FontFactory.getFont(FontFactory.HELVETICA, 12)));
+                        document.add(new Paragraph("- Cantidad Restante: " + resultSet.getString("Cantidad_Restante"), FontFactory.getFont(FontFactory.HELVETICA, 12)));
+                        document.add(new Paragraph(" ", FontFactory.getFont(FontFactory.HELVETICA, 12)));
+                        if(resultSet.next()) {
+                            document.add(new Paragraph("----------------------", FontFactory.getFont(FontFactory.HELVETICA, 12)));
+                            document.add(new Paragraph(" ", FontFactory.getFont(FontFactory.HELVETICA, 12)));
+                        }
+
+                    }
                     break;
                 default:
                     System.out.println("Opcion erronea, no se va a exportar.");
             }
+        //Recojer los errores que se hayan podido dar durante la ejecucion
         }catch (SQLException e){
+            System.out.println("SQLSTATE: " + e.getSQLState());
+            System.out.println("SQLMESSAGE: " + e.getMessage());
+        }catch (FileNotFoundException e) {
+            System.out.println("Archivo no encontrado");
             e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("Error durante el acceso al archivo");
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        //Cerrar todos las instancias y conexiones que se hayan podido abrir.
+        } finally {
+            try {
+                if (bufferedWriter != null) { bufferedWriter.close();}
+                if (preparedStatement != null){preparedStatement.close();}
+                if (document != null){document.close();}
+                if (pdfWriter != null){pdfWriter.close();}
+            }catch (IOException e){
+                System.out.println("El archivo no se ha podido cerrar");
+                System.out.println("MENSAJE: " + e.getMessage());;
+            }catch (SQLException e){
+                System.out.println("SQLSTATE: " + e.getSQLState());
+                System.out.println("SQLMESSAGE: " + e.getMessage());
+            }
         }
     }
 }
