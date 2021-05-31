@@ -15,10 +15,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -676,6 +673,10 @@ public class Bibliotecario extends Persona {
         }
     }
 
+    /**
+     * Muestra todas las reservas de libros
+     * @param con objeto conexión para conectar a la BBDD
+     */
     public static void verReservas(Connection con) {
         try {
             PreparedStatement consulta = con.prepareStatement("select * from libros_reservados");
@@ -703,7 +704,102 @@ public class Bibliotecario extends Persona {
             System.out.println(" Error en la consulta");
             throwables.printStackTrace();
         }
-
-
     }
+
+    /**
+     * Muestra las reservas filtrando por titulo de libro o por dni del alumno
+     * @param con  objeto conexión para conectar a la BBDD
+     */
+    public static void verReservasFiltrado(Connection con){
+        System.out.println("Escribe A) Filtrar por alumno");
+        System.out.println("Escribe B) Filtrar por libro");
+        verReservas(con);
+        switch (lector.nextLine()){
+            case "A":
+                System.out.println("Escribe el DNI del alumno");
+                String dni = lector.nextLine();
+                verReservasDni(dni, con);
+                break;
+            case "B":
+                System.out.println("Escribe el titulo del libro");
+                String libro = lector.nextLine();
+                verReservasLibro(libro, con);
+                break;
+            default:
+                System.out.println("Opcion incorrecta");
+                break;
+        }
+    }
+
+    /**
+     * Muestra todas las reservas de un alumno en concreto
+     * @param dni el dni del alumno a buscar
+     * @param con objeto conexión para conectar a la BBDD
+     */
+    private static void verReservasDni(String dni, Connection con){
+        try {
+            PreparedStatement consulta = con.prepareStatement("select * from libros_reservados where id_alumno = ?");
+            consulta.setString(1, dni);
+            ResultSet resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay reservas.");
+            } else {
+                System.out.println("----------LISTA DE RESERVAS ---------");
+                do {
+                    String alumno = resultados.getString("ID_Alumno");
+                    String libro = resultados.getString("Titulo_libro");
+                    String fechaReserva = resultados.getString("Fecha_reserva");
+                    String fechaDevolucion = resultados.getString("Fecha_devolucion");
+                    System.out.println("Alumno: " + alumno + " ---Titulo libro: " + libro );
+                    System.out.println("Fecha Reserva: " + fechaReserva + " ---Fecha devolucion: " + fechaDevolucion);
+                    System.out.println("----------------------------------------");
+                } while (resultados.next());
+
+            }
+            if (resultados != null) {
+                resultados.close();
+            }
+            if (consulta != null) consulta.close();
+        } catch (SQLException throwables) {
+            System.out.println(" Error en la consulta");
+            throwables.printStackTrace();
+        }
+    }
+
+    /**
+     * Muestra todas las reservas que tiene un título de libro
+     * @param libro el titulo del libro a buscar en la lista de reservas
+     * @param con objeto conexión para conectar a la BBDD
+     */
+    private static void verReservasLibro(String libro, Connection con){
+        try {
+            PreparedStatement consulta = con.prepareStatement("select * from libros_reservados where titulo_libro = ?");
+            consulta.setString(1, libro);
+            ResultSet resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay reservas.");
+            } else {
+                System.out.println("----------LISTA DE RESERVAS ---------");
+                do {
+                    String alumno = resultados.getString("ID_Alumno");
+                    String titulo = resultados.getString("Titulo_libro");
+                    String fechaReserva = resultados.getString("Fecha_reserva");
+                    String fechaDevolucion = resultados.getString("Fecha_devolucion");
+                    System.out.println("Alumno: " + alumno + " ---Titulo libro: " + titulo );
+                    System.out.println("Fecha Reserva: " + fechaReserva + " ---Fecha devolucion: " + fechaDevolucion);
+                    System.out.println("----------------------------------------");
+                } while (resultados.next());
+
+            }
+            if (resultados != null) {
+                resultados.close();
+            }
+            if (consulta != null) consulta.close();
+        } catch (SQLException throwables) {
+            System.out.println(" Error en la consulta");
+            throwables.printStackTrace();
+        }
+    }
+
+
 }
