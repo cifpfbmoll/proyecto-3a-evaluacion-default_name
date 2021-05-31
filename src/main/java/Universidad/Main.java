@@ -4,9 +4,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
+
 public class Main {
-    public static void main(String[] args) throws SQLException {
-        // TODO code application logic here
+    //Scanner
+    public static Scanner lector = new Scanner(System.in);
+    //Main
+    public static void main(String[] args){
 
         Connection miConexion = obtenerConexion();
         Persona persona = new Persona();
@@ -19,8 +23,19 @@ public class Main {
     }
 
 
-    public static Connection obtenerConexion () throws SQLException {
-        String url = "jdbc:mysql://51.178.152.223:3306/nueva_gestion_universidad";
-        return DriverManager.getConnection (url, "Dam4", "ProyectoGrupo4");
+    /**
+     * Metodo para obtener la conexion
+     * @return Connection
+     */
+    public static Connection obtenerConexion () {
+        Connection connection = null;
+        try {
+            String url = "jdbc:mysql://51.178.152.223:3306/nueva_gestion_universidad";
+            connection = DriverManager.getConnection (url, "Dam4", "ProyectoGrupo4");
+        } catch (SQLException exception) {
+            System.out.println("ERROR AL OBTENER LA CONEXION");
+            exception.printStackTrace();
+        }
+        return connection;
     }
 }

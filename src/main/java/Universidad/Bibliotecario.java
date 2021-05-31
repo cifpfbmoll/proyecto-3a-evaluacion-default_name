@@ -23,7 +23,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Bibliotecario extends Persona{
-    //ATRÍBUTOS -- la clase no tiene atríbutos porque los hereda directamenete todos de persona
+    //ATRÍBUTOS
+    private static Scanner lector = new Scanner(System.in);
 
     //constructor vacío
     public Bibliotecario(){
@@ -41,7 +42,6 @@ public class Bibliotecario extends Persona{
     }
 
     // METODOS
-    public static Scanner lector = new Scanner(System.in);
     /**
      * Metodo que pide al usuario los datos del libro y los anade a la BBDD
      * @param miConexion
@@ -349,7 +349,7 @@ public class Bibliotecario extends Persona{
         while(editValida ==false){
             Bibliotecario.mostrarEditoriales(con);
             System.out.println("Escribe el nombre de la editorial que quieres ");
-            Scanner lector = new Scanner(System.in);
+
             nombreEdit = lector.nextLine();
             editValida = Bibliotecario.validarEditorial(nombreEdit, con);
         }

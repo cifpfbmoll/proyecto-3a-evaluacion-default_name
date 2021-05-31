@@ -1,7 +1,7 @@
 package Universidad;
 
 public class Departamento {
-    //    Atributos
+    //Atributos
     private String ID_Departamento;
     private String Nombre_Departamento;
 
@@ -43,5 +43,4 @@ public class Departamento {
         return "Departamento{" + "ID_Departamento=" + ID_Departamento + ", Nombre_Departamento=" + Nombre_Departamento + '}';
     }
 
-//    Metodos pendientes de crear.
 }

@@ -85,6 +85,5 @@ public class Asignatura {
                 '}';
     }
 
-    // Método de mostrar asignaturas en la clase Titulación
 
 }

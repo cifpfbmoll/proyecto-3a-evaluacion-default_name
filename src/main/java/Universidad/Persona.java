@@ -10,13 +10,14 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 
 public  class Persona {
+    //Atributos
     private String ID_Persona;
     private String Nombre;
     private int Edad;
     private String Telefono;
     private String Contrasena;
     private String Rol;
-
+    private static Scanner lector = new Scanner(System.in);
     // getters y setters
     public String getID_Persona() {
         return ID_Persona;
@@ -66,7 +67,6 @@ public  class Persona {
         this.Rol = rol;
     }
 
-    // constructor completo
     public Persona(String ID_Persona, String nombre, int edad, String telefono, String contrasena, String rol) {
         this.ID_Persona = ID_Persona;
         this.Nombre = nombre;
@@ -90,35 +90,40 @@ public  class Persona {
         this.setRol(p.getRol());
     }
 
-    // metodo identificarse
-    public static String[]  identificarse(Connection con) throws SQLException {
-        Scanner lector = new Scanner(System.in);
+    /**
+     * Metiodo para identificar al usuario, este devolvera el el dni posicion 0 y el rol posicion 1
+     * @param con
+     * @return String[]
+     */
+    public static String[]  identificarse(Connection con)  {
+
         System.out.println("Dame tu dni");
         String dni = lector.nextLine();
         System.out.println("Dame tu contrasena");
         String contrasena = lector.nextLine();
-
-        PreparedStatement consulta = con.prepareStatement("select * from persona where ID_Persona = ? and Contrasena = ?");
-        consulta.setString(1, dni);
-        consulta.setString(2, contrasena);
-        ResultSet resultados = consulta.executeQuery();
-
         String[] datos = new String[2];
-        if (resultados.next() == false) {
-            System.out.println("No se ha encontrado al usuario.");
-        } else {
-            String dniCorrecto = resultados.getString ("ID_Persona");
-            datos[0] = dniCorrecto;
-            String rol = resultados.getString ("Rol");
-            datos[1] = rol;
+        try {
+            PreparedStatement consulta = con.prepareStatement("select * from persona where ID_Persona = ? and Contrasena = ?");
+            consulta.setString(1, dni);
+            consulta.setString(2, contrasena);
+            ResultSet resultados = consulta.executeQuery();
+
+
+            if (resultados.next() == false) {
+                System.out.println("No se ha encontrado al usuario.");
+            } else {
+                String dniCorrecto = resultados.getString("ID_Persona");
+                datos[0] = dniCorrecto;
+                String rol = resultados.getString("Rol");
+                datos[1] = rol;
+            }
+
+
+        } catch (SQLException exception) {
+            System.out.println("ERROR EN LA CONNEXION EN LA BBDD");
+            exception.printStackTrace();
         }
-
         return datos;
-    }
-
-    //método buscar info personas (este método no se que recibe ni que devuelve, lo dejo asi de momento)
-    public static void buscarInfoPersonas() {
-        System.out.printf("TODO");
     }
 
 }

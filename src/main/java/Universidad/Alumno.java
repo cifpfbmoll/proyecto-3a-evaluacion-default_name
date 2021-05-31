@@ -1,7 +1,10 @@
 package Universidad;
 
-public class Alumno extends Persona{
+import java.util.Scanner;
 
+public class Alumno extends Persona{
+    //Atributos
+    private static Scanner lector = new Scanner(System.in);
 
     public Alumno () {
     }

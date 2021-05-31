@@ -11,6 +11,8 @@ public class Profesor extends Persona{
 
     // ATRIBUTOS
     private String ID_Departamento;
+    private static Scanner lector = new Scanner(System.in);
+
 
     // CONSTRUCTOR VACIO, CONSTRUCTOR CON PARAMETROS, CONSTRUCTOR COPIA
 
@@ -43,9 +45,8 @@ public class Profesor extends Persona{
      * Metodo estatico que busca los alumnos del profesor activo
      * @param miConexion
      * @param datos
-     * @throws SQLException
      */
-    public static void mostrarAlumnos(Connection miConexion, String[] datos) throws SQLException {
+    public static void mostrarAlumnos(Connection miConexion, String[] datos) {
         PreparedStatement prepStat = null;
         ResultSet resultado = null;
 
@@ -70,11 +71,16 @@ public class Profesor extends Persona{
             System.out.println("No se ha podido realizar la consulta.");
             e.printStackTrace();
         }finally{
-            if(prepStat != null){
-                prepStat.close();
-            }
-            if (resultado != null){
-                resultado.close();
+            try {
+                if (prepStat != null) {
+                    prepStat.close();
+                }
+                if (resultado != null) {
+                    resultado.close();
+                }
+
+            } catch (SQLException exception) {
+                exception.printStackTrace();
             }
         }
     }
@@ -83,10 +89,9 @@ public class Profesor extends Persona{
      * Metodo estatico que se utilizara para poner notas a los alumnos
      * @param miConexion
      * @param datos
-     * @throws SQLException
      */
-    public static void ponerNota(Connection miConexion, String[] datos) throws SQLException{
-        Scanner lector = new Scanner(System.in);
+    public static void ponerNota(Connection miConexion, String[] datos){
+
         PreparedStatement prepStat = null;
 
         mostrarAlumnos(miConexion, datos);
@@ -113,8 +118,12 @@ public class Profesor extends Persona{
             System.out.println("No se ha podido insertar la nota");
             e.printStackTrace();
         }finally {
-            if(prepStat != null) {
-                prepStat.close();
+            try {
+                if (prepStat != null) {
+                    prepStat.close();
+                }
+            } catch (SQLException exception) {
+                exception.printStackTrace();
             }
         }
 

@@ -26,13 +26,4 @@ public class Biblioteca {
         this.setID_Biblioteca(b.getID_Biblioteca());
     }
 
-    //TODO
-    public void verLibros(){
-        System.out.println("TODO");
-    }
-
-    //TODO
-    public void verCategoriasLibros(){
-        System.out.println("TODO");
-    }
 }

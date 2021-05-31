@@ -14,9 +14,10 @@ import java.util.Scanner;
  * @author grupo3
  */
 public class Administrador extends Persona{
+    //Atributos
+    private static Scanner lector = new Scanner(System.in);
 
     // CONSTRUCTOR VACÍO, CONSTRUCTOR CON PARÁMETROS Y CONSTRUCTOR COPIA
-
     public Administrador() {
     }
 
@@ -150,7 +151,7 @@ public class Administrador extends Persona{
                 while(dptValido == false){
                     Administrador.verDepartamento(miConexion);
                     System.out.println("dime el id del departamento del profesor");
-                    Scanner lector = new Scanner(System.in);
+
                     idUsuario = lector.nextInt();
                     lector.nextLine();
                     dptValido = Administrador.validarIdDepartamento(idUsuario , miConexion);
@@ -192,7 +193,7 @@ public class Administrador extends Persona{
      */
     public static void mostrarPersonasAtributo(Connection con) {
         try{
-            Scanner lector = new Scanner(System.in);
+
             System.out.println("¿Por qué atributo quieres ordenar la lista (nombre, edad, rol)?");
             String atributo = lector.nextLine();
             while (!atributo.equals("nombre")&&!atributo.equals("edad")&&!atributo.equals("rol")){
@@ -269,7 +270,7 @@ public class Administrador extends Persona{
             con.setAutoCommit(false);
             String dni = null;
             while (!encontrado) {
-                Scanner lector = new Scanner(System.in);
+
                 System.out.println("Escribe el DNI de la persona a eliminar");
                 dni = lector.nextLine();
                 encontrado = buscarDni(dni, con);
@@ -370,7 +371,7 @@ public class Administrador extends Persona{
     //queda pendiente kambiar la PK de la tabla para que el catch error vea si existe el valor en la tabla
     public static void anadirTitulacion(Connection con){
         try {
-            Scanner lector = new Scanner(System.in);
+
             System.out.println("¿Qué titulacion desea anadir?");
             String titulacion = lector.nextLine();
             String st = "insert into titulacion(nombre_titulacion) values(?)";
@@ -403,7 +404,7 @@ public class Administrador extends Persona{
         PreparedStatement preparedSt = null;
         try {
             while (filas == 0) {
-                Scanner lector = new Scanner(System.in);
+
                 System.out.println("Que titulacion desea eliminar?");
                 int idTitulacion = lector.nextInt();
                 lector.nextLine();
@@ -504,7 +505,7 @@ public class Administrador extends Persona{
         int id = -1;
         while (!encontrado) {
             Administrador.verDepartamento(con);
-            Scanner lector = new Scanner(System.in);
+
             System.out.println("Escribe el id del departamento");
             id = lector.nextInt();
             lector.nextLine();
@@ -520,7 +521,7 @@ public class Administrador extends Persona{
      * @param miConexion es el objeto conexion para conectar con la BBDD
      */
     public static void anadirDepartamento(Connection miConexion){
-        Scanner lector = new Scanner(System.in);
+
         System.out.println("Escribe el nombre de departamento que quieres introducir. ");
         String nombre = lector.nextLine();
 
@@ -570,7 +571,7 @@ public class Administrador extends Persona{
         while(valido == false){
             Administrador.verDepartamento(con);
             System.out.println("Escribe el ID del departamento para eliminar");
-            Scanner lector = new Scanner(System.in);
+
             idUser = lector.nextInt();
             lector.nextLine();
             valido = Administrador.validarIdDepartamento(idUser, con);
@@ -676,7 +677,7 @@ public class Administrador extends Persona{
          boolean idCorrecta = false;
             int idUsuario= -1;
             while (idCorrecta == false){
-             Scanner lector = new Scanner(System.in);
+
              System.out.println("Escribe el ID de la asignatura para borrar: ");
              Administrador.verAsignaturas(miConexion);
              idUsuario = lector.nextInt();
@@ -709,7 +710,7 @@ public class Administrador extends Persona{
      * @param miConexion objeto conexión para conectar con la BBDD
      */
     public static void anadirAsignatura(Connection miConexion){
-            Scanner lector = new Scanner(System.in);
+
             System.out.println("Escribe el nombre de la asignatura a añadir");
             String nombreAsignatura = lector.nextLine();
 
