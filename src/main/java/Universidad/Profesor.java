@@ -128,5 +128,13 @@ public class Profesor extends Persona{
         }
 
     }
+
+    public static  void eliminarNotaAAlumno(Connection con, String[] datos){
+        mostrarAlumnos(con, datos);
+        Scanner lector = new Scanner(System.in);
+        System.out.println("escribe el DNI del alumno cuya nota quieres eliminar: ");
+        String alumno = lector.nextLine();
+
+    }
     
 }
