@@ -119,5 +119,59 @@ public class Alumno extends Persona{
 
 
     }
+    /*verEstadoAsignaturas(Connexion con, String[] datos): Se pedira al alumno si quiere filtrar de
+    alguna manera, es decir, si quiere ver todas, solo las suspendias, las aprobadas o las que solo
+    tienen nota i mostrar las asignaturas que esta cursando en ese momento segun su eleccion.
+    Luego debera pedir al alumno si quiere guardar la informacion en un .txt.
+    Si la respuesta es que si, se debera imprimir la informacion ordenada en un archivo llamado notas.txt.
+    No devuelve nada
+    Es estatica*/
+    public static void verEstadoAsignaturas(Connection con, String id){
+        boolean bool = false;
+        while (!bool)
+        System.out.println("Como quieres filtrar las asignaturas: ");
+        System.out.println("1. ");
 
+
+    }
 }
+
+    boolean salir = false;
+        while (!salir) {
+                try {
+                switch (menuString()) {
+                case 1:
+                Jugador.insertarJugador(conexion);
+                break;
+                case 2:
+                crearAlineacion(conexion);
+                break;
+                case 3:
+                consultarAlineacion(conexion);
+                break;
+                case 4:
+                salir = true;
+                break;
+default:
+        System.out.println("Opcion no valida");
+        }
+        } catch (Exception e) {
+        e.printStackTrace();
+        }
+        }
+        }
+//creo un método para guardar los strings del menú
+public static int menuString() {
+        Scanner lector = new Scanner(System.in);
+        System.out.println("------------------------");
+        System.out.println("1. Insertar jugador");
+        System.out.println("2. Crear alineación");
+        System.out.println("3. Consultar Alineación");
+        System.out.println("4. Salir");
+        System.out.println("------------------------");
+        System.out.println("Escribe una de las opciones: ");
+        int opcion = lector.nextInt();
+        lector.nextLine();
+
+        return opcion;
+        }
