@@ -38,7 +38,6 @@ public class Alumno extends Persona{
             con.setAutoCommit(false);
             while (filas == 0) {
                 verMatriculaciones(con, id);
-                Scanner lector = new Scanner(System.in);
                 System.out.println("Que matricula (indique id de la asignatura) desea eliminar?");
                 idAsignatura = lector.nextInt();
                 lector.nextLine();
