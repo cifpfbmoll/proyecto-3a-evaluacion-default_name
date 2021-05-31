@@ -22,11 +22,11 @@ import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Bibliotecario extends Persona{
+public class Bibliotecario extends Persona {
     //ATRÍBUTOS -- la clase no tiene atríbutos porque los hereda directamenete todos de persona
 
     //constructor vacío
-    public Bibliotecario(){
+    public Bibliotecario() {
     }
 
 
@@ -36,18 +36,20 @@ public class Bibliotecario extends Persona{
     }
 
     //constructor copia
-    public Bibliotecario(Bibliotecario copiaBibliotecario){
-        super((Persona)copiaBibliotecario);
+    public Bibliotecario(Bibliotecario copiaBibliotecario) {
+        super((Persona) copiaBibliotecario);
     }
 
     // METODOS
     public static Scanner lector = new Scanner(System.in);
+
     /**
      * Metodo que pide al usuario los datos del libro y los anade a la BBDD
+     *
      * @param miConexion
      * @param datos
      */
-    public static void anadirLibro(Connection miConexion, String[] datos){
+    public static void anadirLibro(Connection miConexion, String[] datos) {
 
         PreparedStatement prepStat = null;
         System.out.println("Vamos a anadir un libro:");
@@ -64,8 +66,8 @@ public class Bibliotecario extends Persona{
         System.out.println("Tematica del libro:");
         String tematica = lector.nextLine();
 
-        try{
-            prepStat= miConexion.prepareStatement("INSERT INTO libro VALUES(?, ?, ?, 1, ?, ?, ?)");
+        try {
+            prepStat = miConexion.prepareStatement("INSERT INTO libro VALUES(?, ?, ?, 1, ?, ?, ?)");
 
             prepStat.setString(1, titulo);
             prepStat.setString(2, autor);
@@ -76,15 +78,15 @@ public class Bibliotecario extends Persona{
 
             int n = prepStat.executeUpdate();
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("No he podido añadir el libro");
             e.printStackTrace();
-        }finally{
-            try{
-                if(prepStat != null){
+        } finally {
+            try {
+                if (prepStat != null) {
                     prepStat.close();
                 }
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 System.out.println("No he podido cerrar el preparedStatement");
             }
         }
@@ -92,9 +94,10 @@ public class Bibliotecario extends Persona{
 
     /**
      * Metodo que muestra todos los libros guardados en la BBDD
+     *
      * @param miConexion
      */
-    public static void mostrarLibros(Connection miConexion){
+    public static void mostrarLibros(Connection miConexion) {
 
         PreparedStatement sentenciaPrep = null;
         ResultSet resultado = null;
@@ -128,26 +131,28 @@ public class Bibliotecario extends Persona{
             System.out.println("Lo siento, ha ocurrido un error y no se puede conectar a la Base de Datos.");
             e.printStackTrace();
         } finally {
-            try{
+            try {
                 if (sentenciaPrep != null) {
                     sentenciaPrep.close();
                 }
                 if (resultado != null) {
                     resultado.close();
                 }
-            }catch(SQLException e){
+            } catch (SQLException e) {
                 System.out.println("No he podido cerrar los recursos");
                 e.printStackTrace();
             }
 
-        };
+        }
+        ;
     }
 
     /**
      * Metodo que muestra los libros y pregunta al usuario el titulo del libro que quiere eliminar, seguidamente lo elimina
+     *
      * @param miConexion
      */
-    public static void eliminarLibro(Connection miConexion){
+    public static void eliminarLibro(Connection miConexion) {
 
         System.out.println("Escribe el titulo del libro que quieres borrar: ");
         mostrarLibros(miConexion);
@@ -155,7 +160,7 @@ public class Bibliotecario extends Persona{
         String titulo = lector.nextLine();
         PreparedStatement prepStat = null;
 
-        try{
+        try {
             prepStat = miConexion.prepareStatement("DELETE FROM LIBRO WHERE TITULO_LIBRO = ?");
 
             prepStat.setString(1, titulo);
@@ -164,16 +169,16 @@ public class Bibliotecario extends Persona{
 
             System.out.println("Libro borrado con éxito");
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("No he podido borrar el libro " + titulo);
             System.out.println("Revisa que lo hayas escrito bien");
             e.printStackTrace();
-        }finally{
-            try{
-                if (prepStat != null){
+        } finally {
+            try {
+                if (prepStat != null) {
                     prepStat.close();
                 }
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 System.out.println("No he podido cerrar el PreparedStatement");
             }
         }
@@ -186,28 +191,29 @@ public class Bibliotecario extends Persona{
 
     /**
      * Metodo que reserva libros a los alumnos. Se utiliza una transaccion
+     *
      * @param miConexion
      */
-    public static void reservarLibro(Connection miConexion){
+    public static void reservarLibro(Connection miConexion) {
         PreparedStatement prepStat = null;
         System.out.print("Escribe tu ID de Alumno: ");
         String id = lector.nextLine();
         System.out.println("Hola, dime cuantos libros quieres reservar (maximo 3)");
         int reservas = lector.nextInt();
         lector.nextLine();
-        if (reservas > 3 || reservas <= 0){
+        if (reservas > 3 || reservas <= 0) {
             System.out.println("Solo puedes reservas de 1 a 3 libros. Vuelve a escribir la cantidad");
             reservas = lector.nextInt();
             lector.nextLine();
-        }else{
-            for(int i = 0; reservas > i; i++){
+        } else {
+            for (int i = 0; reservas > i; i++) {
                 System.out.println("Escribe el titulo del libro que quieras reservar");
                 mostrarLibros(miConexion);
                 System.out.println("Escribe el titulo correctamente");
                 System.out.print("Titulo: ");
                 String titulo = lector.nextLine();
 
-                try{
+                try {
                     // Inicio transaccion
                     miConexion.setAutoCommit(false);
 
@@ -228,20 +234,20 @@ public class Bibliotecario extends Persona{
 
                     System.out.println("Libro reservado con éxito para el alumno con ID = " + id);
                     miConexion.commit();
-                }catch(SQLException e){
-                    try{
+                } catch (SQLException e) {
+                    try {
                         miConexion.rollback();
                         e.printStackTrace();
-                    }catch(SQLException e2){
+                    } catch (SQLException e2) {
                         System.out.println("No he podido hacer rollback");
                     }
-                }finally {
-                    try{
+                } finally {
+                    try {
                         miConexion.setAutoCommit(true);
-                        if(prepStat != null){
+                        if (prepStat != null) {
                             prepStat.close();
                         }
-                    }catch(SQLException e){
+                    } catch (SQLException e) {
                         System.out.println("No he podido cerrar el prepared Statement");
                     }
                 }
@@ -252,9 +258,10 @@ public class Bibliotecario extends Persona{
     /**
      * Metodo que hace un filtrado por Autor para ver solo los libros que hay de dicho Autor en la biblioteca y
      * pide si lo quieren escribir en un fichero o PDF
+     *
      * @param miConexion
      */
-    public static void filtrarLibrosAutor(Connection miConexion){
+    public static void filtrarLibrosAutor(Connection miConexion) {
         PreparedStatement prepStat = null;
         ResultSet resultado = null;
         System.out.println("Escribe el autor de los libros que quieras ver");
@@ -262,7 +269,7 @@ public class Bibliotecario extends Persona{
         String autor = lector.nextLine();
         String atajo;
 
-        try{
+        try {
 
             prepStat = miConexion.prepareStatement("SELECT * FROM LIBRO WHERE Autor = ?");
 
@@ -270,17 +277,17 @@ public class Bibliotecario extends Persona{
 
             resultado = prepStat.executeQuery();
 
-            if(resultado.next() == false){
+            if (resultado.next() == false) {
                 System.out.println("\nNo hay libros de " + autor + ", lo siento");
-            }else{
+            } else {
                 System.out.println("\nEstos son los libros que hay de " + autor + "\n");
-                do{
+                do {
 
                     String tit = resultado.getString("TITULO_LIBRO");
                     String aut = resultado.getString("AUTOR");
                     String edi = resultado.getString("EDITORIAL");
                     int tot = resultado.getInt("CANTIDAD_TOTAL");
-                    int rest  = resultado.getInt("CANTIDAD_RESTANTE");
+                    int rest = resultado.getInt("CANTIDAD_RESTANTE");
                     String tem = resultado.getString("TEMATICA");
 
                     atajo = "TITULO: " + tit + "\n" +
@@ -290,7 +297,7 @@ public class Bibliotecario extends Persona{
                             "CANTIDAD RESTANTE: " + rest + "\n" +
                             "TEMATICA: " + tem + "\n";
                     System.out.println(atajo);
-                }while(resultado.next());
+                } while (resultado.next());
 
                 System.out.println("Quieres imprimirlo en un fichero ? \n");
                 System.out.println(" 1) En un fichero .txt");
@@ -299,41 +306,41 @@ public class Bibliotecario extends Persona{
                 int opcion = lector.nextInt();
                 lector.nextLine();
 
-                if(opcion == 1){
-                    try(BufferedWriter bufferWriter = new BufferedWriter(new FileWriter("Ficheros/prueba.txt"))){
+                if (opcion == 1) {
+                    try (BufferedWriter bufferWriter = new BufferedWriter(new FileWriter("Ficheros/prueba.txt"))) {
 
-                          bufferWriter.write(atajo);
+                        bufferWriter.write(atajo);
 
                         System.out.println("Se ha escrito correctamente el fichero .txt en la ruta Fichero/prueba.txt");
 
-                    }catch(IOException e){
+                    } catch (IOException e) {
                         System.out.println("No he podido escribir el fichero .txt");
                         e.printStackTrace();
-                    }catch(InputMismatchException e2){
+                    } catch (InputMismatchException e2) {
                         System.out.println("No he encontrado el fichero .txt");
                     }
                 }
-                if(opcion == 2){
+                if (opcion == 2) {
                     //PDF
                 }
-                if(opcion == 3){
+                if (opcion == 3) {
                     System.out.println(":(");
                 }
 
 
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("No he podido filtrar por autor");
             e.printStackTrace();
-        }finally {
-            try{
-                if(prepStat != null){
+        } finally {
+            try {
+                if (prepStat != null) {
                     prepStat.close();
                 }
-                if(resultado != null){
+                if (resultado != null) {
                     resultado.close();
                 }
-            }catch(SQLException e2){
+            } catch (SQLException e2) {
 
             }
         }
@@ -341,12 +348,13 @@ public class Bibliotecario extends Persona{
 
     /**
      * Pregunta al usuario que editorial quiere para consultar sus libros e imprime listado en txt
+     *
      * @param con objeto conexion para conectar con la bbdd
      */
-    public static void filtrarLibrosEditorial(Connection con){
+    public static void filtrarLibrosEditorial(Connection con) {
         boolean editValida = false;
         String nombreEdit = null;
-        while(editValida ==false){
+        while (editValida == false) {
             Bibliotecario.mostrarEditoriales(con);
             System.out.println("Escribe el nombre de la editorial que quieres ");
             Scanner lector = new Scanner(System.in);
@@ -357,51 +365,52 @@ public class Bibliotecario extends Persona{
         ResultSet resultados = null;
 
 
-        try{
-            File archivoSalida = new File("Ficheros/LibrosEditorial"+nombreEdit.toUpperCase()+".txt");
+        try {
+            File archivoSalida = new File("Ficheros/LibrosEditorial" + nombreEdit.toUpperCase() + ".txt");
             consulta = con.prepareStatement("select * from libro where editorial = ?");
             consulta.setString(1, nombreEdit);
             resultados = consulta.executeQuery();
             if (resultados.next() == false) {
                 System.out.println("No hay libros.");
             } else {
-                BufferedWriter escritorMejorado = new BufferedWriter(new FileWriter(archivoSalida));;
+                BufferedWriter escritorMejorado = new BufferedWriter(new FileWriter(archivoSalida));
+                ;
                 do {
                     String titulo = resultados.getString("Titulo_libro");
                     String autor = resultados.getString("autor");
                     String edit = resultados.getString("editorial");
-                    String linea= "Titulo: " + titulo  + "--- Autor: "+autor + "--- Editorial: " +edit;
+                    String linea = "Titulo: " + titulo + "--- Autor: " + autor + "--- Editorial: " + edit;
                     System.out.println(linea);
                     escritorMejorado.write(linea);
                     escritorMejorado.newLine();
 
-                } while(resultados.next());
+                } while (resultados.next());
                 escritorMejorado.close();
             }
 
-        }catch(SQLException error) {
+        } catch (SQLException error) {
             System.out.println("Error en la consulta.");
-        }catch (IOException e) {
-                e.printStackTrace();
-        }
-        finally{
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
             try {
                 if (resultados != null) resultados.close();
-                if (consulta != null)consulta.close();
+                if (consulta != null) consulta.close();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
 
         }
-        }
+    }
 
 
     /**
      * Enseña las diferentes editoriales que tienen libros
+     *
      * @param con objeto conexion para conectar con la bbdd
      */
-    public static void mostrarEditoriales( Connection con){
-        try{
+    public static void mostrarEditoriales(Connection con) {
+        try {
             PreparedStatement consulta = con.prepareStatement("select distinct editorial from libro");
             ResultSet resultados = consulta.executeQuery();
             if (resultados.next() == false) {
@@ -411,13 +420,15 @@ public class Bibliotecario extends Persona{
                 do {
                     String nombre = resultados.getString("Editorial");
                     System.out.println(nombre);
-                } while(resultados.next());
+                } while (resultados.next());
 
             }
-            if (resultados != null) {resultados.close (); }
-            if (consulta != null) consulta.close ();
+            if (resultados != null) {
+                resultados.close();
+            }
+            if (consulta != null) consulta.close();
 
-        }catch(SQLException error){
+        } catch (SQLException error) {
             System.out.println("Error en la consulta.");
 
         }
@@ -426,11 +437,12 @@ public class Bibliotecario extends Persona{
 
     /**
      * Comprueba si una editorial existe dada un nombre
+     *
      * @param nombre es el nombre de la editorial para comprobar si existe
-     * @param con objeto conexion para conectar con la bbdd
+     * @param con    objeto conexion para conectar con la bbdd
      * @return true si la editorial existe en la bbdd, y false si no existe
      */
-    public static boolean validarEditorial( String nombre, Connection con){
+    public static boolean validarEditorial(String nombre, Connection con) {
         boolean encontrado = false;
         try (PreparedStatement consulta = con.prepareStatement("select editorial from libro where editorial = ?")) {
             consulta.setString(1, nombre);
@@ -438,18 +450,23 @@ public class Bibliotecario extends Persona{
 
             if (resultado.next() == false) {
                 encontrado = false;
-            }else{
-                encontrado= true;
+            } else {
+                encontrado = true;
             }
-            if (consulta != null) {consulta.close (); }//cierra
-            if (resultado != null) {resultado.close (); }//cierra
+            if (consulta != null) {
+                consulta.close();
+            }//cierra
+            if (resultado != null) {
+                resultado.close();
+            }//cierra
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }finally {
+        } finally {
             return encontrado;
         }
     }
-    private static void verTematicasLibros(Connection connection){
+
+    private static void verTematicasLibros(Connection connection) {
         //Declarar variables
         PreparedStatement preparedStatement = null;
         try {
@@ -459,21 +476,24 @@ public class Bibliotecario extends Persona{
             System.out.println("----------------------");
             System.out.println("TEMATICAS: ");
             //Printear el resultado
-            while (resultSet.next()){
-                System.out.println("- " + resultSet.getString("tematica"));;
+            while (resultSet.next()) {
+                System.out.println("- " + resultSet.getString("tematica"));
+                ;
             }
             System.out.println("----------------------");
 
-        //Recojer los errores
-        }catch (SQLException e){
+            //Recojer los errores
+        } catch (SQLException e) {
             System.out.println("SQLSTATE: " + e.getSQLState());
             System.out.println("SQLMESSAGE: " + e.getMessage());
-        //Cerrar la conexion a la bbdd
-        }finally {
+            //Cerrar la conexion a la bbdd
+        } finally {
             try {
-                if(preparedStatement != null){preparedStatement.close();}
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
 
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 System.out.println("SQLSTATE: " + e.getSQLState());
                 System.out.println("SQLMESSAGE: " + e.getMessage());
             }
@@ -483,6 +503,7 @@ public class Bibliotecario extends Persona{
 
     /**
      * Metodo que filtra los libros por una tematica y los enseña en consola
+     *
      * @param connection
      */
     public static void filtrarLibrosTematica(Connection connection) {
@@ -505,7 +526,7 @@ public class Bibliotecario extends Persona{
                 System.out.println("LIBROS DE TEMATICA " + tematica.toUpperCase());
                 //Mostrar los resultados de la sequencia
                 System.out.println("----------------------");
-                while (resultSet.next()){
+                while (resultSet.next()) {
                     System.out.println("- Titulo: " + resultSet.getString("Titulo_Libro"));
                     System.out.println("- Autor: " + resultSet.getString("Autor"));
                     System.out.println("- Editorial: " + resultSet.getString("ID_Biblioteca"));
@@ -515,29 +536,31 @@ public class Bibliotecario extends Persona{
                     informacion = true;
 
                 }
-                if(informacion){
-                    bool=true;
+                if (informacion) {
+                    bool = true;
                     System.out.println("Quieres exportar los datos? (si/no)");
-                    if(scanner.nextLine().equalsIgnoreCase("si")){
+                    if (scanner.nextLine().equalsIgnoreCase("si")) {
                         librosTematicaExportar(connection, tematica);
                     }
-                }else{
+                } else {
                     System.out.println("No se ha encontrado esa tematica, inserta otra.");
                 }
 
 
             }
-        //Recojer excepciones
+            //Recojer excepciones
         } catch (SQLException e) {
             System.out.println("SQLSTATE: " + e.getSQLState());
             System.out.println("SQLMESSAGE: " + e.getMessage());
 
-        //Cerrar conexion
-        }finally {
+            //Cerrar conexion
+        } finally {
             try {
                 //Cerrar PreparedStatement
-                if(preparedStatement!= null){preparedStatement.close();}
-            }catch (SQLException e){
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
                 System.out.println("SQLSTATE: " + e.getSQLState());
                 System.out.println("SQLMESSAGE: " + e.getMessage());
             }
@@ -547,6 +570,7 @@ public class Bibliotecario extends Persona{
 
     /**
      * Filtra los libros por una tematica y los exporta a un txt o pdf (usado por filtrarLibrosTematica(Connection connection))
+     *
      * @param connection
      * @param tematica
      */
@@ -597,14 +621,14 @@ public class Bibliotecario extends Persona{
                     //Escribir en el documento la informacion
                     document.add(new Paragraph("LIBROS DE LA TEMATICA " + tematica.toUpperCase(), FontFactory.getFont(FontFactory.HELVETICA, 18, Font.BOLD)));
                     document.add(new Paragraph(" ", FontFactory.getFont(FontFactory.HELVETICA, 12)));
-                    while (resultSet.next()){
+                    while (resultSet.next()) {
                         document.add(new Paragraph("- Titulo: " + resultSet.getString("Titulo_Libro"), FontFactory.getFont(FontFactory.HELVETICA, 12)));
                         document.add(new Paragraph("- Autor: " + resultSet.getString("Autor"), FontFactory.getFont(FontFactory.HELVETICA, 12)));
                         document.add(new Paragraph("- Editorial: " + resultSet.getString("ID_Biblioteca"), FontFactory.getFont(FontFactory.HELVETICA, 12)));
                         document.add(new Paragraph("- Cantidad Total: " + resultSet.getString("Cantidad_Total"), FontFactory.getFont(FontFactory.HELVETICA, 12)));
                         document.add(new Paragraph("- Cantidad Restante: " + resultSet.getString("Cantidad_Restante"), FontFactory.getFont(FontFactory.HELVETICA, 12)));
                         document.add(new Paragraph(" ", FontFactory.getFont(FontFactory.HELVETICA, 12)));
-                        if(resultSet.next()) {
+                        if (resultSet.next()) {
                             document.add(new Paragraph("----------------------", FontFactory.getFont(FontFactory.HELVETICA, 12)));
                             document.add(new Paragraph(" ", FontFactory.getFont(FontFactory.HELVETICA, 12)));
                         }
@@ -614,11 +638,11 @@ public class Bibliotecario extends Persona{
                 default:
                     System.out.println("Opcion erronea, no se va a exportar.");
             }
-        //Recojer los errores que se hayan podido dar durante la ejecucion
-        }catch (SQLException e){
+            //Recojer los errores que se hayan podido dar durante la ejecucion
+        } catch (SQLException e) {
             System.out.println("SQLSTATE: " + e.getSQLState());
             System.out.println("SQLMESSAGE: " + e.getMessage());
-        }catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("Archivo no encontrado");
             e.printStackTrace();
         } catch (IOException e) {
@@ -626,20 +650,60 @@ public class Bibliotecario extends Persona{
             e.printStackTrace();
         } catch (DocumentException e) {
             e.printStackTrace();
-        //Cerrar todos las instancias y conexiones que se hayan podido abrir.
+            //Cerrar todos las instancias y conexiones que se hayan podido abrir.
         } finally {
             try {
-                if (bufferedWriter != null) { bufferedWriter.close();}
-                if (preparedStatement != null){preparedStatement.close();}
-                if (document != null){document.close();}
-                if (pdfWriter != null){pdfWriter.close();}
-            }catch (IOException e){
+                if (bufferedWriter != null) {
+                    bufferedWriter.close();
+                }
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (document != null) {
+                    document.close();
+                }
+                if (pdfWriter != null) {
+                    pdfWriter.close();
+                }
+            } catch (IOException e) {
                 System.out.println("El archivo no se ha podido cerrar");
-                System.out.println("MENSAJE: " + e.getMessage());;
-            }catch (SQLException e){
+                System.out.println("MENSAJE: " + e.getMessage());
+                ;
+            } catch (SQLException e) {
                 System.out.println("SQLSTATE: " + e.getSQLState());
                 System.out.println("SQLMESSAGE: " + e.getMessage());
             }
         }
+    }
+
+    public static void verReservas(Connection con) {
+        try {
+            PreparedStatement consulta = con.prepareStatement("select * from libros_reservados");
+            ResultSet resultados = consulta.executeQuery();
+            if (resultados.next() == false) {
+                System.out.println("No hay titulaciones.");
+            } else {
+                System.out.println("----------LISTA DE RESERVAS ---------");
+                do {
+                    String alumno = resultados.getString("ID_Alumno");
+                    String libro = resultados.getString("Titulo_libro");
+                    String fechaReserva = resultados.getString("Fecha_reserva");
+                    String fechaDevolucion = resultados.getString("Fecha_devolucion");
+                    System.out.println("Alumno: " + alumno + " ---Titulo libro: " + libro );
+                    System.out.println("Fecha Reserva: " + fechaReserva + " ---Fecha devolucion: " + fechaDevolucion);
+                    System.out.println("----------------------------------------");
+                } while (resultados.next());
+
+            }
+            if (resultados != null) {
+                resultados.close();
+            }
+            if (consulta != null) consulta.close();
+        } catch (SQLException throwables) {
+            System.out.println(" Error en la consulta");
+            throwables.printStackTrace();
+        }
+
+
     }
 }
