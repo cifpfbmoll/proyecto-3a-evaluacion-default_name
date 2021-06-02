@@ -93,33 +93,40 @@ public class Profesor extends Persona{
      * @param datos
      */
     public static void ponerNota(Connection miConexion, String[] datos){
-
-        PreparedStatement prepStat = null;
-
         mostrarAlumnos(miConexion, datos);
-        System.out.println("Escribe el ID del Alumno al que quieres ponerle nota:");
-        System.out.println("ID: ");
-        String id = lector.nextLine();
-
-        System.out.println("Que nota quieres ponerle?");
-        Double nota = lector.nextDouble();
+        Scanner lector = new Scanner(System.in);
+        System.out.println("Escribe el DNI del alumno que quieres calificar: ");
+        String alumno = lector.nextLine();
+        System.out.println("Escribe el id de la asignatura");
+        int asignatura = lector.nextInt();
         lector.nextLine();
-
-        try {
-            prepStat = miConexion.prepareStatement("UPDATE matriculacion" +
-                    "                                   SET Nota=?" +
-                    "                                   WHERE ID_Persona=?");
-
+        System.out.println("Escribe el año de la asignatura");
+        int ano = lector.nextInt();
+        lector.nextLine();
+        System.out.println("Escribe la nota");
+        double nota = lector.nextDouble();
+        lector.nextLine();
+        PreparedStatement prepStat = null;
+        try{
+            prepStat = miConexion.prepareStatement("update " +
+                    "                                   Persona AS p " +
+                    "                                   INNER JOIN Matriculacion AS m ON m.ID_Persona = p.ID_Persona" +
+                    "                                   INNER JOIN Asignatura AS a ON a.ID_Asignatura = m.ID_Asignatura " +
+                    "                                   INNER JOIN Profesor AS pr ON pr.ID_Persona = a.ID_Profesor " +
+                    "                                   set m.nota  = ?" +
+                    "                                   WHERE pr.ID_Persona = ?  and m.id_persona = ? and " +
+                    "m.ano_academico = ? and m.id_asignatura = ?" );
             prepStat.setDouble(1, nota);
-            prepStat.setString(2, id);
-
+            prepStat.setString(2, datos[0]);
+            prepStat.setString(3, alumno);
+            prepStat.setInt(4, ano);
+            prepStat.setInt(5, asignatura);
             int n = prepStat.executeUpdate();
-
-
+            System.out.println("¡Nota guardada!");
         }catch(SQLException e){
-            System.out.println("No se ha podido insertar la nota");
+            System.out.println("No se ha podido realizar la accion");
             e.printStackTrace();
-        }finally {
+        }finally{
             try {
                 if (prepStat != null) {
                     prepStat.close();
@@ -128,7 +135,6 @@ public class Profesor extends Persona{
                 exception.printStackTrace();
             }
         }
-
     }
 
     /**
