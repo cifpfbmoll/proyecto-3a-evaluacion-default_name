@@ -15,13 +15,9 @@ public class Main {
         Connection miConexion = obtenerConexion();
         Persona persona = new Persona();
         String[] datos = Persona.identificarse(miConexion);
-        for (int i = 0; i < datos.length; i++) {
-            System.out.println(datos[i]);
-        }
 
-
+        System.out.println("Has iniciado sesion como " + datos[1]);
         mostrarMenus(datos, miConexion);
-        //Bibliotecario.filtrarLibrosTematica(miConexion);
     }
 
 
@@ -45,13 +41,14 @@ public class Main {
         switch(datos[1]){
 
             case "bibliotecario": menuBibliotecario(datos, miConexion); break;
-            case "alumno": ; break;
+            case "alumno": menuAlumno(datos, miConexion); break;
             case "profesor": ; break;
             case "administrador": ; break;
             default: System.out.println("No has iniciado con tu usuario");
         }
     }
-    public static void menuBibliotecario(String[] datos, Connection miConexion){
+    
+    private static void menuBibliotecario(String[] datos, Connection miConexion){
 
         boolean menu = false;
 
@@ -86,7 +83,6 @@ public class Main {
                                 System.out.println("Escribe una opcion correcta:");
                                 break;
                         }
-
                     }
                     break;
                 case 5:
@@ -113,10 +109,9 @@ public class Main {
                     break;
             }
         }
-
     }
 
-    public static int pedirOpcionBibliotecario(){
+    private static int pedirOpcionBibliotecario(){
         System.out.println("-----------------------------------------");
         System.out.println("Escribe la opcion que quieras realizar:  ");
         System.out.println("-----------------------------------------");
@@ -132,7 +127,6 @@ public class Main {
         System.out.println("       10. Salir                         ");
         System.out.println("-----------------------------------------");
         System.out.print("Opcion: ");
-
         return lector.nextInt();
     }
 
@@ -143,9 +137,52 @@ public class Main {
         System.out.println("        1. Reservar libro                ");
         System.out.println("        2. Ver reservas                  ");
         System.out.println("        3. Filtrar reserva               ");
-        System.out.println("        4. Volver al menu anterior      ");
+        System.out.println("        4. Volver al menu anterior       ");
+        System.out.println("-----------------------------------------");
+        System.out.print("Opcion: ");
+        return lector.nextInt();
+    }
+
+    public static void menuAlumno(String[] datos, Connection miConexion){
+
+        boolean menu = false;
+
+        while (!menu){
+            switch (pedirOpcionAlumno()){
+                case 1:
+                    // Dar de alta matricula
+                    break;
+                case 2:
+                    Alumno.bajaMatricula(miConexion, datos[0]);
+                    break;
+                case 3:
+                    //ver estado asignatura
+                    break;
+                case 4:
+                    Alumno.verMatriculaciones(miConexion, datos[0]);
+                    break;
+                case 5:
+                    menu = true;
+                    break;
+                default:
+                    System.out.println("Escribe una opcion correcta:");
+                    break;
+            }
+        }
+    }
+
+    private static int pedirOpcionAlumno(){
+        System.out.println("-----------------------------------------");
+        System.out.println("Escribe la opcion que quieras realizar:  ");
+        System.out.println("-----------------------------------------");
+        System.out.println("     1. Dar de alta en una matricula     ");
+        System.out.println("     2. Dar de baja en una matricula     ");
+        System.out.println("     3. Ver el estado de una asignatura  ");
+        System.out.println("     4. Ver matriculaciones              ");
+        System.out.println("     5. Salir                            ");
         System.out.println("-----------------------------------------");
         System.out.print("Opcion: ");
         return lector.nextInt();
     }
 }
+
