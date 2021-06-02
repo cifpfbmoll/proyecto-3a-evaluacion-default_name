@@ -156,7 +156,7 @@ public class Main {
                     Alumno.bajaMatricula(miConexion, datos[0]);
                     break;
                 case 3:
-                    //ver estado asignatura
+                    Alumno.verEstadoAsignaturas(miConexion, datos[0]);
                     break;
                 case 4:
                     Alumno.verMatriculaciones(miConexion, datos[0]);
@@ -201,7 +201,7 @@ public class Main {
                     Profesor.ponerNota(miConexion, datos);
                     break;
                 case 4:
-                    // Eliminar nota de un alumno
+                    Profesor.eliminarNotaAAlumno(miConexion, datos);
                     break;
                 case 5:
                     menu = true;
