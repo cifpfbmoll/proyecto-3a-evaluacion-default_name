@@ -127,6 +127,17 @@ public class Alumno extends Persona {
 
     }
 
+    /**
+     * Se pedira al alumno si quiere filtrar de alguna manera, es decir, si quiere ver todas, solo las suspendias,
+     * las aprobadas, solo las que tienen nota o de una asignatura a su eleccion. Luego debera pedir al alumno si
+     * quiere guardar la informacion en un .txt.
+     * Si la respuesta es que si, se debera imprimir la informacion ordenada en un archivo llamado notas.txt.
+     * SE USARA EL PAIR PROGRAMMING.
+     * Es estatico.
+     * @param con un objeto Connection para hacer la busqueda en la BBDD.
+     * @param id  el dni del alumno para consultar sus matriculas y dar de baja.
+     */
+
     public static void verEstadoAsignaturas(Connection con, String id) {
         int opcion;
         String datos = "";
@@ -176,6 +187,10 @@ public class Alumno extends Persona {
 
     }
 
+    /**
+     * Metodo para crear un archivo de txt que recoge los datos de los metodos para ver asignaturas.
+     * @param datos string de datos con los datos de las matriculas del alumno.
+     */
     private static void escribirEstadoAsignatuas(String datos){
         BufferedWriter bufferedWriter = null;
         try{
@@ -199,6 +214,12 @@ public class Alumno extends Persona {
 
     }
 
+    /**
+     * Muestra todas las asignaturas matriculadas del alumno.
+     * @param con un objeto Connection para hacer la busqueda en la BBDD.
+     * @param id  el dni del alumno para consultar sus matriculas y dar de baja.
+     * @return datosTxt Es un string de datos con los datos de las matriculas del alumno.
+     */
     private static String verEstadoAsignaturasTodas(Connection con, String id) {
         String datosAux = "";
         String datosTxt = "";
@@ -232,7 +253,12 @@ public class Alumno extends Persona {
         }
         return datosTxt;
     }
-
+    /**
+     * Muestra las asignaturas matriculadas del alumno que estan suspendidas.
+     * @param con un objeto Connection para hacer la busqueda en la BBDD.
+     * @param id  el dni del alumno para consultar sus matriculas y dar de baja.
+     * @return datosTxt Es un string de datos con los datos de las matriculas del alumno.
+     */
     private static String verEstadoAsignaturasSuspendidas(Connection con, String id) {
         String datosAux = "";
         String datosTxt = "";
@@ -264,6 +290,12 @@ public class Alumno extends Persona {
         }
         return datosTxt;
     }
+    /**
+     * Muestra las asignaturas matriculadas del alumno que estan aprobadas.
+     * @param con un objeto Connection para hacer la busqueda en la BBDD.
+     * @param id  el dni del alumno para consultar sus matriculas y dar de baja.
+     * @return datosTxt Es un string de datos con los datos de las matriculas del alumno.
+     */
     private static String verEstadoAsignaturasAprobadas(Connection con, String id) {
         String datosAux = "";
         String datosTxt = "";
@@ -296,6 +328,12 @@ public class Alumno extends Persona {
         }
         return datosTxt;
     }
+    /**
+     * Muestra las asignaturas matriculadas del alumno que tienen una nota.
+     * @param con un objeto Connection para hacer la busqueda en la BBDD.
+     * @param id  el dni del alumno para consultar sus matriculas y dar de baja.
+     * @return datosTxt Es un string de datos con los datos de las matriculas del alumno.
+     */
     private static String verEstadoAsignaturasNotNull(Connection con, String id) {
         String datosAux = "";
         String datosTxt = "";
@@ -327,6 +365,12 @@ public class Alumno extends Persona {
         }
         return datosTxt;
     }
+    /**
+     * Muestra la asignatura que el alumne indique.
+     * @param con un objeto Connection para hacer la busqueda en la BBDD.
+     * @param id  el dni del alumno para consultar sus matriculas y dar de baja.
+     * @return datosTxt Es un string de datos con los datos de las matriculas del alumno.
+     */
     private static String verEstadoAsignaturasUnica(Connection con, String id) {
         String datosAux = "";
         String datosTxt = "";
