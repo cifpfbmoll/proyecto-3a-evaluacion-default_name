@@ -227,3 +227,4 @@ public class Main {
         return lector.nextInt();
     }
 }
+
