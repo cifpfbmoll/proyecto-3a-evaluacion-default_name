@@ -42,12 +42,12 @@ public class Main {
 
             case "bibliotecario": menuBibliotecario(datos, miConexion); break;
             case "alumno": menuAlumno(datos, miConexion); break;
-            case "profesor": ; break;
+            case "profesor": menuProfesor(datos, miConexion); break;
             case "administrador": ; break;
             default: System.out.println("No has iniciado con tu usuario");
         }
     }
-    
+
     private static void menuBibliotecario(String[] datos, Connection miConexion){
 
         boolean menu = false;
@@ -143,7 +143,7 @@ public class Main {
         return lector.nextInt();
     }
 
-    public static void menuAlumno(String[] datos, Connection miConexion){
+    private static void menuAlumno(String[] datos, Connection miConexion){
 
         boolean menu = false;
 
@@ -180,6 +180,48 @@ public class Main {
         System.out.println("     3. Ver el estado de una asignatura  ");
         System.out.println("     4. Ver matriculaciones              ");
         System.out.println("     5. Salir                            ");
+        System.out.println("-----------------------------------------");
+        System.out.print("Opcion: ");
+        return lector.nextInt();
+    }
+
+    private static void menuProfesor(String[] datos, Connection miConexion){
+
+        boolean menu = false;
+
+        while (!menu){
+            switch (pedirOpcionProfesor()){
+                case 1:
+                    Profesor.mostrarAlumnos(miConexion, datos);
+                    break;
+                case 2:
+                    //Mostrar alumnos por asignaturas
+                    break;
+                case 3:
+                    Profesor.ponerNota(miConexion, datos);
+                    break;
+                case 4:
+                    // Eliminar nota de un alumno
+                    break;
+                case 5:
+                    menu = true;
+                    break;
+                default:
+                    System.out.println("Escribe una opcion correcta:");
+                    break;
+            }
+        }
+    }
+
+    private static int pedirOpcionProfesor(){
+        System.out.println("-----------------------------------------");
+        System.out.println("Escribe la opcion que quieras realizar:  ");
+        System.out.println("-----------------------------------------");
+        System.out.println("    1. Mostrar alumnos                   ");
+        System.out.println("    2. Mostrar alumnos por asignaturas   ");
+        System.out.println("    3. Poner nota                        ");
+        System.out.println("    4. Eliminar nota a un alumno         ");
+        System.out.println("    5. Salir                             ");
         System.out.println("-----------------------------------------");
         System.out.print("Opcion: ");
         return lector.nextInt();
