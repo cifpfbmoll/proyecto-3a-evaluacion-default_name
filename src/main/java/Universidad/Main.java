@@ -67,7 +67,8 @@ public class Main {
                     Bibliotecario.mostrarLibros(miConexion);
                     break;
                 case 4:
-                    while(!menu){
+                    boolean menu2 = false;
+                    while (!menu2){
                         switch (pedirOpcionReserva()){
                             case 1:
                                 Bibliotecario.reservarLibro(miConexion);
@@ -79,8 +80,13 @@ public class Main {
                                 Bibliotecario.verReservasFiltrado(miConexion);
                                 break;
                             case 4:
-                                menuBibliotecario(datos, miConexion);
+                                menu2 = true;
+                                break;
+                            default:
+                                System.out.println("Escribe una opcion correcta:");
+                                break;
                         }
+
                     }
                     break;
                 case 5:
