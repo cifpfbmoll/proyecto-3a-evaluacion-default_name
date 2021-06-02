@@ -50,10 +50,9 @@ public class Profesor extends Persona{
         PreparedStatement prepStat = null;
         ResultSet resultado = null;
 
-        System.out.println("Estos son los alumnos que tienes:");
         try{
-            
-            prepStat = miConexion.prepareStatement("SELECT p.ID_Persona, p.Nombre, p.Edad, p.Telefono " +
+
+            prepStat = miConexion.prepareStatement("SELECT * " +
                     "                                   FROM Persona AS p " +
                     "                                   INNER JOIN Matriculacion AS m ON m.ID_Persona = p.ID_Persona" +
                     "                                   INNER JOIN Asignatura AS a ON a.ID_Asignatura = m.ID_Asignatura " +
@@ -61,10 +60,13 @@ public class Profesor extends Persona{
                     "                                   WHERE pr.ID_Persona = ? ");
             prepStat.setString(1, datos[0]);
             resultado = prepStat.executeQuery();
+            System.out.println("Listado de alumnos matriculados en tus asignaturas");
             while(resultado.next()){
-                String trampitas = resultado.getString("ID_Persona") + " " + resultado.getString("Nombre") +
-                        " " + resultado.getString("Edad") + " " + resultado.getString("Telefono");
-                System.out.println(trampitas.replace(" ", " - "));
+                System.out.println("ID Alumno: " + resultado.getString("ID_persona") + " --Nombre alumno: " + resultado.getString("nombre"));
+                System.out.println(" Asignatura: " + resultado.getString("nombre_Asignatura") + "--ID asignatura: " + resultado.getString("ID_asignatura")) ;
+                System.out.println(" Ano academico: " + resultado.getInt("ano_academico"));
+                System.out.println("Nota actual: " + resultado.getDouble("nota"));
+                System.out.println("----------------------------------------------------------------------------------");
             }
 
         }catch(SQLException e){
@@ -129,11 +131,54 @@ public class Profesor extends Persona{
 
     }
 
+    /**
+     * Pone una nota de un alumno a null
+     * @param con objeto conexión para conectar con la BBDD
+     * @param datos asd
+     */
     public static  void eliminarNotaAAlumno(Connection con, String[] datos){
         mostrarAlumnos(con, datos);
         Scanner lector = new Scanner(System.in);
-        System.out.println("escribe el DNI del alumno cuya nota quieres eliminar: ");
+        System.out.println("Escribe el DNI del alumno cuya nota quieres eliminar: ");
         String alumno = lector.nextLine();
+        System.out.println("Escribe el id de la asignatura que quieres borrar la nota");
+        int asignatura = lector.nextInt();
+        lector.nextLine();
+        System.out.println("Escribe el año de la asignatura");
+        int ano = lector.nextInt();
+        lector.nextLine();
+
+        PreparedStatement prepStat = null;
+        ResultSet resultado = null;
+
+        try{
+            prepStat = con.prepareStatement("update " +
+                    "                                   Persona AS p " +
+                    "                                   INNER JOIN Matriculacion AS m ON m.ID_Persona = p.ID_Persona" +
+                    "                                   INNER JOIN Asignatura AS a ON a.ID_Asignatura = m.ID_Asignatura " +
+                    "                                   INNER JOIN Profesor AS pr ON pr.ID_Persona = a.ID_Profesor " +
+                    "                                   set m.nota  = NULL" +
+                    "                                   WHERE pr.ID_Persona = ?  and m.id_persona = ? and " +
+                    "m.ano_academico = ? and m.id_asignatura = ?" );
+            prepStat.setString(1, datos[0]);
+            prepStat.setString(2, alumno);
+            prepStat.setInt(3, ano);
+            prepStat.setInt(4, asignatura);
+            int n = prepStat.executeUpdate();
+            System.out.println("Nota eliminada");
+        }catch(SQLException e){
+            System.out.println("No se ha podido realizar la consulta.");
+            e.printStackTrace();
+        }finally{
+            try {
+                if (prepStat != null) {
+                    prepStat.close();
+                }
+
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
+        }
 
     }
     
