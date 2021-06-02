@@ -67,27 +67,39 @@ public class Main {
                     Bibliotecario.mostrarLibros(miConexion);
                     break;
                 case 4:
-                    Bibliotecario.reservarLibro(miConexion);
+                    while(!menu){
+                        switch (pedirOpcionReserva()){
+                            case 1:
+                                Bibliotecario.reservarLibro(miConexion);
+                                break;
+                            case 2:
+                                Bibliotecario.verReservas(miConexion);
+                                break;
+                            case 3:
+                                Bibliotecario.verReservasFiltrado(miConexion);
+                                break;
+                            case 4:
+                                menuBibliotecario(datos, miConexion);
+                        }
+                    }
                     break;
                 case 5:
-                    Bibliotecario.verReservas(miConexion);
-                    break;
-                case 6:
-                    Bibliotecario.verReservasFiltrado(miConexion);
-                    break;
-                case 7:
+                    // devolverLibro()
                     //Bibliotecario
                     break;
-                case 8:
+                case 6:
+                    Bibliotecario.mostrarEditoriales(miConexion);
+                    break;
+                case 7:
                     Bibliotecario.filtrarLibrosAutor(miConexion);
                     break;
-                case 9:
+                case 8:
                     Bibliotecario.filtrarLibrosEditorial(miConexion);
                     break;
-                case 10:
+                case 9:
                     Bibliotecario.filtrarLibrosTematica(miConexion);
                     break;
-                case 11:
+                case 10:
                     menu = true;
                     break;
                 default:
@@ -99,24 +111,35 @@ public class Main {
     }
 
     public static int pedirOpcionBibliotecario(){
-        Scanner lector = new Scanner(System.in);
         System.out.println("-----------------------------------------");
         System.out.println("Escribe la opcion que quieras realizar:  ");
         System.out.println("-----------------------------------------");
         System.out.println("        1. Anadir libro                  ");
         System.out.println("        2. Eliminar libro                ");
         System.out.println("        3. Ver libros                    ");
-        System.out.println("        4. Reservar libro                ");
-        System.out.println("        5. Ver reservas                  ");
-        System.out.println("        6. Filtrar reservas              ");
-        System.out.println("        7. Devolver Libro                ");
-        System.out.println("        8. Filtrar libros por autor      ");
-        System.out.println("        9. Filtrar libros por editorial  ");
-        System.out.println("       10. Filtrar libros por tematica   ");
-        System.out.println("       11. Salir                         ");
+        System.out.println("        4. Menu Reservas                 ");
+        System.out.println("        5. Devolver Libro                ");
+        System.out.println("        6. Ver editoriales               ");
+        System.out.println("        7. Filtrar libros por autor      ");
+        System.out.println("        8. Filtrar libros por editorial  ");
+        System.out.println("        9. Filtrar libros por tematica   ");
+        System.out.println("       10. Salir                         ");
         System.out.println("-----------------------------------------");
         System.out.print("Opcion: ");
 
+        return lector.nextInt();
+    }
+
+    private static int pedirOpcionReserva(){
+        System.out.println("-----------------------------------------");
+        System.out.println("Escribe la opcion que quieras realizar:  ");
+        System.out.println("-----------------------------------------");
+        System.out.println("        1. Reservar libro                ");
+        System.out.println("        2. Ver reservas                  ");
+        System.out.println("        3. Filtrar reserva               ");
+        System.out.println("        4. Volver al menu anterior      ");
+        System.out.println("-----------------------------------------");
+        System.out.print("Opcion: ");
         return lector.nextInt();
     }
 }
