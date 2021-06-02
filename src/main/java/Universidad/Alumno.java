@@ -126,14 +126,6 @@ public class Alumno extends Persona {
 
 
     }
-    /*verEstadoAsignaturas(Connexion con, String[] datos): Se pedira al alumno si quiere filtrar de
-    alguna manera, es decir, si quiere ver todas, solo las suspendias, las aprobadas o las que solo
-    tienen nota i mostrar las asignaturas que esta cursando en ese momento segun su eleccion.
-    Luego debera pedir al alumno si quiere guardar la informacion en un .txt.
-    Si la respuesta es que si, se debera imprimir la informacion ordenada en un archivo llamado notas.txt.
-    No devuelve nada
-    Es estatica*/
-
 
     public static void verEstadoAsignaturas(Connection con, String id) {
         int opcion;
