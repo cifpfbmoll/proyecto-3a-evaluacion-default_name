@@ -43,7 +43,7 @@ public class Main {
             case "bibliotecario": menuBibliotecario(datos, miConexion); break;
             case "alumno": menuAlumno(datos, miConexion); break;
             case "profesor": menuProfesor(datos, miConexion); break;
-            case "administrador": ; break;
+            case "administrador": menuAdministrador(datos, miConexion); break;
             default: System.out.println("No has iniciado con tu usuario");
         }
     }
@@ -222,6 +222,197 @@ public class Main {
         System.out.println("    3. Poner nota                        ");
         System.out.println("    4. Eliminar nota a un alumno         ");
         System.out.println("    5. Salir                             ");
+        System.out.println("-----------------------------------------");
+        System.out.print("Opcion: ");
+        return lector.nextInt();
+    }
+
+    private static void menuAdministrador(String[] datos, Connection miConexion){
+
+        boolean menu = false;
+
+        while (!menu){
+            switch (pedirOpcionAdministrador()){
+                case 1:
+                    boolean menuPersonas = false;
+                    while (!menuPersonas){
+                        switch (pedirOpcionAdminPersonas()){
+                            case 1:
+                                Administrador.anadirPersona(miConexion);
+                                break;
+                            case 2:
+                                Administrador.borrarPersona(miConexion);
+                                break;
+                            case 3:
+                                Administrador.verPersonas(miConexion);
+                                break;
+                            case 4:
+                                Administrador.mostrarPersonasAtributo(miConexion);
+                                break;
+                            case 5:
+                                Administrador.verProfesores(miConexion);
+                                break;
+                            case 6:
+                                Administrador.verAlumnos(miConexion);
+                                break;
+                            case 7:
+                                Administrador.verBibliotecarios(miConexion);
+                                break;
+                            case 8:
+                                Administrador.verAdministradores(miConexion);
+                                break;
+                            case 9:
+                                menuPersonas = true;
+                                break;
+                            default:
+                                System.out.println("Escribe una opcion correcta:");
+                                break;
+                        }
+                    }
+                    break;
+                case 2:
+                    boolean menuTitulaciones = false;
+                    while (!menuTitulaciones){
+                        switch (pedirOpcionAdminTitulaciones()){
+                            case 1:
+                                Administrador.anadirTitulacion(miConexion);
+                                break;
+                            case 2:
+                                Administrador.eliminarTitulacion(miConexion);
+                                break;
+                            case 3:
+                                Administrador.verTitulaciones(miConexion);
+                                break;
+                            case 4:
+                                menuTitulaciones = true;
+                                break;
+                            default:
+                                System.out.println("Escribe una opcion correcta:");
+                                break;
+                        }
+                    }
+                    break;
+                case 3:
+                    boolean menuDepartamentos = false;
+                    while (!menuDepartamentos){
+                        switch (pedirOpcionAdminDepartamentos()){
+                            case 1:
+                                Administrador.anadirDepartamento(miConexion);
+                                break;
+                            case 2:
+                                Administrador.eliminarDepartamento(miConexion);
+                                break;
+                            case 3:
+                                Administrador.verDepartamento(miConexion);
+                                break;
+                            case 4:
+                                menuDepartamentos = true;
+                                break;
+                            default:
+                                System.out.println("Escribe una opcion correcta:");
+                                break;
+                        }
+                    }
+                    break;
+                case 4:
+                    boolean menuAsignaturas = false;
+                    while (!menuAsignaturas){
+                        switch (pedirOpcionAdminAsignaturas()){
+                            case 1:
+                                Administrador.anadirAsignatura(miConexion);
+                                break;
+                            case 2:
+                                Administrador.borrarAsignatura(miConexion);
+                                break;
+                            case 3:
+                                Administrador.verAsignaturas(miConexion);
+                                break;
+                            case 4:
+                                menuAsignaturas = true;
+                                break;
+                            default:
+                                System.out.println("Escribe una opcion correcta:");
+                                break;
+                        }
+                    }
+                    break;
+                case 5:
+                    menu = true;
+                    break;
+                default:
+                    System.out.println("Escribe una opcion correcta:");
+                    break;
+
+            }
+        }
+    }
+
+    private static int pedirOpcionAdministrador(){
+        System.out.println("-----------------------------------------");
+        System.out.println("Escribe la opcion que quieras realizar:  ");
+        System.out.println("-----------------------------------------");
+        System.out.println("    1. Administracion personas           ");
+        System.out.println("    2. Administracion titulaciones       ");
+        System.out.println("    3. Administracion departamentos      ");
+        System.out.println("    4. Administracion asignaturas        ");
+        System.out.println("    5. Salir                             ");
+        System.out.println("-----------------------------------------");
+        System.out.print("Opcion: ");
+        return lector.nextInt();
+    }
+
+    private static int pedirOpcionAdminPersonas(){
+        System.out.println("-----------------------------------------");
+        System.out.println("Escribe la opcion que quieras realizar:  ");
+        System.out.println("-----------------------------------------");
+        System.out.println("       1. Anadir persona                 ");
+        System.out.println("       2. Borrar persona                 ");
+        System.out.println("       3. Mostrar personas               ");
+        System.out.println("       4. Mostrar personas por atributo  ");
+        System.out.println("       5. Mostrar profesores             ");
+        System.out.println("       6. Mostrar alumnos                ");
+        System.out.println("       7. Mostrar bibliotecarios         ");
+        System.out.println("       8. Mostrar administradores        ");
+        System.out.println("       9. Volver al menu anterior        ");
+        System.out.println("-----------------------------------------");
+        System.out.print("Opcion: ");
+        return lector.nextInt();
+    }
+
+    private static int pedirOpcionAdminTitulaciones(){
+        System.out.println("-----------------------------------------");
+        System.out.println("Escribe la opcion que quieras realizar:  ");
+        System.out.println("-----------------------------------------");
+        System.out.println("       1. Anadir titulacion              ");
+        System.out.println("       2. Eliminar titulacion            ");
+        System.out.println("       3. Mostrar titulaciones           ");
+        System.out.println("       4. Volver al menu anterior        ");
+        System.out.println("-----------------------------------------");
+        System.out.print("Opcion: ");
+        return lector.nextInt();
+    }
+
+    private static int pedirOpcionAdminDepartamentos(){
+        System.out.println("-----------------------------------------");
+        System.out.println("Escribe la opcion que quieras realizar:  ");
+        System.out.println("-----------------------------------------");
+        System.out.println("       1. Anadir departamento            ");
+        System.out.println("       2. Eliminar departamento          ");
+        System.out.println("       3. Mostrar departamentos          ");
+        System.out.println("       4. Volver al menu anterior        ");
+        System.out.println("-----------------------------------------");
+        System.out.print("Opcion: ");
+        return lector.nextInt();
+    }
+
+    private static int pedirOpcionAdminAsignaturas(){
+        System.out.println("-----------------------------------------");
+        System.out.println("Escribe la opcion que quieras realizar:  ");
+        System.out.println("-----------------------------------------");
+        System.out.println("       1. Anadir asignatura              ");
+        System.out.println("       2. Eliminar asignatura            ");
+        System.out.println("       3. Mostrar asignaturas            ");
+        System.out.println("       4. Volver al menu anterior        ");
         System.out.println("-----------------------------------------");
         System.out.print("Opcion: ");
         return lector.nextInt();
