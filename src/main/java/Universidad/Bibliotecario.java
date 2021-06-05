@@ -799,6 +799,11 @@ public class Bibliotecario extends Persona{
         }
     }
 
+    /**
+     * pide el alumno que devuelve el libro i actualiza el atributo Cantidad_Restante aumentandolo por 1 en
+     * libros i elimina de la tabla libros reservados el libro que se ha devuelto
+     * @param miConexion
+     */
     public static void devolverLibro(Connection miConexion){
         PreparedStatement prepStat = null;
         PreparedStatement psLibrosAlumnos = null;
