@@ -100,7 +100,7 @@ Los conocimientos y conceptos usados para realizar esta aplicación son:
 * **SCRUM MASTER:** Alfons Lorente Darder.
 * **SCRUM TEAM:** 
     * Julia Jaca Estepa.
-    * Enrique Manuel Grao Sanchez.
+    * Enrique Manuel Grao Sánchez.
     * César Andrés Granda Henríquez.
     * Franco Paolo Peri Bustos.
     * Alberto Serrano Ruiz.
