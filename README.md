@@ -1,5 +1,9 @@
-"# proyecto-3a-evaluacion-default_name" 
+# Proyecto 3a evaluacion - Default_Name
+## Proyecto.
+* En este proyecto hacemos la gestion de una universidad incluyendo su biblioteca. 
+* El objetivo principal de este proyecto es el aprendizaje y cumplir los objetivos propuestos por product owner.
 
+## Sprints.
 |Tarea              |Asignados  | Horas reales    | Horas estimadas|
 |---                | ---            | ---              |   ---      |
 |  **Sprint 1**       |               |Fecha inicio :     |Fecha fin: |
@@ -65,4 +69,40 @@
 |#49 Métodos clase bibliotecario filtrarLibrosPorTematica |Alfons | horas           | Horas     |
 |#47 Métodos clase bibliotecario filtrarLibrosPorEditorial |Julia | horas           | Horas     |
 
+## Guia.
+Esta aplicación intenta llevar la gestion de una universidad.
 
+* UML:
+![Imagen del UML](Resources/UML_PROJECTE.png)
+
+* ESQUEMA DE LA BASE DE DATOS:
+![Imagen del esquema](Resources/Universidad-Esquema.png)
+
+* TABLAS DE LA BASE DE DATOS:
+![Imagen de las tablas](Resources/Universidad-Tablas.png)
+
+La aplicación consta de un centralizado en las clases descendientes de persona, que vienen a ser los roles como vease administrador, profesor... <br><br>
+Para inicializar en la aplicacion se hace una identificacion, la cual detecta si el usuario que esta iniciando sesion existe en la base de datos o no. Después segun su rol, se le enseñara un menú distinto el qual le permitirà realizar diferentes acciones, algunos ejemplos:
+* Alumno: Ver el estado de las asignaturas o darse de alta o baja en una matricula.
+* Profesor: Ver notas de algun alumno o poner notas.
+* Administrador: Crear, ver o eliminar asignaturas, departamentos, titulaciones y demas.
+* Biblotecario: Crear y eliminar libros, filtraje de estos y reservarlos y devolverlos para los alumnos.
+
+## Conceptos y conocimientos usados para realizar la aplicacion.
+Los conocimientos y conceptos usados para realizar esta aplicación son:
+* Conceptos basicos y generales del lenguaje de Java.
+* Conceptos mas especificos en Java: Conexion a la base de datos y exportacion de la informacion en ficheros TXT y PDF.
+* Metodologia SCRUM.
+* Conociminetos de BBDD en esquema relacional y SQL.
+* Conocimientos sobre UML.
+* Conocimineto sobre MD.
+
+## Integrantes.
+* **SCRUM MASTER:** Alfons Lorente Darder.
+* **SCRUM TEAM:** 
+    * Julia Jaca Estepa.
+    * Enrique Manuel Grao Sanchez.
+    * César Andrés Granda Henríquez.
+    * Franco Paolo Peri Bustos.
+    * Alberto Serrano Ruiz.
+* **PRODUCT OWNER:** Rafael Gion Muñoz.
