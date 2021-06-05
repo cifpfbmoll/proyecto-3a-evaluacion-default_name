@@ -1,5 +1,8 @@
 package Universidad;
-
+/**
+ * Clase asigntura. No tiene metodos
+ * @author grupo3
+ */
 public class Asignatura {
 
     private int ID_Asignatura;

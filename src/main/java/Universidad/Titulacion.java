@@ -3,7 +3,8 @@ package Universidad;
 import java.sql.*;
 
 /**
- * @author Alberto
+ * Clase titulacion. No tiene metodos
+ * @author grupo3
  */
 public class Titulacion {
     
@@ -43,28 +44,4 @@ public class Titulacion {
         this.Nombre_Titulacion = Nombre_Titulacion;
     }
 
-   // MÉTODOS
-    
-    public static void mostrarAsignaturas(){
-        
-        try{
-            
-            Connection miConexion = DriverManager.getConnection("jdbc:mysql://51.178.152.223:3306/dam4", "Dam4", "ProyectoGrupo4");
-        
-            PreparedStatement sentenciaPrep = miConexion.prepareStatement("SELECT * FROM ASIGNATURAS");
-            
-            ResultSet resultado = sentenciaPrep.executeQuery();
-            
-            while(resultado.next()){
-                System.out.println(resultado.getString("ID_ASIGNATURA") +
-                                   resultado.getString("NOMBRE_ASIGNATURA") +
-                                   resultado.getString("ID_Titulacion") +
-                                   resultado.getString("ID_PROFESOR") +
-                                   resultado.getString("CURSO"));
-            }
-        }catch(Exception e){
-            
-            System.out.println("Lo siento, ha ocurrido un error y no se puede conectar a la Base de Datos.");
-        }
-    }
 }

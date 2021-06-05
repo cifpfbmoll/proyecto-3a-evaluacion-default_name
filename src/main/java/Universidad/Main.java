@@ -5,7 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
-
+/**
+ * Clase principal del proyecto. Contiene los menus de los usuarios y la conexion a la BBDD
+ * @author grupo3
+ */
 public class Main {
     //Scanner
     public static Scanner lector = new Scanner(System.in);

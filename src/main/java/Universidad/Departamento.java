@@ -1,5 +1,8 @@
 package Universidad;
-
+/**
+ * Clase departamento. No tiene metodos
+ * @author grupo3
+ */
 public class Departamento {
     //Atributos
     private String ID_Departamento;

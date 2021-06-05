@@ -5,7 +5,10 @@ package Universidad; /**
 
 import java.util.Scanner;
 import java.sql.*;
-
+/**
+ * Clase libros. No tiene metodos
+ * @author grupo3
+ */
 public class Libro {
 
     // ATRIBUTOS 

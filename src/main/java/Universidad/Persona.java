@@ -8,7 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
-
+/**
+ * Clase abstracta persona que permite la identificacion del usuario en la aplicacion
+ * @author grupo3
+ */
 public  class Persona {
     //Atributos
     private String ID_Persona;

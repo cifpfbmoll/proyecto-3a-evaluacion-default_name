@@ -1,5 +1,8 @@
 package Universidad;
-
+/**
+ * Clase biblioteca. No tiene metodos
+ * @author grupo3
+ */
 public class Biblioteca {
     private String ID_Biblioteca;
 

@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
-
+/**
+ * El profesor puede ver sus alumnos y calificarlos
+ * @author grupo3
+ */
 public class Profesor extends Persona{
 
 

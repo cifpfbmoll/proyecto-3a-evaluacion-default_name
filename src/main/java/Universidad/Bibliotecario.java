@@ -18,7 +18,10 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
+/**
+ * Gestiona libros, reservas e imprime archivos de los libros
+ * @author grupo3
+ */
 public class Bibliotecario extends Persona{
     //ATRIBUTOS
     private static Scanner lector = new Scanner(System.in);

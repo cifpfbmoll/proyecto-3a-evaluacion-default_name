@@ -1,5 +1,8 @@
 package Universidad;
-
+/**
+ * Clase matriculacion. No tiene metodos
+ * @author grupo3
+ */
 public class Matriculacion {
     //    Atributos
     private String ID_Alumno;

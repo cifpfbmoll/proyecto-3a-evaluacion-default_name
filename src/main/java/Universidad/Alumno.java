@@ -12,7 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+/**
+ * El alumno puede gestionar sus matriculas
+ * @author grupo3
+ */
 public class Alumno extends Persona {
     //Atributos
     static ArrayList<Integer> lista = new ArrayList();

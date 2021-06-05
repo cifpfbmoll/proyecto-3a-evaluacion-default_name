@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 /**
- * Clase Administrador
+ * Gestiona Personas, Titulaciones, Departamentos y Asignaturas
  * @author grupo3
  */
 public class Administrador extends Persona{

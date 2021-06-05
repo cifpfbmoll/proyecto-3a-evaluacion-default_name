@@ -1,5 +1,8 @@
 package Universidad;
-
+/**
+ * Clase libros reservados. No tiene metodos
+ * @author grupo3
+ */
 public class Libros_Reservados {
     //    Atributos
     private String ID_Alumno;
