@@ -799,5 +799,61 @@ public class Bibliotecario extends Persona{
         }
     }
 
+    public static void devolverLibro(Connection miConexion){
+        PreparedStatement prepStat = null;
+        PreparedStatement psLibrosAlumnos = null;
+        ResultSet rsLibrosAlumnos = null;
+        String titulo;
+        System.out.print("Escribe el ID del Alumno: ");
+        String id = lector.nextLine();
+        try{
+            miConexion.setAutoCommit(false);
+            psLibrosAlumnos = miConexion.prepareStatement("SELECT * FROM libros_reservados where id_alumno = ?");
+            psLibrosAlumnos.setString(1, id);
+            rsLibrosAlumnos = psLibrosAlumnos.executeQuery();
+            System.out.println("A continuación se mostrarán los títulos de los libros que tiene reservados.");
+            while (rsLibrosAlumnos.next()) {
+                System.out.println("- TITULO: " + rsLibrosAlumnos.getString("titulo_libro"));
+            }
+            System.out.println("Escoge el titulo del libro que quieras devolver: ");
+            titulo = lector.nextLine();
+            prepStat = miConexion.prepareStatement("UPDATE LIBRO SET CANTIDAD_RESTANTE = CANTIDAD_RESTANTE+1 WHERE TITULO_LIBRO = ?");
+            prepStat.setString(1, titulo);
+
+            int g = prepStat.executeUpdate();
+
+            miConexion.commit();
+            prepStat = miConexion.prepareStatement("DELETE FROM LIBROS_RESERVADOS WHERE ID_Alumno = ? AND titulo_libro = ?");
+            prepStat.setString(1, id);
+            prepStat.setString(2, titulo);
+
+            int g2 = prepStat.executeUpdate();
+
+            System.out.println("Libro devuelto con éxito para el alumno con ID = " + id);
+            miConexion.commit();
+        }catch(SQLException e){
+            try{
+                miConexion.rollback();
+                System.out.println("Ha habido un error en la devolucion, comprueba que los datos son correctos.");
+            }catch(SQLException e2){
+                System.out.println("No se ha podido hacer rollback");
+            }
+        }finally {
+            try{
+                miConexion.setAutoCommit(true);
+                if(rsLibrosAlumnos != null){
+                    rsLibrosAlumnos.close();
+                }
+                if(prepStat != null){
+                    prepStat.close();
+                }
+                if(psLibrosAlumnos != null){
+                    psLibrosAlumnos.close();
+                }
+            }catch(SQLException e){
+                System.out.println("No se ha podido cerrar el prepared Statement");
+            }
+        }
+    }
 
 }

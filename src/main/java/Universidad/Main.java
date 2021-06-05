@@ -86,8 +86,7 @@ public class Main {
                     }
                     break;
                 case 5:
-                    // devolverLibro()
-                    //Bibliotecario
+                    Bibliotecario.devolverLibro(miConexion);
                     break;
                 case 6:
                     Bibliotecario.mostrarEditoriales(miConexion);
