@@ -35,12 +35,12 @@
 |  **Sprint 4**     |               |**Fecha inicio :** 05/05/2021|**Fecha fin:** 20/05/2021|
 |#33 Métodos clase profesor mostrar alumnos por asignatura    |Cesar |~ horas |4 Horas     |
 |#31 Actualizar base de datos   |Franco |1 horas           |1 Horas     |
-|#25 Métodos clase profesor verAlumnos poner una nota    |Alberto | horas | Horas |
+|#25 Métodos clase profesor verAlumnos poner una nota    |Alberto |2 horas |2 Horas |
 |#29 Métodos clase administrador mostrar personas    |Julia | 1.5 horas |1.5  Horas |
 |#28 Métodos clase administrador añadir y eliminar personas    |Julia | 5.5 horas           | 2 Horas     |
-|#30 Modificar hijos de persona    |Alberto | horas           | Horas     |
+|#30 Modificar hijos de persona    |Alberto |0.25 horas           |0.5 Horas     |
 |#22 Insertar tablas e información en la máquina remota    |Enrique, Julia | 1.5 horas           | 1 Horas     |
-|#26 Arreglar clase asignatura  |Alberto | horas           | Horas     |
+|#26 Arreglar clase asignatura  |Alberto |0.5 horas           |0.5 Horas     |
 |#23 Crear obtener conexion en main |Julia |0.5  horas           | 0.5 Horas     |
 |#37 Metodo clase administrador ver departamentos anadirdepartametos eliminar departamentos |Julia |5  horas           | 2 Horas     |
 |  **Sprint 5**     |               |**Fecha inicio :** 20/05/2021|**Fecha fin:** 31/05/2021|
@@ -49,14 +49,14 @@
 |#45 Métodos bibliotecario verReservas, verReservasFiltrado |Julia | 2 horas           | 3 Horas     |
 |#41 Métodos clase alumno bajaMatricula |Enrique |3 horas  |2 Horas     |
 |#34 Métodos clase admin verAsignaturas, añadirAsignaturas, eliminarAsignaturas |Julia | 5 horas           | 3 Horas     |
-|#43 Métodos clase bibliotecario reservarLibros |Alberto | horas           | Horas     |
+|#43 Métodos clase bibliotecario reservarLibros |Alberto |3 horas           |2 Horas     |
 |#51 subir información BBDD remota |Alfons |1 horas           |1 Horas     |
-|#40 Métodos clase bibliotecario verLibros, eliminarLibros , anadirLibros |Alberto | horas           | Horas     |
+|#40 Métodos clase bibliotecario verLibros, eliminarLibros , anadirLibros |Alberto |2 horas           |2 Horas     |
 |#35 Métodos clase admin vertitulaciones, añadirtitulaciones , eliminartitulaciones |Enrique |2.5 horas  |2 Horas     |
 |  **Sprint 6**     |               |**Fecha inicio :** 31/05/2021|**Fecha fin:** 07/06/2021|
-|#52 Realizar main |Alberto | horas           | Horas     |
+|#52 Realizar main |Alberto |3 horas      |3 Horas     |
 |#42 Realizar readme |Alfons, Julia |6 horas |5 Horas |
-|#57 Poner insert en la BBDD |Julia | 0.5 horas           | 0.5 Horas     |
+|#57 Poner insert en la BBDD |Julia | 0.5 horas      | 0.5 Horas     |
 |#59 Arreglar BBDD |Franco |1.5 horas           |1 Horas     |
 |#39 Métodos clase eliminarNotaAAlumno  |Julia | 1 horas           |1  Horas     |
 |#58 Reparar método poner nota  |Julia | 0.25 horas           | 0.25 Horas     |
@@ -64,8 +64,8 @@
 |#56 Añadir javadoc donde falte  |Alfons |0.5 horas  |0.5 Horas     |
 |#55 Crear scanner global en las clases y cambiar funciones que lo tenga | Alfons |0.25 horas           |0.5 Horas     |
 |#54 Eliminar throws |Alfons |0.5 horas           |0.5 Horas     |
-|#48 Métodos clase bibliotecario filtrarLibrosPorAutor |Alberto | horas           | Horas     |
-|#49 Métodos clase bibliotecario filtrarLibrosPorTematica |Alfons |2.5 horas           |3 Horas     |
+|#48 Métodos clase bibliotecario filtrarLibrosPorAutor |Alberto |1.5 horas           |1.5 Horas     |
+|#49 Métodos clase bibliotecario filtrarLibrosPorTematica |Alfons |2.5 horas           |2 Horas     |
 |#47 Métodos clase bibliotecario filtrarLibrosPorEditorial |Julia | 1 horas           | 1 Horas     |
 
 ## Guia.
