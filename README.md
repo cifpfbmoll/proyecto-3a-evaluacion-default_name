@@ -44,30 +44,28 @@
 |#23 Crear obtener conexion en main |Julia |0.5  horas           | 0.5 Horas     |
 |#37 Metodo clase administrador ver departamentos anadirdepartametos eliminar departamentos |Julia |5  horas           | 2 Horas     |
 |  **Sprint 5**     |               |**Fecha inicio :** 20/05/2021|**Fecha fin:** 31/05/2021|
-|#24 Métodos clase alumno altaMatricula |Franco | horas           | Horas     |
-|#44 Métodos clase bibliotecario  devolver Libro |Cesar | horas           | Horas     |
-|#46 Métodos clase profesor modificacion  mostrar alumnos por asignatura |Cesar | horas           | Horas     |
+|#24 Métodos clase alumno altaMatricula |Franco |5 horas           |3 Horas     |
+|#44 Métodos clase bibliotecario  devolver Libro |Cesar |4 horas           |3 Horas     |
 |#45 Métodos bibliotecario verReservas, verReservasFiltrado |Julia | 2 horas           | 3 Horas     |
-|#41 Métodos clase alumno bajaMatricula |Enrique | horas           | Horas     |
+|#41 Métodos clase alumno bajaMatricula |Enrique |3 horas  |2 Horas     |
 |#34 Métodos clase admin verAsignaturas, añadirAsignaturas, eliminarAsignaturas |Julia | 5 horas           | 3 Horas     |
 |#43 Métodos clase bibliotecario reservarLibros |Alberto | horas           | Horas     |
-|#51 subir información BBDD remota |Alfons | horas           | Horas     |
+|#51 subir información BBDD remota |Alfons |1 horas           |1 Horas     |
 |#40 Métodos clase bibliotecario verLibros, eliminarLibros , anadirLibros |Alberto | horas           | Horas     |
-|#35 Métodos clase admin vertitulaciones, añadirtitulaciones , eliminartitulaciones |Enrique | horas           | Horas     |
+|#35 Métodos clase admin vertitulaciones, añadirtitulaciones , eliminartitulaciones |Enrique |2.5 horas  |2 Horas     |
 |  **Sprint 6**     |               |**Fecha inicio :** 31/05/2021|**Fecha fin:** 07/06/2021|
 |#52 Realizar main |Alberto | horas           | Horas     |
-|#42 Realizar readme |Alfons, Julia | horas           | Horas     |
-|#53 Metodos clase alumno, modificar bajaMatricula |NADIE | horas           | Horas     |
+|#42 Realizar readme |Alfons, Julia |6 horas |5 Horas |
 |#57 Poner insert en la BBDD |Julia | 0.5 horas           | 0.5 Horas     |
-|#59 Arreglar BBDD |Franco | horas           | Horas     |
+|#59 Arreglar BBDD |Franco |1.5 horas           |1 Horas     |
 |#39 Métodos clase eliminarNotaAAlumno  |Julia | 1 horas           |1  Horas     |
 |#58 Reparar método poner nota  |Julia | 0.25 horas           | 0.25 Horas     |
-|#38 Métodos clase alumno ver estado asignaturas  |Enrique, Alfons | horas           | Horas     |
-|#56 Añadir javadoc donde falte  |Alfons | horas           | Horas     |
-|#55 Crear scanner globarl en las clases y cambiar funciones que lo tenga | Alfons | horas           | Horas     |
-|#54 Eliminar throws |Alfons | horas           | Horas     |
+|#38 Métodos clase alumno ver estado asignaturas  |Enrique, Alfons |2 horas|2 Horas |
+|#56 Añadir javadoc donde falte  |Alfons |0.5 horas  |0.5 Horas     |
+|#55 Crear scanner global en las clases y cambiar funciones que lo tenga | Alfons |0.25 horas           |0.5 Horas     |
+|#54 Eliminar throws |Alfons |0.5 horas           |0.5 Horas     |
 |#48 Métodos clase bibliotecario filtrarLibrosPorAutor |Alberto | horas           | Horas     |
-|#49 Métodos clase bibliotecario filtrarLibrosPorTematica |Alfons | horas           | Horas     |
+|#49 Métodos clase bibliotecario filtrarLibrosPorTematica |Alfons |2.5 horas           |3 Horas     |
 |#47 Métodos clase bibliotecario filtrarLibrosPorEditorial |Julia | 1 horas           | 1 Horas     |
 
 ## Guia.
@@ -102,7 +100,7 @@ Los conocimientos y conceptos usados para realizar esta aplicación son:
 * **SCRUM MASTER:** Alfons Lorente Darder.
 * **SCRUM TEAM:** 
     * Julia Jaca Estepa.
-    * Enrique Manuel Grao Sanchez.
+    * Enrique Manuel Grao Sánchez.
     * César Andrés Granda Henríquez.
     * Franco Paolo Peri Bustos.
     * Alberto Serrano Ruiz.

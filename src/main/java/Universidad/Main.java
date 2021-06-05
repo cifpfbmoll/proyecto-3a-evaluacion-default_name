@@ -194,15 +194,12 @@ public class Main {
                     Profesor.mostrarAlumnos(miConexion, datos);
                     break;
                 case 2:
-                    //Mostrar alumnos por asignaturas
-                    break;
-                case 3:
                     Profesor.ponerNota(miConexion, datos);
                     break;
-                case 4:
+                case 3:
                     Profesor.eliminarNotaAAlumno(miConexion, datos);
                     break;
-                case 5:
+                case 4:
                     menu = true;
                     break;
                 default:
@@ -217,10 +214,9 @@ public class Main {
         System.out.println("Escribe la opcion que quieras realizar:  ");
         System.out.println("-----------------------------------------");
         System.out.println("    1. Mostrar alumnos                   ");
-        System.out.println("    2. Mostrar alumnos por asignaturas   ");
-        System.out.println("    3. Poner nota                        ");
-        System.out.println("    4. Eliminar nota a un alumno         ");
-        System.out.println("    5. Salir                             ");
+        System.out.println("    2. Poner nota                        ");
+        System.out.println("    3. Eliminar nota a un alumno         ");
+        System.out.println("    4. Salir                             ");
         System.out.println("-----------------------------------------");
         System.out.print("Opcion: ");
         return lector.nextInt();

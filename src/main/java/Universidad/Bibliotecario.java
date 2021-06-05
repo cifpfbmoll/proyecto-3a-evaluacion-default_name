@@ -296,8 +296,7 @@ public class Bibliotecario extends Persona{
 
                 System.out.println("Quieres imprimirlo en un fichero ? \n");
                 System.out.println(" 1) En un fichero .txt");
-                System.out.println(" 2) En un PDF");
-                System.out.println(" 3) No quiero imprimir nada");
+                System.out.println(" 2) No quiero imprimir nada");
                 int opcion = lector.nextInt();
                 lector.nextLine();
 
@@ -316,9 +315,6 @@ public class Bibliotecario extends Persona{
                     }
                 }
                 if (opcion == 2) {
-                    //PDF
-                }
-                if (opcion == 3) {
                     System.out.println(":(");
                 }
 

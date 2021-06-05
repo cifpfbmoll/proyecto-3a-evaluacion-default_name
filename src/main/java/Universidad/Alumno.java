@@ -3,18 +3,21 @@ package Universidad;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Alumno extends Persona {
     //Atributos
+    static ArrayList<Integer> lista = new ArrayList();
     private static Scanner lector = new Scanner(System.in);
-
+    static int auxiliarAñoAcademico;
     public Alumno() {
     }
 
@@ -406,5 +409,153 @@ public class Alumno extends Persona {
         }
         return datosTxt;
     }
+
+
+
+
+    /**
+     * Método que imprime la matrícula de un alumno en un archivo txt, par que quede
+     * constancia de lo matriculado.
+     *
+     * @param conexionBase un objeto Connection para hacer la busqueda en la BBDD.
+     * @param id  el dni del alumno para realizar los inserts en la tabla
+     *            matriculaciones y dar de alta.
+     */
+    private static void imprimirMatricula(Connection conexionBase, String id) {
+        PreparedStatement SqlMatricula = null;
+        ArrayList<String> lista_Nombres_matricula = new ArrayList();
+        BufferedWriter miBuffer = null;
+        try {
+            conexionBase.setAutoCommit(false);
+            SqlMatricula = conexionBase.prepareStatement(
+                    "select nombre_asignatura from asignatura a, matriculacion m where a.ID_Asignatura = m.ID_Asignatura and m.ID_Persona=?");
+            SqlMatricula.setString(1, id);
+            ResultSet rs = SqlMatricula.executeQuery();
+            while (rs.next()) {
+                String nombreA = rs.getString("nombre_asignatura");
+                System.out.println(nombreA);
+                lista_Nombres_matricula.add(nombreA);
+            }
+            String resumen = "Alumno con id : " + id + " matriculado de las siguientes asignaturas: " + "\n";
+            String finalMatricula = "\n" + "Correspondientes al año : " + auxiliarAñoAcademico;
+            miBuffer = new BufferedWriter(new FileWriter("Ficheros/matricula.txt"));
+            miBuffer.write(resumen);
+            for (int i = 0; i < lista_Nombres_matricula.size(); i++) {
+                miBuffer.write(lista_Nombres_matricula.get(i));
+                System.out.println("\n");
+            }
+            miBuffer.write(finalMatricula);
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (SqlMatricula != null) {
+                    SqlMatricula.close();
+                }
+                if (miBuffer != null) {
+                    miBuffer.close();
+                }
+            } catch (SQLException | IOException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+
+
+    }
+
+    /**Método que registra matriculas a traves del campo dni de alumno y los codigos obtenidos en el
+     * método registrarAsignaturas.
+     *
+     * @param conexionBase un objeto Connection para hacer la busqueda en la BBDD.
+     * @param id  el dni del alumno para realizar los inserts en la tabla
+     *            matriculaciones y dar de alta.
+     */
+    public static void altaMatricula(Connection conexionBase, String id) {
+        PreparedStatement Sql1 = null;
+        PreparedStatement Sql2 = null;
+        try {
+            conexionBase.setAutoCommit(false);
+            // comenzamos el preparedstatement para actualizar la transaccion en caso de que
+            // todo vaya bien
+            // por bloques se mostraran todos los procesos implicados en la matriculación
+            // primer bloque que ejecuta la matriculación
+            lista = registrarAsignaturas();
+            System.out.println("De que año académico quieres matricularte?");
+            int año_academico = Integer.parseInt(lector.nextLine());
+            auxiliarAñoAcademico = año_academico;
+            int asignatura;
+            for (int i = 0; i < lista.size(); i++) {
+                Sql1 = conexionBase.prepareStatement("insert into matriculacion values (?,?,?,null)");
+                String alumno = id;
+                asignatura = lista.get(i);
+                Sql1.setString(1, alumno);
+                Sql1.setInt(2, asignatura);
+                Sql1.setInt(3, año_academico);
+                Sql1.executeUpdate();
+                // segundo bloque que resta una plaza a la asignatura
+                Sql2 = conexionBase.prepareStatement(
+                        "update asignatura set plazas_disponibles = (plazas_disponibles)-1 where id_asignatura =?");
+                Sql2.setInt(1, asignatura);
+                Sql2.executeUpdate();
+                String resumen = "usuario " + alumno + " matriculado de " + asignatura + " para el curso "
+                        + año_academico;
+                System.out.println(resumen);
+            }
+            conexionBase.commit();
+        } catch (MySQLIntegrityConstraintViolationException e) {
+            System.out.println("Asignatura ya matriculada");
+            try {
+                conexionBase.rollback();
+            } catch (SQLException e1) {
+                // TODO Bloque catch generado automáticamente
+                e1.printStackTrace();
+            }
+        } catch (SQLException e1) {
+            System.out.println("Conexión fallida");
+
+            try {
+                conexionBase.rollback();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            e1.printStackTrace();
+        } finally {
+            try {
+                if (Sql1 != null) {
+                    Sql1.close();
+                }
+                if (Sql2 != null) {
+                    Sql2.close();
+                }
+                conexionBase.setAutoCommit(true);
+            } catch (SQLException e) {
+                // TODO Bloque catch generado automáticamente
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * método registrarAsginaturas, te pregunta la candtidad de asignaturas de las
+     * cuales te quieres registrar y, seguidamente, pide los códigos de estas, las
+     * almacena en un ArrayList. Devuelve el arraylist con los codigos de las
+     * asignaturas
+     *
+     * @return listaAsignaturas, es un arraylist que contiene los códigos de las
+     *         asignaturas para hacer un tratamieno posterior
+     */
+    private static ArrayList<Integer> registrarAsignaturas() {
+        ArrayList<Integer> listaAsignaturas = new ArrayList();
+        System.out.println("Introduce la cantidad de asignaturas de las cuales te vas a matricular: ");
+        int opcion = Integer.parseInt(lector.nextLine());
+        for (int i = 0; i < opcion; i++) {
+            System.out
+                    .println("Introduce el codigo de la " + (i + 1) + " asignatura de la cual te quieres matricular: ");
+            listaAsignaturas.add(Integer.parseInt(lector.nextLine()));
+        }
+        return listaAsignaturas;
+    }
+
+
 
 }
