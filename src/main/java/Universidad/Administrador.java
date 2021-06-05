@@ -17,7 +17,7 @@ public class Administrador extends Persona{
     //Atributos
     private static Scanner lector = new Scanner(System.in);
 
-    // CONSTRUCTOR VACÍO, CONSTRUCTOR CON PARÁMETROS Y CONSTRUCTOR COPIA
+    // CONSTRUCTOR VACIO, CONSTRUCTOR CON PARAMETROS Y CONSTRUCTOR COPIA
     public Administrador() {
     }
 
@@ -31,7 +31,7 @@ public class Administrador extends Persona{
 
     /**
      * Imprime las personas de la tabla persona.
-     * @param con es un objeto de tipo Connection, que es la conexión a la BBDD
+     * @param con es un objeto de tipo Connection, que es la conexion a la BBDD
      */
     public static void verPersonas(Connection con) {
         try{

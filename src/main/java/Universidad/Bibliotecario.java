@@ -20,7 +20,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Bibliotecario extends Persona{
-    //ATRÍBUTOS
+    //ATRIBUTOS
     private static Scanner lector = new Scanner(System.in);
 
     //constructor vacío
