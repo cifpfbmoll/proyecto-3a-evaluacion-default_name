@@ -17,7 +17,7 @@ public class Alumno extends Persona {
     //Atributos
     static ArrayList<Integer> lista = new ArrayList();
     private static Scanner lector = new Scanner(System.in);
-
+    static int auxiliarAñoAcademico;
     public Alumno() {
     }
 
@@ -422,9 +422,9 @@ public class Alumno extends Persona {
      *            matriculaciones y dar de alta.
      */
     private static void imprimirMatricula(Connection conexionBase, String id) {
-        // TODO Esbozo de método generado automáticamente
         PreparedStatement SqlMatricula = null;
         ArrayList<String> lista_Nombres_matricula = new ArrayList();
+        BufferedWriter miBuffer = null;
         try {
             conexionBase.setAutoCommit(false);
             SqlMatricula = conexionBase.prepareStatement(
@@ -436,20 +436,31 @@ public class Alumno extends Persona {
                 System.out.println(nombreA);
                 lista_Nombres_matricula.add(nombreA);
             }
-        } catch (SQLException e) {
+            String resumen = "Alumno con id : " + id + " matriculado de las siguientes asignaturas: " + "\n";
+            String finalMatricula = "\n" + "Correspondientes al año : " + auxiliarAñoAcademico;
+            miBuffer = new BufferedWriter(new FileWriter("Ficheros/matricula.txt"));
+            miBuffer.write(resumen);
+            for (int i = 0; i < lista_Nombres_matricula.size(); i++) {
+                miBuffer.write(lista_Nombres_matricula.get(i));
+                System.out.println("\n");
+            }
+            miBuffer.write(finalMatricula);
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (SqlMatricula != null) {
+                    SqlMatricula.close();
+                }
+                if (miBuffer != null) {
+                    miBuffer.close();
+                }
+            } catch (SQLException | IOException throwables) {
+                throwables.printStackTrace();
+            }
         }
-        System.out.println(lista + "pasa por aqui");
-        // falta imprimir matricula
-        try {
-            BufferedWriter miBuffer = new BufferedWriter(new FileWriter("Ficheros/matricula.txt"));
-        } catch (FileNotFoundException e) {
-            // TODO Bloque catch generado automáticamente
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Bloque catch generado automáticamente
-            e.printStackTrace();
-        }
+
+
     }
 
     /**Método que registra matriculas a traves del campo dni de alumno y los codigos obtenidos en el
@@ -471,6 +482,7 @@ public class Alumno extends Persona {
             lista = registrarAsignaturas();
             System.out.println("De que año académico quieres matricularte?");
             int año_academico = Integer.parseInt(lector.nextLine());
+            auxiliarAñoAcademico = año_academico;
             int asignatura;
             for (int i = 0; i < lista.size(); i++) {
                 Sql1 = conexionBase.prepareStatement("insert into matriculacion values (?,?,?,null)");
