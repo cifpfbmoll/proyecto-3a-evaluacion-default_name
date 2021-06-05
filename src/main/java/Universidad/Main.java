@@ -152,7 +152,7 @@ public class Main {
         while (!menu){
             switch (pedirOpcionAlumno()){
                 case 1:
-                    // Dar de alta matricula
+                    Alumno.altaMatricula(miConexion, datos[0]);
                     break;
                 case 2:
                     Alumno.bajaMatricula(miConexion, datos[0]);

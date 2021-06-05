@@ -42,6 +42,7 @@ public class Alumno extends Persona {
     public static void bajaMatricula(Connection con, String id) {
         int filas = 0;
         PreparedStatement preparedSt = null;
+        PreparedStatement preparedSt2 = null;
         int idAsignatura = 0;
         try {
             con.setAutoCommit(false);
@@ -60,8 +61,7 @@ public class Alumno extends Persona {
                     System.out.println("Error try again.");
                 }
             }
-            System.out.println(idAsignatura);
-            PreparedStatement preparedSt2 = con.prepareStatement("update asignatura set plazas_disponibles = (plazas_disponibles)+1 where id_asignatura = ?");
+            preparedSt2 = con.prepareStatement("update asignatura set plazas_disponibles = plazas_disponibles+1 where id_asignatura = ?");
             preparedSt2.setInt(1, idAsignatura);
             int filasSt2 = preparedSt2.executeUpdate();
 
@@ -87,6 +87,9 @@ public class Alumno extends Persona {
         } finally {
             try {
                 con.setAutoCommit(true);
+                if (preparedSt2 != null) {
+                    preparedSt2.close();
+                }
                 if (preparedSt != null) {
                     preparedSt.close();
                 }
@@ -445,7 +448,7 @@ public class Alumno extends Persona {
             miBuffer.write(resumen);
             for (int i = 0; i < lista_Nombres_matricula.size(); i++) {
                 miBuffer.write(lista_Nombres_matricula.get(i));
-                System.out.println("\n");
+                miBuffer.newLine();
             }
             miBuffer.write(finalMatricula);
         } catch (SQLException | IOException e) {
@@ -500,10 +503,9 @@ public class Alumno extends Persona {
                         "update asignatura set plazas_disponibles = (plazas_disponibles)-1 where id_asignatura =?");
                 Sql2.setInt(1, asignatura);
                 Sql2.executeUpdate();
-                String resumen = "usuario " + alumno + " matriculado de " + asignatura + " para el curso "
-                        + año_academico;
-                System.out.println(resumen);
             }
+            imprimirMatricula(conexionBase, id);
+            System.out.println("Se ha exportado esta informacion a un txt.");
             conexionBase.commit();
         } catch (MySQLIntegrityConstraintViolationException e) {
             System.out.println("Asignatura ya matriculada");
@@ -532,7 +534,6 @@ public class Alumno extends Persona {
                 }
                 conexionBase.setAutoCommit(true);
             } catch (SQLException e) {
-                // TODO Bloque catch generado automáticamente
                 e.printStackTrace();
             }
         }
@@ -552,8 +553,7 @@ public class Alumno extends Persona {
         System.out.println("Introduce la cantidad de asignaturas de las cuales te vas a matricular: ");
         int opcion = Integer.parseInt(lector.nextLine());
         for (int i = 0; i < opcion; i++) {
-            System.out
-                    .println("Introduce el codigo de la " + (i + 1) + " asignatura de la cual te quieres matricular: ");
+            System.out.println("Introduce el codigo de la " + (i + 1) + " asignatura de la cual te quieres matricular: ");
             listaAsignaturas.add(Integer.parseInt(lector.nextLine()));
         }
         return listaAsignaturas;
