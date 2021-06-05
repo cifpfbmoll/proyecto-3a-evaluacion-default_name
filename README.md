@@ -4,45 +4,45 @@
 * El objetivo principal de este proyecto es el aprendizaje y cumplir los objetivos propuestos por product owner.
 
 ## Sprints.
-|Tarea              |Asignados  | Horas reales    | Horas estimadas|
+|Tarea              |Asignados  | Horas reales | Horas estimadas|
 |---                | ---            | ---              |   ---      |
-|  **Sprint 1**       |               |Fecha inicio :     |Fecha fin: |
-|#5 Estudiar java      |César, Enrique  | horas           | Horas     |
-|#4 Estudiar acceso BBDD      |Alberto, Franco  | horas           | Horas     |
-|#3 Estudiar interfaz gráfica      |Alfonso, Julia       | horas              | Horas     |
-|#2 Diseñar tablas BBDD     |Todos | horas           | Horas     |
-|#1 Diseño del diagrama de BBDD      |Todos | horas           | Horas     |
-|  **Sprint 2**      |               |Fecha inicio :     |Fecha fin:  
-|#7 Instalar y prepararse todos el UltraVCN      |Todos  | horas           | Horas     |
-|#6 Compartir conocimiento con el grupo      |Todos  | horas           | Horas     |
-|#8 Discutir funcionamiento interno de la aplicación y preparar base para empezar     |Todos  | horas           | Horas     |
-|#9 Insertar tablas en mysql      |Franco  | horas           | Horas     |
-|#36 Métodos clase administrador verProfesores, verAdministradores, verAlumnos, ver Bibliotecarios      |Julia  | horas           | Horas     |
-|  **Sprint 3**      |               |**Fecha inicio :**    |**Fecha fin:** |
-|#27 Cambiar Ñ por N     |Enrique | horas           | Horas     |
-|#21 Crear profesor     |Alberto | horas           | Horas     |
-|#18 Crear administrador     |Alberto  | horas           | Horas     |
-|#20 Crear bibliotecario     |Franco  | horas           | Horas     |
-|#13 Crear clase departamento     |Enrique | horas           | Horas     |
-|#19 Crear alumno     |Cesar  | horas           | Horas     |
-|#12 Crear clase asignatura     |Cesar  | horas           | Horas     |
-|#14 Crear biblioteca     |Julia  | horas           | Horas     |
-|#11 Crear clase titulaciones     |Alberto  | horas           | Horas     |
-|#10 Crear clase Libros reservados     |Enrique  | horas           | Horas     |
-|#16 Crear clase matriculaciones     |Enrique  | horas           | Horas     |
-|#15 Crear clase Libros     |Alberto  | horas           | Horas     |
-|#17 Crear clase personas(abstracta)     |Julia  | horas           | Horas     |
-|  **Sprint 4**     |               |**Fecha inicio :**     |**Fecha fin:** |
-|#33 Métodos clase profesor mostrar alumnos por asignatura    |Cesar | horas           | Horas     |
-|#31 Actualizar base de datos   |Franco | horas           | Horas     |
-|#25 Métodos clase profesor verAlumnos poner una nota    |Alberto | horas           | Horas     |
-|#29 Métodos clase administrador mostrar personas    |Enrique | horas           | Horas     |
+|  **Sprint 1**       |               |**Fecha inicio:** 24/03/2021|**Fecha fin:** 19/04/2021|
+|#5 Estudiar java      |César, Enrique  |10 horas |15 Horas  |
+|#4 Estudiar acceso BBDD      |Alberto, Franco  |12 horas           |15 Horas     |
+|#3 Estudiar interfaz gráfica      |Alfonso, Julia       |15 horas              |15 Horas     |
+|#2 Diseñar tablas BBDD     |Todos |4 horas           |3 Horas     |
+|#1 Diseño del diagrama de BBDD      |Todos |12 horas           |6 Horas     |
+|  **Sprint 2**      |               |**Fecha inicio:** 19/04/2021|**Fecha fin:** 26/04/2021|
+|#7 Instalar y prepararse todos el UltraVCN      |Todos  |0.5 horas           |0.5 Horas     |
+|#6 Compartir conocimiento con el grupo      |Todos  |8 horas           |10 Horas     |
+|#8 Discutir funcionamiento interno de la aplicación y preparar base para empezar     |Todos  |12 horas           |6 Horas  |
+|#9 Insertar tablas en mysql      |Franco  |3 horas           |1.5 Horas     |
+|#36 Métodos clase administrador verProfesores, verAdministradores, verAlumnos, verBibliotecarios      |Julia  |2 horas           |3 Horas     |
+|  **Sprint 3**      |               |**Fecha inicio :** 26/04/2021|**Fecha fin:** 05/05/2021|
+|#27 Cambiar Ñ por N     |Enrique |0.5 horas           |0.5 Horas     |
+|#21 Crear profesor     |Alberto |0.5 horas           |0.5 Horas     |
+|#18 Crear administrador     |Alberto  |0.5 horas           |0.5 Horas     |
+|#20 Crear bibliotecario     |Franco  |1 horas           |0.5 Horas     |
+|#13 Crear departamento     |Enrique |0.5 horas           |0.5 Horas     |
+|#19 Crear alumno     |Cesar  |1.5 horas   |0.5 Horas     |
+|#12 Crear clase asignatura     |Cesar  |0.5 horas           |0.5 Horas     |
+|#14 Crear biblioteca     |Julia  |0.25 horas           |0.5 Horas     |
+|#11 Crear clase titulaciones     |Alberto  |0.25 horas           |0.5 Horas     |
+|#10 Crear clase Libros reservados     | Enrique  |0.5 horas           |0.5 Horas     |
+|#16 Crear clase matriculaciones     |Enrique  |0.25 horas           |0.5 Horas     |
+|#15 Crear clase Libros     |Alberto  |0.25 horas           |0.5 Horas     |
+|#17 Crear clase personas(abstracta)     |Julia  |0.25 horas           |0.5 Horas     |
+|  **Sprint 4**     |               |**Fecha inicio :** 05/05/2021|**Fecha fin:** 20/05/2021|
+|#33 Métodos clase profesor mostrar alumnos por asignatura    |Cesar |~ horas |4 Horas     |
+|#31 Actualizar base de datos   |Franco |1 horas           |1 Horas     |
+|#25 Métodos clase profesor verAlumnos poner una nota    |Alberto | horas | Horas |
+|#29 Métodos clase administrador mostrar personas    |Julia | horas | Horas |
 |#28 Métodos clase administrador añadir y eliminar personas    |Julia | horas           | Horas     |
 |#30 Modificar hijos de persona    |Alberto | horas           | Horas     |
 |#22 Insertar tablas e información en la máquina remota    |Enrique, Julia | horas           | Horas     |
 |#26 Arreglar clase asignatura  |Alberto | horas           | Horas     |
 |#23 Crear obtener conexion en main |Julia | horas           | Horas     |
-|  **Sprint 5**     |               |**Fecha inicio :**     |**Fecha fin:** |
+|  **Sprint 5**     |               |**Fecha inicio :** 20/05/2021|**Fecha fin:** 31/05/2021|
 |#24 Métodos clase alumno altaMatricula |Franco | horas           | Horas     |
 |#44 Métodos clase bibliotecario  devolver Libro |Cesar | horas           | Horas     |
 |#46 Métodos clase profesor modificacion  mostrar alumnos por asignatura |Cesar | horas           | Horas     |
@@ -53,7 +53,7 @@
 |#51 subir información BBDD remota |Alfons | horas           | Horas     |
 |#40 Métodos clase bibliotecario verLibros, eliminarLibros , anadirLibros |Alberto | horas           | Horas     |
 |#35 Métodos clase admin vertitulaciones, añadirtitulaciones , eliminartitulaciones |Enrique | horas           | Horas     |
-|  **Sprint 6**     |               |**Fecha inicio :**     |**Fecha fin:** |
+|  **Sprint 6**     |               |**Fecha inicio :** 31/05/2021|**Fecha fin:** 07/06/2021|
 |#52 Realizar main |Alberto | horas           | Horas     |
 |#42 Realizar readme |Alfons, Julia | horas           | Horas     |
 |#53 Metodos clase alumno, modificar bajaMatricula |NADIE | horas           | Horas     |
