@@ -1,0 +1,103 @@
+CREATE SCHEMA `nueva_gestion_universidad` DEFAULT CHARACTER SET utf8 ;
+drop schema nueva_gestion_universidad;
+USE nueva_gestion_universidad;
+
+CREATE TABLE Titulacion (
+ID_titulacion INT NOT NULL AUTO_INCREMENT,
+Nombre_Titulacion VARCHAR(100) NOT NULL,
+PRIMARY KEY (ID_titulacion)
+);
+
+CREATE TABLE Departamento (
+ID_Departamento INT NOT NULL AUTO_INCREMENT,
+Nombre_Departamento VARCHAR(100) NOT NULL,
+PRIMARY KEY (ID_Departamento)
+);
+
+CREATE TABLE Persona (
+ID_Persona varchar(9) NOT NULL,
+Nombre VARCHAR(100) NOT NULL,
+Edad integer not null,
+Telefono varchar2(25),
+Contrasena varchar(25)not null,
+Rol varchar(25)not null,
+PRIMARY KEY (id_persona)
+);
+create table alumno (
+ID_Persona varchar(9) NOT NULL, 
+primary key(ID_Persona),
+constraint alumno_fk_persona FOREIGN KEY (ID_Persona) references Persona(ID_Persona) ON DELETE CASCADE
+);
+
+create table profesor (
+ID_Persona varchar(9) NOT NULL, 
+ID_Departamento int not null,
+primary key(ID_Persona),
+constraint profesor_fk_persona FOREIGN KEY (ID_Persona) references Persona(ID_Persona) ON DELETE CASCADE,
+constraint profesor_fk_departamento FOREIGN KEY (ID_Departamento) references Departamento(ID_Departamento)
+);
+
+create table Administrador (
+ID_Persona varchar(9) NOT NULL, 
+primary key(ID_Persona),
+constraint administrador_fk_persona FOREIGN KEY (ID_Persona) references Persona(ID_Persona) ON DELETE CASCADE
+);
+
+create table Bibliotecario (
+ID_Persona varchar(9) NOT NULL, 
+primary key(ID_Persona),
+constraint bibliotecario_fk_persona FOREIGN KEY (ID_Persona) references Persona(ID_Persona) ON DELETE CASCADE
+);
+
+create table Asignatura (
+ID_Asignatura INT auto_increment NOT NULL,
+Nombre_Asignatura varchar(40) NOT NULL, 
+ID_Titulacion INT NOT NULL,
+ID_Profesor varchar(9) NOT NULL,
+Curso	varchar(40)not null,
+Plazas_disponibles int not null default 80,
+primary key(ID_Asignatura,Nombre_Asignatura),
+constraint asignatura_fk_titulacion FOREIGN KEY (ID_Titulacion)  references Titulacion(ID_Titulacion),
+constraint asignatura_fk_profesor FOREIGN KEY (ID_Profesor) references Profesor(ID_Persona)
+);
+
+
+create table matriculacion (
+ID_Persona varchar(9) NOT NULL,
+ID_Asignatura INT not null,
+ano_academico INT NOT NULL,
+nota double,
+primary key(ID_Persona,ID_Asignatura,año_academico),
+constraint matriculacion_fk_persona FOREIGN KEY (ID_Persona) references Persona(ID_Persona),
+constraint matriculacion_fk_asignatura FOREIGN KEY (ID_Asignatura) references Asignatura(ID_Asignatura)
+);
+
+
+create table Biblioteca(
+ID_Biblioteca int,
+primary key(ID_Biblioteca)
+);
+
+create table Libro(
+Titulo_Libro varchar(100),
+Autor varchar(50),
+Editorial varchar(100),
+ID_Biblioteca int,
+Cantidad_Total int,
+Cantidad_Restante int,
+Tematica varchar(50),
+primary key(Titulo_Libro),
+constraint libros_fk_biblioteca foreign key(ID_Biblioteca) references Biblioteca(ID_Biblioteca)
+);
+
+create table Libros_Reservados(
+ID_Alumno varchar(9),
+Titulo_Libro varchar(100),
+Fecha_Reserva timestamp default now(),
+Fecha_Devolucion timestamp generated always as (Fecha_reserva + interval 15 day)
+);
+
+
+
+
+

@@ -1,0 +1,6 @@
+Alumno con id : 11111111T matriculado de las siguientes asignaturas: 
+matemática discreta
+Matematicas II - Cálculo
+Sistemes Digitals
+
+Correspondientes al año : 2020
