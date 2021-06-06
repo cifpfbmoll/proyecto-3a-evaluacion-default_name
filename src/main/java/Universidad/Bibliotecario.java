@@ -26,7 +26,7 @@ public class Bibliotecario extends Persona{
     //ATRIBUTOS
     private static Scanner lector = new Scanner(System.in);
 
-    //constructor vacío
+    //constructor vacio
     public Bibliotecario() {
     }
 
@@ -77,7 +77,7 @@ public class Bibliotecario extends Persona{
             int n = prepStat.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println("No he podido añadir el libro");
+            System.out.println("No he podido anadir el libro");
             e.printStackTrace();
         } finally {
             try {
@@ -165,7 +165,7 @@ public class Bibliotecario extends Persona{
 
             int n = prepStat.executeUpdate();
 
-            System.out.println("Libro borrado con éxito");
+            System.out.println("Libro borrado con exito");
 
         } catch (SQLException e) {
             System.out.println("No he podido borrar el libro " + titulo);
@@ -230,7 +230,7 @@ public class Bibliotecario extends Persona{
 
                     int n2 = prepStat.executeUpdate();
 
-                    System.out.println("Libro reservado con éxito para el alumno con ID = " + id);
+                    System.out.println("Libro reservado con exito para el alumno con ID = " + id);
                     miConexion.commit();
                 } catch (SQLException e) {
                     try {
@@ -399,7 +399,7 @@ public class Bibliotecario extends Persona{
 
 
     /**
-     * Enseña las diferentes editoriales que tienen libros
+     * Ensena las diferentes editoriales que tienen libros
      *
      * @param con objeto conexion para conectar con la bbdd
      */
@@ -496,7 +496,7 @@ public class Bibliotecario extends Persona{
     }
 
     /**
-     * Metodo que filtra los libros por una tematica y los enseña en consola
+     * Metodo que filtra los libros por una tematica y los ensena en consola
      *
      * @param connection
      */
@@ -672,7 +672,7 @@ public class Bibliotecario extends Persona{
 
     /**
      * Muestra todas las reservas de libros
-     * @param con objeto conexión para conectar a la BBDD
+     * @param con objeto conexion para conectar a la BBDD
      */
     public static void verReservas(Connection con) {
         try {
@@ -705,7 +705,7 @@ public class Bibliotecario extends Persona{
 
     /**
      * Muestra las reservas filtrando por titulo de libro o por dni del alumno
-     * @param con  objeto conexión para conectar a la BBDD
+     * @param con  objeto conexion para conectar a la BBDD
      */
     public static void verReservasFiltrado(Connection con){
         System.out.println("Escribe A) Filtrar por alumno");
@@ -731,7 +731,7 @@ public class Bibliotecario extends Persona{
     /**
      * Muestra todas las reservas de un alumno en concreto
      * @param dni el dni del alumno a buscar
-     * @param con objeto conexión para conectar a la BBDD
+     * @param con objeto conexion para conectar a la BBDD
      */
     private static void verReservasDni(String dni, Connection con){
         try {
@@ -764,9 +764,9 @@ public class Bibliotecario extends Persona{
     }
 
     /**
-     * Muestra todas las reservas que tiene un título de libro
+     * Muestra todas las reservas que tiene un titulo de libro
      * @param libro el titulo del libro a buscar en la lista de reservas
-     * @param con objeto conexión para conectar a la BBDD
+     * @param con objeto conexion para conectar a la BBDD
      */
     private static void verReservasLibro(String libro, Connection con){
         try {
@@ -815,7 +815,7 @@ public class Bibliotecario extends Persona{
             psLibrosAlumnos = miConexion.prepareStatement("SELECT * FROM libros_reservados where id_alumno = ?");
             psLibrosAlumnos.setString(1, id);
             rsLibrosAlumnos = psLibrosAlumnos.executeQuery();
-            System.out.println("A continuación se mostrarán los títulos de los libros que tiene reservados.");
+            System.out.println("A continuacion se mostraran los titulos de los libros que tiene reservados.");
             while (rsLibrosAlumnos.next()) {
                 System.out.println("- TITULO: " + rsLibrosAlumnos.getString("titulo_libro"));
             }
@@ -833,7 +833,7 @@ public class Bibliotecario extends Persona{
 
             int g2 = prepStat.executeUpdate();
 
-            System.out.println("Libro devuelto con éxito para el alumno con ID = " + id);
+            System.out.println("Libro devuelto con exito para el alumno con ID = " + id);
             miConexion.commit();
         }catch(SQLException e){
             try{

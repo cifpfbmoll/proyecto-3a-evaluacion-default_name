@@ -20,7 +20,7 @@ public class Alumno extends Persona {
     //Atributos
     static ArrayList<Integer> lista = new ArrayList();
     private static Scanner lector = new Scanner(System.in);
-    static int auxiliarAñoAcademico;
+    static int auxiliarAnoAcademico;
     public Alumno() {
     }
 
@@ -420,7 +420,7 @@ public class Alumno extends Persona {
 
 
     /**
-     * Método que imprime la matrícula de un alumno en un archivo txt, par que quede
+     * Metodo que imprime la matricula de un alumno en un archivo txt, par que quede
      * constancia de lo matriculado.
      *
      * @param conexionBase un objeto Connection para hacer la busqueda en la BBDD.
@@ -443,7 +443,7 @@ public class Alumno extends Persona {
                 lista_Nombres_matricula.add(nombreA);
             }
             String resumen = "Alumno con id : " + id + " matriculado de las siguientes asignaturas: " + "\n";
-            String finalMatricula = "\n" + "Correspondientes al año : " + auxiliarAñoAcademico;
+            String finalMatricula = "\n" + "Correspondientes al ano : " + auxiliarAnoAcademico;
             miBuffer = new BufferedWriter(new FileWriter("Ficheros/matricula.txt"));
             miBuffer.write(resumen);
             for (int i = 0; i < lista_Nombres_matricula.size(); i++) {
@@ -469,8 +469,8 @@ public class Alumno extends Persona {
 
     }
 
-    /**Método que registra matriculas a traves del campo dni de alumno y los codigos obtenidos en el
-     * método registrarAsignaturas.
+    /**Metodo que registra matriculas a traves del campo dni de alumno y los codigos obtenidos en el
+     * metodo registrarAsignaturas.
      *
      * @param conexionBase un objeto Connection para hacer la busqueda en la BBDD.
      * @param id  el dni del alumno para realizar los inserts en la tabla
@@ -483,12 +483,12 @@ public class Alumno extends Persona {
             conexionBase.setAutoCommit(false);
             // comenzamos el preparedstatement para actualizar la transaccion en caso de que
             // todo vaya bien
-            // por bloques se mostraran todos los procesos implicados en la matriculación
-            // primer bloque que ejecuta la matriculación
+            // por bloques se mostraran todos los procesos implicados en la matriculacion
+            // primer bloque que ejecuta la matriculacion
             lista = registrarAsignaturas();
-            System.out.println("De que año académico quieres matricularte?");
-            int año_academico = Integer.parseInt(lector.nextLine());
-            auxiliarAñoAcademico = año_academico;
+            System.out.println("De que ano academico quieres matricularte?");
+            int ano_academico = Integer.parseInt(lector.nextLine());
+            auxiliarAnoAcademico = ano_academico;
             int asignatura;
             for (int i = 0; i < lista.size(); i++) {
                 Sql1 = conexionBase.prepareStatement("insert into matriculacion values (?,?,?,null)");
@@ -496,7 +496,7 @@ public class Alumno extends Persona {
                 asignatura = lista.get(i);
                 Sql1.setString(1, alumno);
                 Sql1.setInt(2, asignatura);
-                Sql1.setInt(3, año_academico);
+                Sql1.setInt(3, ano_academico);
                 Sql1.executeUpdate();
                 // segundo bloque que resta una plaza a la asignatura
                 Sql2 = conexionBase.prepareStatement(
@@ -512,11 +512,11 @@ public class Alumno extends Persona {
             try {
                 conexionBase.rollback();
             } catch (SQLException e1) {
-                // TODO Bloque catch generado automáticamente
+                // TODO Bloque catch generado automaticamente
                 e1.printStackTrace();
             }
         } catch (SQLException e1) {
-            System.out.println("Conexión fallida");
+            System.out.println("Conexion fallida");
 
             try {
                 conexionBase.rollback();
@@ -540,12 +540,12 @@ public class Alumno extends Persona {
     }
 
     /**
-     * método registrarAsginaturas, te pregunta la candtidad de asignaturas de las
-     * cuales te quieres registrar y, seguidamente, pide los códigos de estas, las
+     * metodo registrarAsginaturas, te pregunta la candtidad de asignaturas de las
+     * cuales te quieres registrar y, seguidamente, pide los codigos de estas, las
      * almacena en un ArrayList. Devuelve el arraylist con los codigos de las
      * asignaturas
      *
-     * @return listaAsignaturas, es un arraylist que contiene los códigos de las
+     * @return listaAsignaturas, es un arraylist que contiene los codigos de las
      *         asignaturas para hacer un tratamieno posterior
      */
     private static ArrayList<Integer> registrarAsignaturas() {

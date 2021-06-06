@@ -103,7 +103,7 @@ public class Profesor extends Persona{
         System.out.println("Escribe el id de la asignatura");
         int asignatura = lector.nextInt();
         lector.nextLine();
-        System.out.println("Escribe el año de la asignatura");
+        System.out.println("Escribe el ano de la asignatura");
         int ano = lector.nextInt();
         lector.nextLine();
         System.out.println("Escribe la nota");
@@ -142,7 +142,7 @@ public class Profesor extends Persona{
 
     /**
      * Pone una nota de un alumno a null
-     * @param con objeto conexión para conectar con la BBDD
+     * @param con objeto conexion para conectar con la BBDD
      * @param datos asd
      */
     public static  void eliminarNotaAAlumno(Connection con, String[] datos){
@@ -153,7 +153,7 @@ public class Profesor extends Persona{
         System.out.println("Escribe el id de la asignatura que quieres borrar la nota");
         int asignatura = lector.nextInt();
         lector.nextLine();
-        System.out.println("Escribe el año de la asignatura");
+        System.out.println("Escribe el ano de la asignatura");
         int ano = lector.nextInt();
         lector.nextLine();
 

@@ -11,11 +11,11 @@ public class Asignatura {
     private int ID_Profesor;
     private String Curso;
 
-    //Constructor vacío
+    //Constructor vacio
     public Asignatura(){
     }
 
-    // Constructor con parámetros
+    // Constructor con parametros
     public Asignatura(int ID_Asignatura, String Nombre_Asignatura, int ID_Titulacion, int ID_Profesor, String Curso) {
 
         this.setID_Asignatura(ID_Asignatura);

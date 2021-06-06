@@ -70,7 +70,7 @@ public class Administrador extends Persona{
         Scanner lector = new  Scanner(System.in);
         String tipoPersona;
         do{
-            System.out.println("¿Qué tipo de persona quieres introducir?");
+            System.out.println("¿Que tipo de persona quieres introducir?");
             System.out.println("1. Administrador");
             System.out.println("2. Profesor");
             System.out.println("3. Alumno");
@@ -110,8 +110,8 @@ public class Administrador extends Persona{
     }
 
     /**
-     * Añade una persona a la BBDD
-     * @param miConexion recibe un objeto conexión para conectar con la BBDD
+     * Anade una persona a la BBDD
+     * @param miConexion recibe un objeto conexion para conectar con la BBDD
      */
     public static void anadirPersona(Connection miConexion) {
         Persona p = Administrador.pedirDatosPersona();
@@ -162,11 +162,11 @@ public class Administrador extends Persona{
             miConexion.commit();
 
             if (filasMetidas > 0 && filasMetidasROl > 0) {
-                System.out.println("Se Ha añadido el registro");
+                System.out.println("Se Ha anadido el registro");
             }
 
         } catch (MySQLIntegrityConstraintViolationException ex)  {
-            System.out.println("Este dni ya está en la base de datos");
+            System.out.println("Este dni ya esta en la base de datos");
         }catch (SQLException throwables) {
            System.out.println("SQLSTATE " + throwables.getSQLState() + "SQLMESSAGE" +throwables.getMessage());
             System.out.println("Hago rollback");
@@ -194,7 +194,7 @@ public class Administrador extends Persona{
     public static void mostrarPersonasAtributo(Connection con) {
         try{
 
-            System.out.println("¿Por qué atributo quieres ordenar la lista (nombre, edad, rol)?");
+            System.out.println("¿Por que atributo quieres ordenar la lista (nombre, edad, rol)?");
             String atributo = lector.nextLine();
             while (!atributo.equals("nombre")&&!atributo.equals("edad")&&!atributo.equals("rol")){
                 System.out.println("Introduce un atributo valido:");
@@ -230,7 +230,7 @@ public class Administrador extends Persona{
     /**
      * Busca por un DNI
      * @param dni un dni para buscar
-     * @param con un objeto Connection para hacer la búsqueda en la BBDD
+     * @param con un objeto Connection para hacer la busqueda en la BBDD
      * @return true si ha encontrado el DNI, false si no lo ha encontrado
      */
     public static boolean buscarDni( String dni, Connection con){
@@ -364,15 +364,15 @@ public class Administrador extends Persona{
     }
 
     /**
-     *Preguntar al administrador que titulaciones quiere crear, preguntarle por todos los atributos de la titulacioen
-     * y una vez se tienen los valores del atributo, añadirlos a la tabla de titulaciones. Es estatico.
+     *Preguntar al administrador que titulaciones quiere crear, preguntarle por todos los atributos de la titulacio en
+     * y una vez se tienen los valores del atributo, anadirlos a la tabla de titulaciones. Es estatico.
      * @param con un objeto Connection para hacer la busqueda en la BBDD.
      */
     //queda pendiente kambiar la PK de la tabla para que el catch error vea si existe el valor en la tabla
     public static void anadirTitulacion(Connection con){
         try {
 
-            System.out.println("¿Qué titulacion desea anadir?");
+            System.out.println("¿Que titulacion desea anadir?");
             String titulacion = lector.nextLine();
             String st = "insert into titulacion(nombre_titulacion) values(?)";
             PreparedStatement preparedSt = con.prepareStatement(st);
@@ -517,7 +517,7 @@ public class Administrador extends Persona{
 
 
     /**
-     * Añade un departamento a la tabla departamento
+     * Anade un departamento a la tabla departamento
      * @param miConexion es el objeto conexion para conectar con la BBDD
      */
     public static void anadirDepartamento(Connection miConexion){
@@ -532,7 +532,7 @@ public class Administrador extends Persona{
             estatementpreparada.setString(1, nombre);
             int filasMetidas = estatementpreparada.executeUpdate();
             if (filasMetidas > 0) {
-                System.out.println("Se Ha añadido el departamento");
+                System.out.println("Se Ha anadido el departamento");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -540,9 +540,9 @@ public class Administrador extends Persona{
     }
 
     /**
-     * Comprueba, dada una id de un departamento, si éste existe
+     * Comprueba, dada una id de un departamento, si este existe
      * @param id la id del departamento que queremos comprobar si existe
-     * @param con es el objeto conexión
+     * @param con es el objeto conexion
      * @return devuelve true si el id del dpto existe, y false si no existe
      */
     public static boolean validarIdDepartamento(int id, Connection con){
@@ -635,7 +635,7 @@ public class Administrador extends Persona{
     }
 
     /**
-     * Dado un id de asignatura, comprueba que éste exista o no
+     * Dado un id de asignatura, comprueba que este exista o no
      * @param miConexion objeto Connection para conectar con la base de datos
      * @param idAsignatura el id de la asignatura a buscar
      * @return true si el id existe en la tabla asignaturas, false si no existe
@@ -671,7 +671,7 @@ public class Administrador extends Persona{
 
     /**
      * Borra una asignatura de la BBDD
-     * @param miConexion objeto conexión para conectar con la BBDD
+     * @param miConexion objeto conexion para conectar con la BBDD
      */
     public  static void borrarAsignatura(Connection  miConexion){
          boolean idCorrecta = false;
@@ -706,12 +706,12 @@ public class Administrador extends Persona{
         }
 
     /**
-     * Añade una asignatura a la base de datos
-     * @param miConexion objeto conexión para conectar con la BBDD
+     * Anade una asignatura a la base de datos
+     * @param miConexion objeto conexion para conectar con la BBDD
      */
     public static void anadirAsignatura(Connection miConexion){
 
-            System.out.println("Escribe el nombre de la asignatura a añadir");
+            System.out.println("Escribe el nombre de la asignatura a anadir");
             String nombreAsignatura = lector.nextLine();
 
             boolean titulacionValida = false;
@@ -745,7 +745,7 @@ public class Administrador extends Persona{
 
                 int filasMetidas = estatementpreparada.executeUpdate();
                 if (filasMetidas > 0) {
-                    System.out.println("Se Ha añadido la asignatura");
+                    System.out.println("Se Ha anadido la asignatura");
                 }
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
@@ -756,7 +756,7 @@ public class Administrador extends Persona{
     /**
      * Comprueba, dada una id, que la titulacion existe en la BBDD
      * @param idTitulacion id de la titulacion a buscar
-     * @param con objeto conexión para conectar con la BBDD
+     * @param con objeto conexion para conectar con la BBDD
      * @return false si el id no existe, true, si el id existe
      */
     public static boolean comprobarTitulacion( int idTitulacion, Connection con){
@@ -781,7 +781,7 @@ public class Administrador extends Persona{
 
     /**
      * Lista todos los profesores
-     * @param miConexion objeto conexión para conectar con la BBDD
+     * @param miConexion objeto conexion para conectar con la BBDD
      */
     public static void verProfesores(Connection miConexion){
         try (PreparedStatement consulta = miConexion.prepareStatement("select * from persona  where rol = 'profesor'  ")) {
@@ -807,7 +807,7 @@ public class Administrador extends Persona{
     /**
      * Comprueba que la id dada pertenece a un profesor o no
      * @param idProfesor id del profesor a buscar
-     * @param con objeto conexión para conectar con la BBDD
+     * @param con objeto conexion para conectar con la BBDD
      * @return true si el id dado es de un profesor, false si no lo es
      */
         public static boolean comprobarProfesor( String idProfesor, Connection con){
@@ -834,7 +834,7 @@ public class Administrador extends Persona{
 
     /**
      * Lista todos los alumnos
-     * @param miConexion objeto conexión para conectar con la BBDD
+     * @param miConexion objeto conexion para conectar con la BBDD
      */
     public static void verAlumnos(Connection miConexion){
         try (PreparedStatement consulta = miConexion.prepareStatement("select * from persona  where rol = 'alumno'  ")) {
@@ -860,7 +860,7 @@ public class Administrador extends Persona{
 
     /**
      * Lista todos los administradores
-     * @param miConexion objeto conexión para conectar con la BBDD
+     * @param miConexion objeto conexion para conectar con la BBDD
      */
     public static void verAdministradores(Connection miConexion){
         try (PreparedStatement consulta = miConexion.prepareStatement("select * from persona  where rol = 'administrador'  ")) {
@@ -886,7 +886,7 @@ public class Administrador extends Persona{
 
     /**
      * Lista todos los bibliotecarios
-     * @param miConexion objeto conexión para conectar con la BBDD
+     * @param miConexion objeto conexion para conectar con la BBDD
      */
     public static void verBibliotecarios(Connection miConexion){
         try (PreparedStatement consulta = miConexion.prepareStatement("select * from persona  where rol = 'bibliotecario'  ")) {
