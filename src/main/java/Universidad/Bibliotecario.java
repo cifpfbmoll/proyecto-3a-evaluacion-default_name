@@ -221,8 +221,6 @@ public class Bibliotecario extends Persona{
 
                     int n = prepStat.executeUpdate();
 
-                    miConexion.commit();
-
                     prepStat = miConexion.prepareStatement("INSERT INTO LIBROS_RESERVADOS VALUES (?,?, default, default)");
 
                     prepStat.setString(1, id);
@@ -826,7 +824,6 @@ public class Bibliotecario extends Persona{
 
             int g = prepStat.executeUpdate();
 
-            miConexion.commit();
             prepStat = miConexion.prepareStatement("DELETE FROM LIBROS_RESERVADOS WHERE ID_Alumno = ? AND titulo_libro = ?");
             prepStat.setString(1, id);
             prepStat.setString(2, titulo);

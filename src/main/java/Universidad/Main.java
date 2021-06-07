@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 /**
  * Clase principal del proyecto. Contiene los menus de los usuarios y la conexion a la BBDD
@@ -16,13 +17,20 @@ public class Main {
     public static void main(String[] args){
 
         Connection miConexion = obtenerConexion();
-        Persona persona = new Persona();
-        String[] datos = Persona.identificarse(miConexion);
+        try{
+            Persona persona = new Persona();
+            String[] datos = Persona.identificarse(miConexion);
 
-        System.out.println("Has iniciado sesion como " + datos[1]);
-        mostrarMenus(datos, miConexion);
+            System.out.println("Has iniciado sesion como " + datos[1]);
+            mostrarMenus(datos, miConexion);
+        }catch(NullPointerException e){
+            System.out.println("\n  ************************************************************");
+            System.out.println("   No has iniciado sesion correctamente, vuelve ha intentarlo");
+            System.out.println("  ************************************************************\n");
+            main(args);
+        }
+
     }
-
 
     /**
      * Metodo para obtener la conexion
@@ -54,62 +62,69 @@ public class Main {
     private static void menuBibliotecario(String[] datos, Connection miConexion){
 
         boolean menu = false;
-
-        while(!menu){
-            switch (pedirOpcionBibliotecario()){
-                case 1:
-                    Bibliotecario.anadirLibro(miConexion, datos);
-                    break;
-                case 2:
-                    Bibliotecario.eliminarLibro(miConexion);
-                    break;
-                case 3:
-                    Bibliotecario.mostrarLibros(miConexion);
-                    break;
-                case 4:
-                    boolean menu2 = false;
-                    while (!menu2){
-                        switch (pedirOpcionReserva()){
-                            case 1:
-                                Bibliotecario.reservarLibro(miConexion);
-                                break;
-                            case 2:
-                                Bibliotecario.verReservas(miConexion);
-                                break;
-                            case 3:
-                                Bibliotecario.verReservasFiltrado(miConexion);
-                                break;
-                            case 4:
-                                menu2 = true;
-                                break;
-                            default:
-                                System.out.println("Escribe una opcion correcta:");
-                                break;
+        try{
+            while(!menu){
+                switch (pedirOpcionBibliotecario()){
+                    case 1:
+                        Bibliotecario.anadirLibro(miConexion, datos);
+                        break;
+                    case 2:
+                        Bibliotecario.eliminarLibro(miConexion);
+                        break;
+                    case 3:
+                        Bibliotecario.mostrarLibros(miConexion);
+                        break;
+                    case 4:
+                        boolean menu2 = false;
+                        while (!menu2){
+                            switch (pedirOpcionReserva()){
+                                case 1:
+                                    Bibliotecario.reservarLibro(miConexion);
+                                    break;
+                                case 2:
+                                    Bibliotecario.verReservas(miConexion);
+                                    break;
+                                case 3:
+                                    Bibliotecario.verReservasFiltrado(miConexion);
+                                    break;
+                                case 4:
+                                    menu2 = true;
+                                    break;
+                                default:
+                                    System.out.println("Escribe una opcion correcta:");
+                                    break;
+                            }
                         }
-                    }
-                    break;
-                case 5:
-                    Bibliotecario.devolverLibro(miConexion);
-                    break;
-                case 6:
-                    Bibliotecario.mostrarEditoriales(miConexion);
-                    break;
-                case 7:
-                    Bibliotecario.filtrarLibrosAutor(miConexion);
-                    break;
-                case 8:
-                    Bibliotecario.filtrarLibrosEditorial(miConexion);
-                    break;
-                case 9:
-                    Bibliotecario.filtrarLibrosTematica(miConexion);
-                    break;
-                case 10:
-                    menu = true;
-                    break;
-                default:
-                    System.out.println("Escribe una opcion correcta:");
-                    break;
+                        break;
+                    case 5:
+                        Bibliotecario.devolverLibro(miConexion);
+                        break;
+                    case 6:
+                        Bibliotecario.mostrarEditoriales(miConexion);
+                        break;
+                    case 7:
+                        Bibliotecario.filtrarLibrosAutor(miConexion);
+                        break;
+                    case 8:
+                        Bibliotecario.filtrarLibrosEditorial(miConexion);
+                        break;
+                    case 9:
+                        Bibliotecario.filtrarLibrosTematica(miConexion);
+                        break;
+                    case 10:
+                        menu = true;
+                        break;
+                    default:
+                        System.out.println("Escribe una opcion correcta:");
+                        break;
+                }
             }
+        }catch(InputMismatchException e){
+            System.out.println("\n  *********************************");
+            System.out.println("   Pon un caracter correspondiente");
+            System.out.println("  *********************************\n");
+            lector.next();
+            menuBibliotecario(datos, miConexion);
         }
     }
 
@@ -148,28 +163,35 @@ public class Main {
     private static void menuAlumno(String[] datos, Connection miConexion){
 
         boolean menu = false;
-
-        while (!menu){
-            switch (pedirOpcionAlumno()){
-                case 1:
-                    Alumno.altaMatricula(miConexion, datos[0]);
-                    break;
-                case 2:
-                    Alumno.bajaMatricula(miConexion, datos[0]);
-                    break;
-                case 3:
-                    Alumno.verEstadoAsignaturas(miConexion, datos[0]);
-                    break;
-                case 4:
-                    Alumno.verMatriculaciones(miConexion, datos[0]);
-                    break;
-                case 5:
-                    menu = true;
-                    break;
-                default:
-                    System.out.println("Escribe una opcion correcta:");
-                    break;
+        try{
+            while (!menu){
+                switch (pedirOpcionAlumno()){
+                    case 1:
+                        Alumno.altaMatricula(miConexion, datos[0]);
+                        break;
+                    case 2:
+                        Alumno.bajaMatricula(miConexion, datos[0]);
+                        break;
+                    case 3:
+                        Alumno.verEstadoAsignaturas(miConexion, datos[0]);
+                        break;
+                    case 4:
+                        Alumno.verMatriculaciones(miConexion, datos[0]);
+                        break;
+                    case 5:
+                        menu = true;
+                        break;
+                    default:
+                        System.out.println("Escribe una opcion correcta:");
+                        break;
+                }
             }
+        }catch(InputMismatchException e){
+            System.out.println("\n  *********************************");
+            System.out.println("   Pon un caracter correspondiente");
+            System.out.println("  *********************************\n");
+            lector.next();
+            menuAlumno(datos, miConexion);
         }
     }
 
@@ -190,25 +212,32 @@ public class Main {
     private static void menuProfesor(String[] datos, Connection miConexion){
 
         boolean menu = false;
-
-        while (!menu){
-            switch (pedirOpcionProfesor()){
-                case 1:
-                    Profesor.mostrarAlumnos(miConexion, datos);
-                    break;
-                case 2:
-                    Profesor.ponerNota(miConexion, datos);
-                    break;
-                case 3:
-                    Profesor.eliminarNotaAAlumno(miConexion, datos);
-                    break;
-                case 4:
-                    menu = true;
-                    break;
-                default:
-                    System.out.println("Escribe una opcion correcta:");
-                    break;
+        try{
+            while (!menu){
+                switch (pedirOpcionProfesor()){
+                    case 1:
+                        Profesor.mostrarAlumnos(miConexion, datos);
+                        break;
+                    case 2:
+                        Profesor.ponerNota(miConexion, datos);
+                        break;
+                    case 3:
+                        Profesor.eliminarNotaAAlumno(miConexion, datos);
+                        break;
+                    case 4:
+                        menu = true;
+                        break;
+                    default:
+                        System.out.println("Escribe una opcion correcta:");
+                        break;
+                }
             }
+        }catch (InputMismatchException e){
+            System.out.println("\n  *********************************");
+            System.out.println("   Pon un caracter correspondiente");
+            System.out.println("  *********************************\n");
+            lector.next();
+            menuProfesor(datos, miConexion);
         }
     }
 
@@ -228,120 +257,127 @@ public class Main {
     private static void menuAdministrador(String[] datos, Connection miConexion){
 
         boolean menu = false;
+        try{
+            while (!menu){
+                switch (pedirOpcionAdministrador()){
+                    case 1:
+                        boolean menuPersonas = false;
+                        while (!menuPersonas){
+                            switch (pedirOpcionAdminPersonas()){
+                                case 1:
+                                    Administrador.anadirPersona(miConexion);
+                                    break;
+                                case 2:
+                                    Administrador.borrarPersona(miConexion);
+                                    break;
+                                case 3:
+                                    Administrador.verPersonas(miConexion);
+                                    break;
+                                case 4:
+                                    Administrador.mostrarPersonasAtributo(miConexion);
+                                    break;
+                                case 5:
+                                    Administrador.verProfesores(miConexion);
+                                    break;
+                                case 6:
+                                    Administrador.verAlumnos(miConexion);
+                                    break;
+                                case 7:
+                                    Administrador.verBibliotecarios(miConexion);
+                                    break;
+                                case 8:
+                                    Administrador.verAdministradores(miConexion);
+                                    break;
+                                case 9:
+                                    menuPersonas = true;
+                                    break;
+                                default:
+                                    System.out.println("Escribe una opcion correcta:");
+                                    break;
+                            }
+                        }
+                        break;
+                    case 2:
+                        boolean menuTitulaciones = false;
+                        while (!menuTitulaciones){
+                            switch (pedirOpcionAdminTitulaciones()){
+                                case 1:
+                                    Administrador.anadirTitulacion(miConexion);
+                                    break;
+                                case 2:
+                                    Administrador.eliminarTitulacion(miConexion);
+                                    break;
+                                case 3:
+                                    Administrador.verTitulaciones(miConexion);
+                                    break;
+                                case 4:
+                                    menuTitulaciones = true;
+                                    break;
+                                default:
+                                    System.out.println("Escribe una opcion correcta:");
+                                    break;
+                            }
+                        }
+                        break;
+                    case 3:
+                        boolean menuDepartamentos = false;
+                        while (!menuDepartamentos){
+                            switch (pedirOpcionAdminDepartamentos()){
+                                case 1:
+                                    Administrador.anadirDepartamento(miConexion);
+                                    break;
+                                case 2:
+                                    Administrador.eliminarDepartamento(miConexion);
+                                    break;
+                                case 3:
+                                    Administrador.verDepartamento(miConexion);
+                                    break;
+                                case 4:
+                                    menuDepartamentos = true;
+                                    break;
+                                default:
+                                    System.out.println("Escribe una opcion correcta:");
+                                    break;
+                            }
+                        }
+                        break;
+                    case 4:
+                        boolean menuAsignaturas = false;
+                        while (!menuAsignaturas){
+                            switch (pedirOpcionAdminAsignaturas()){
+                                case 1:
+                                    Administrador.anadirAsignatura(miConexion);
+                                    break;
+                                case 2:
+                                    Administrador.borrarAsignatura(miConexion);
+                                    break;
+                                case 3:
+                                    Administrador.verAsignaturas(miConexion);
+                                    break;
+                                case 4:
+                                    menuAsignaturas = true;
+                                    break;
+                                default:
+                                    System.out.println("Escribe una opcion correcta:");
+                                    break;
+                            }
+                        }
+                        break;
+                    case 5:
+                        menu = true;
+                        break;
+                    default:
+                        System.out.println("Escribe una opcion correcta:");
+                        break;
 
-        while (!menu){
-            switch (pedirOpcionAdministrador()){
-                case 1:
-                    boolean menuPersonas = false;
-                    while (!menuPersonas){
-                        switch (pedirOpcionAdminPersonas()){
-                            case 1:
-                                Administrador.anadirPersona(miConexion);
-                                break;
-                            case 2:
-                                Administrador.borrarPersona(miConexion);
-                                break;
-                            case 3:
-                                Administrador.verPersonas(miConexion);
-                                break;
-                            case 4:
-                                Administrador.mostrarPersonasAtributo(miConexion);
-                                break;
-                            case 5:
-                                Administrador.verProfesores(miConexion);
-                                break;
-                            case 6:
-                                Administrador.verAlumnos(miConexion);
-                                break;
-                            case 7:
-                                Administrador.verBibliotecarios(miConexion);
-                                break;
-                            case 8:
-                                Administrador.verAdministradores(miConexion);
-                                break;
-                            case 9:
-                                menuPersonas = true;
-                                break;
-                            default:
-                                System.out.println("Escribe una opcion correcta:");
-                                break;
-                        }
-                    }
-                    break;
-                case 2:
-                    boolean menuTitulaciones = false;
-                    while (!menuTitulaciones){
-                        switch (pedirOpcionAdminTitulaciones()){
-                            case 1:
-                                Administrador.anadirTitulacion(miConexion);
-                                break;
-                            case 2:
-                                Administrador.eliminarTitulacion(miConexion);
-                                break;
-                            case 3:
-                                Administrador.verTitulaciones(miConexion);
-                                break;
-                            case 4:
-                                menuTitulaciones = true;
-                                break;
-                            default:
-                                System.out.println("Escribe una opcion correcta:");
-                                break;
-                        }
-                    }
-                    break;
-                case 3:
-                    boolean menuDepartamentos = false;
-                    while (!menuDepartamentos){
-                        switch (pedirOpcionAdminDepartamentos()){
-                            case 1:
-                                Administrador.anadirDepartamento(miConexion);
-                                break;
-                            case 2:
-                                Administrador.eliminarDepartamento(miConexion);
-                                break;
-                            case 3:
-                                Administrador.verDepartamento(miConexion);
-                                break;
-                            case 4:
-                                menuDepartamentos = true;
-                                break;
-                            default:
-                                System.out.println("Escribe una opcion correcta:");
-                                break;
-                        }
-                    }
-                    break;
-                case 4:
-                    boolean menuAsignaturas = false;
-                    while (!menuAsignaturas){
-                        switch (pedirOpcionAdminAsignaturas()){
-                            case 1:
-                                Administrador.anadirAsignatura(miConexion);
-                                break;
-                            case 2:
-                                Administrador.borrarAsignatura(miConexion);
-                                break;
-                            case 3:
-                                Administrador.verAsignaturas(miConexion);
-                                break;
-                            case 4:
-                                menuAsignaturas = true;
-                                break;
-                            default:
-                                System.out.println("Escribe una opcion correcta:");
-                                break;
-                        }
-                    }
-                    break;
-                case 5:
-                    menu = true;
-                    break;
-                default:
-                    System.out.println("Escribe una opcion correcta:");
-                    break;
-
+                }
             }
+        }catch(InputMismatchException e){
+            System.out.println("\n  *********************************");
+            System.out.println("   Pon un caracter correspondiente");
+            System.out.println("  *********************************\n");
+            lector.next();
+            menuAdministrador(datos, miConexion);
         }
     }
 
